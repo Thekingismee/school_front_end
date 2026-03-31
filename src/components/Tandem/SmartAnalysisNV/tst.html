@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carousel</title>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Owl Carousel CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+<!-- Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<style>
+header,
+footer{
+  text-align: center;
+  padding: 20px 0 70px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  background: #780000;
+  clip-path: shape(from 0 0,vline to 100%,curve to 4.17% calc(100% - 15.5px) with 2.78% calc(100% - 15px),curve to 6.94% calc(100% - 9px) with 5.56% calc(100% - 16px),curve to 9.72% calc(100% - 20px) with 8.33% calc(100% - 2px),curve to 12.5% calc(100% - 44px) with 11.11% calc(100% - 38px),curve to 15.28% calc(100% - 27.5px) with 13.89% calc(100% - 50px),curve to 18.06% calc(100% - 20.5px) with 16.67% calc(100% - 5px),curve to 20.83% calc(100% - 23.5px) with 19.44% calc(100% - 36px),curve to 23.61% calc(100% - 10.5px) with 22.22% calc(100% - 11px),curve to 26.39% calc(100% - 5.5px) with 25% calc(100% - 10px),curve to 29.17% calc(100% - 9.5px) with 27.78% calc(100% - 1px),curve to 31.94% calc(100% - 11.5px) with 30.56% calc(100% - 18px),curve to 34.72% calc(100% - 20px) with 33.33% calc(100% - 5px),curve to 37.5% calc(100% - 23px) with 36.11% calc(100% - 35px),curve to 40.28% calc(100% - 28px) with 38.89% calc(100% - 11px),curve to 43.06% calc(100% - 24.5px) with 41.67% calc(100% - 45px),curve to 45.83% calc(100% - 25.5px) with 44.44% calc(100% - 4px),curve to 48.61% calc(100% - 44.5px) with 47.22% calc(100% - 47px),curve to 51.39% calc(100% - 31px) with 50% calc(100% - 42px),curve to 54.17% calc(100% - 26.5px) with 52.78% calc(100% - 20px),curve to 56.94% calc(100% - 23.5px) with 55.56% calc(100% - 33px),curve to 59.72% calc(100% - 13.5px) with 58.33% calc(100% - 14px),curve to 62.5% calc(100% - 26.5px) with 61.11% calc(100% - 13px),curve to 65.28% calc(100% - 41px) with 63.89% calc(100% - 40px),curve to 68.06% calc(100% - 28.5px) with 66.67% calc(100% - 42px),curve to 70.83% calc(100% - 7.5px) with 69.44% calc(100% - 15px),curve to 73.61% calc(100% - 12.5px) with 72.22% calc(100% - 0px),curve to 76.39% calc(100% - 27.5px) with 75% calc(100% - 25px),curve to 79.17% calc(100% - 28px) with 77.78% calc(100% - 30px),curve to 81.94% calc(100% - 27px) with 80.56% calc(100% - 26px),curve to 84.72% calc(100% - 34px) with 83.33% calc(100% - 28px),curve to 87.5% calc(100% - 28px) with 86.11% calc(100% - 40px),curve to 90.28% calc(100% - 31px) with 88.89% calc(100% - 16px),curve to 93.06% calc(100% - 37px) with 91.67% calc(100% - 46px),curve to 95.83% calc(100% - 23.5px) with 94.44% calc(100% - 28px),curve to 100% 100% with 97.22% calc(100% - 19px),vline to 0, hline to 0);
+}
+.footer1 {
+  background: #219ebc;
+  padding: 70px 0 20px;
+  clip-path: shape(from 0 100%,vline to 0,curve to 4.17% 13px with 2.78% 9px,curve to 6.94% 16px with 5.56% 17px,curve to 9.72% 31.5px with 8.33% 15px,curve to 12.5% 39px with 11.11% 48px,curve to 15.28% 24px with 13.89% 30px,curve to 18.06% 21px with 16.67% 18px,curve to 20.83% 22px with 19.44% 24px,curve to 23.61% 21.5px with 22.22% 20px,curve to 26.39% 17px with 25% 23px,curve to 29.17% 7.5px with 27.78% 11px,curve to 31.94% 7px with 30.56% 4px,curve to 34.72% 17px with 33.33% 10px,curve to 37.5% 12.5px with 36.11% 24px,curve to 40.28% 19.5px with 38.89% 1px,curve to 43.06% 37.5px with 41.67% 38px,curve to 45.83% 27.5px with 44.44% 37px,curve to 48.61% 23.5px with 47.22% 18px,curve to 51.39% 18px with 50% 29px,curve to 54.17% 27px with 52.78% 7px,curve to 56.94% 42.5px with 55.56% 47px,curve to 59.72% 33.5px with 58.33% 38px,curve to 62.5% 33.5px with 61.11% 29px,curve to 65.28% 32px with 63.89% 38px,curve to 68.06% 20.5px with 66.67% 26px,curve to 70.83% 21.5px with 69.44% 15px,curve to 73.61% 20.5px with 72.22% 28px,curve to 76.39% 29px with 75% 13px,curve to 79.17% 47px with 77.78% 45px,curve to 81.94% 26.5px with 80.56% 49px,curve to 84.72% 17.5px with 83.33% 4px,curve to 87.5% 27.5px with 86.11% 31px,curve to 90.28% 22px with 88.89% 24px,curve to 93.06% 31.5px with 91.67% 20px,curve to 95.83% 33px with 94.44% 43px,curve to 100% 0 with 97.22% 23px,vline to 100%, hline to 0);
+}
+.wavy {
+  background: #ffb703;
+  padding-block: 50px;
+  clip-path: shape(from 0 0,curve to 4.17% 21px with 2.78% 1px,curve to 6.94% 21.5px with 5.56% 41px,curve to 9.72% 10.5px with 8.33% 2px,curve to 12.5% 33px with 11.11% 19px,curve to 15.28% 29.5px with 13.89% 47px,curve to 18.06% 11.5px with 16.67% 12px,curve to 20.83% 12.5px with 19.44% 11px,curve to 23.61% 18px with 22.22% 14px,curve to 26.39% 13px with 25% 22px,curve to 29.17% 13.5px with 27.78% 4px,curve to 31.94% 29px with 30.56% 23px,curve to 34.72% 26.5px with 33.33% 35px,curve to 37.5% 16px with 36.11% 18px,curve to 40.28% 17px with 38.89% 14px,curve to 43.06% 18px with 41.67% 20px,curve to 45.83% 13.5px with 44.44% 16px,curve to 48.61% 21px with 47.22% 11px,curve to 51.39% 34px with 50% 31px,curve to 54.17% 38px with 52.78% 37px,curve to 56.94% 25px with 55.56% 39px,curve to 59.72% 28.5px with 58.33% 11px,curve to 62.5% 46px with 61.11% 46px,curve to 65.28% 40.5px with 63.89% 46px,curve to 68.06% 24.5px with 66.67% 35px,curve to 70.83% 28.5px with 69.44% 14px,curve to 73.61% 36.5px with 72.22% 43px,curve to 76.39% 21px with 75% 30px,curve to 79.17% 20.5px with 77.78% 12px,curve to 81.94% 29.5px with 80.56% 29px,curve to 84.72% 21px with 83.33% 30px,curve to 87.5% 6.5px with 86.11% 12px,curve to 90.28% 23.5px with 88.89% 1px,curve to 93.06% 39.5px with 91.67% 46px,curve to 95.83% 32.5px with 94.44% 33px,curve to 100% 0 with 97.22% 32px,vline to 100%,curve to 95.83% calc(100% - 21px) with 97.22% calc(100% - 27px),curve to 93.06% calc(100% - 28.5px) with 94.44% calc(100% - 15px),curve to 90.28% calc(100% - 29px) with 91.67% calc(100% - 42px),curve to 87.5% calc(100% - 33px) with 88.89% calc(100% - 16px),curve to 84.72% calc(100% - 29px) with 86.11% calc(100% - 50px),curve to 81.94% calc(100% - 28.5px) with 83.33% calc(100% - 8px),curve to 79.17% calc(100% - 34.5px) with 80.56% calc(100% - 49px),curve to 76.39% calc(100% - 23.5px) with 77.78% calc(100% - 20px),curve to 73.61% calc(100% - 29px) with 75% calc(100% - 27px),curve to 70.83% calc(100% - 29.5px) with 72.22% calc(100% - 31px),curve to 68.06% calc(100% - 20px) with 69.44% calc(100% - 28px),curve to 65.28% calc(100% - 26.5px) with 66.67% calc(100% - 12px),curve to 62.5% calc(100% - 36px) with 63.89% calc(100% - 41px),curve to 59.72% calc(100% - 36px) with 61.11% calc(100% - 31px),curve to 56.94% calc(100% - 38.5px) with 58.33% calc(100% - 41px),curve to 54.17% calc(100% - 33.5px) with 55.56% calc(100% - 36px),curve to 51.39% calc(100% - 38.5px) with 52.78% calc(100% - 31px),curve to 48.61% calc(100% - 30px) with 50% calc(100% - 46px),curve to 45.83% calc(100% - 7px) with 47.22% calc(100% - 14px),curve to 43.06% calc(100% - 23px) with 44.44% calc(100% - 0px),curve to 40.28% calc(100% - 41px) with 41.67% calc(100% - 46px),curve to 37.5% calc(100% - 40px) with 38.89% calc(100% - 36px),curve to 34.72% calc(100% - 34px) with 36.11% calc(100% - 44px),curve to 31.94% calc(100% - 18px) with 33.33% calc(100% - 24px),curve to 29.17% calc(100% - 27px) with 30.56% calc(100% - 12px),curve to 26.39% calc(100% - 32px) with 27.78% calc(100% - 42px),curve to 23.61% calc(100% - 28px) with 25% calc(100% - 22px),curve to 20.83% calc(100% - 40px) with 22.22% calc(100% - 34px),curve to 18.06% calc(100% - 31px) with 19.44% calc(100% - 46px),curve to 15.28% calc(100% - 12px) with 16.67% calc(100% - 16px),curve to 12.5% calc(100% - 9px) with 13.89% calc(100% - 8px),curve to 9.72% calc(100% - 11.5px) with 11.11% calc(100% - 10px),curve to 6.94% calc(100% - 20.5px) with 8.33% calc(100% - 13px),curve to 4.17% calc(100% - 20px) with 5.56% calc(100% - 28px),curve to 0 100% with 2.78% calc(100% - 12px),vline to 0);
+}
+.wavy-img {
+  padding: 0;
+  clip-path: shape(from 0 0,curve to 4.17% 28px with 2.78% 40px,curve to 6.94% 21.5px with 5.56% 16px,curve to 9.72% 19px with 8.33% 27px,curve to 12.5% 18px with 11.11% 11px,curve to 15.28% 34.5px with 13.89% 25px,curve to 18.06% 37px with 16.67% 44px,curve to 20.83% 34.5px with 19.44% 30px,curve to 23.61% 24px with 22.22% 39px,curve to 26.39% 20.5px with 25% 9px,curve to 29.17% 39px with 27.78% 32px,curve to 31.94% 43px with 30.56% 46px,curve to 34.72% 36px with 33.33% 40px,curve to 37.5% 18.5px with 36.11% 32px,curve to 40.28% 3px with 38.89% 5px,curve to 43.06% 16.5px with 41.67% 1px,curve to 45.83% 39.5px with 44.44% 32px,curve to 48.61% 23.5px with 47.22% 47px,curve to 51.39% 4.5px with 50% 0px,curve to 54.17% 8.5px with 52.78% 9px,curve to 56.94% 11px with 55.56% 8px,curve to 59.72% 25.5px with 58.33% 14px,curve to 62.5% 40.5px with 61.11% 37px,curve to 65.28% 44px with 63.89% 44px,curve to 68.06% 26px with 66.67% 44px,curve to 70.83% 17px with 69.44% 8px,curve to 73.61% 26.5px with 72.22% 26px,curve to 76.39% 19px with 75% 27px,curve to 79.17% 18px with 77.78% 11px,curve to 81.94% 20.5px with 80.56% 25px,curve to 84.72% 10px with 83.33% 16px,curve to 87.5% 17.5px with 86.11% 4px,curve to 90.28% 20.5px with 88.89% 31px,curve to 93.06% 11.5px with 91.67% 10px,curve to 95.83% 19px with 94.44% 13px,curve to 100% 0 with 97.22% 25px,vline to 100%,curve to 95.83% calc(100% - 29px) with 97.22% calc(100% - 39px),curve to 93.06% calc(100% - 15.5px) with 94.44% calc(100% - 19px),curve to 90.28% calc(100% - 14.5px) with 91.67% calc(100% - 12px),curve to 87.5% calc(100% - 16.5px) with 88.89% calc(100% - 17px),curve to 84.72% calc(100% - 10px) with 86.11% calc(100% - 16px),curve to 81.94% calc(100% - 22.5px) with 83.33% calc(100% - 4px),curve to 79.17% calc(100% - 29px) with 80.56% calc(100% - 41px),curve to 76.39% calc(100% - 32px) with 77.78% calc(100% - 17px),curve to 73.61% calc(100% - 23.5px) with 75% calc(100% - 47px),curve to 70.83% calc(100% - 4.5px) with 72.22% calc(100% - 0px),curve to 68.06% calc(100% - 10.5px) with 69.44% calc(100% - 9px),curve to 65.28% calc(100% - 11px) with 66.67% calc(100% - 12px),curve to 62.5% calc(100% - 15px) with 63.89% calc(100% - 10px),curve to 59.72% calc(100% - 16.5px) with 61.11% calc(100% - 20px),curve to 56.94% calc(100% - 27px) with 58.33% calc(100% - 13px),curve to 54.17% calc(100% - 25px) with 55.56% calc(100% - 41px),curve to 51.39% calc(100% - 27px) with 52.78% calc(100% - 9px),curve to 48.61% calc(100% - 41.5px) with 50% calc(100% - 45px),curve to 45.83% calc(100% - 41.5px) with 47.22% calc(100% - 38px),curve to 43.06% calc(100% - 38px) with 44.44% calc(100% - 45px),curve to 40.28% calc(100% - 34px) with 41.67% calc(100% - 31px),curve to 37.5% calc(100% - 32.5px) with 38.89% calc(100% - 37px),curve to 34.72% calc(100% - 17px) with 36.11% calc(100% - 28px),curve to 31.94% calc(100% - 3.5px) with 33.33% calc(100% - 6px),curve to 29.17% calc(100% - 22.5px) with 30.56% calc(100% - 1px),curve to 26.39% calc(100% - 32px) with 27.78% calc(100% - 44px),curve to 23.61% calc(100% - 30.5px) with 25% calc(100% - 20px),curve to 20.83% calc(100% - 38px) with 22.22% calc(100% - 41px),curve to 18.06% calc(100% - 37px) with 19.44% calc(100% - 35px),curve to 15.28% calc(100% - 25.5px) with 16.67% calc(100% - 39px),curve to 12.5% calc(100% - 7px) with 13.89% calc(100% - 12px),curve to 9.72% calc(100% - 9.5px) with 11.11% calc(100% - 2px),curve to 6.94% calc(100% - 22px) with 8.33% calc(100% - 17px),curve to 4.17% calc(100% - 32px) with 5.56% calc(100% - 27px),curve to 0 100% with 2.78% calc(100% - 37px),vline to 0);
+}
+section {
+  padding: .3em max(1em,50cqw - 800px/2);
+}
+body {
+  font-family: system-ui, sans-serif;
+  background: #eee;
+  margin: 0;
+}
+h1 {
+  font-size: 3rem;
+}
+p {
+  font-size: 1.5rem;
+  text-align:justify;
+}
+img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  Header
+</header>
+<main>
+  <section>
+    <h1>Main title</h1>
+    <p>Dragée powder bear claw tiramisu pudding gummi bears wafer. Macaroon chocolate cake cake marzipan icing carrot cake macaroon sweet. Lemon drops </p>
+  </section>
+  <section class="wavy">
+    <h2>Wavy cotton candy</h2>
+    <p> cotton candy bear claw. Dessert danish pastry tootsie roll biscuit jujubes lollipop pastry tootsie roll. Cotton candy chocolate cake gummi bears ice cream jelly fruitcake caramels. Shortbread ice cream bear claw gingerbread chocolate cake jelly-o cake caramels soufflé. </p>
+  </section>
+  <section>
+    <h2>Lemon drops candy</h2>
+    <p>Dessert halvah sesame snaps jelly beans caramels marzipan. Cheesecake ice cream gummies lemon drops candy chocolate bar dessert pie. Tootsie roll gummi bears biscuit marshmallow sweet halvah fruitcake marzipan. Candy canes cake gummies marzipan marshmallow lollipop. Lemon drops apple pie tootsie roll pastry apple pie jelly-o. Biscuit lollipop biscuit muffin carrot cak</p>
+  </section>
+  <section class="wavy-img">
+      <img src="https://picsum.photos/id/210/1000/300">
+    </div>
+  </section>
+  <section>
+    <h3>Cake pie lollipop</h3>
+    <p>Jelly chocolate biscuit sesame snaps dessert chocolate. Topping jelly-o jelly jujubes marzipan sugar plum. Cake pie lollipop halvah shortbread. Powder tiramisu tart wafer marshmallow gingerbread powder</p>
+  </section>
+</main>
+<footer class="footer1">
+  Footer
+</footer>
+
+</body>
+</html>
