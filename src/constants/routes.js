@@ -1,0 +1,1 @@
+export const TANDEM_SALAFIN = "/demo" + "/salafin";
