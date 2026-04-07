@@ -1,89 +1,180 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle, User, Phone, Mail, BookOpen, GraduationCap, Calendar } from 'lucide-react';
+import { Send, CheckCircle, User, Phone, Mail, MapPin, Briefcase, Building2, Calendar, FileText, Upload } from 'lucide-react';
 
 const JoinUs = () => {
   const [formData, setFormData] = useState({
-    parentNom: '',
-    telephone: '',
+    // 👤 Informations personnelles
+    nom: '',
+    prenom: '',
     email: '',
-    eleveNom: '',
-    etablissement: '',
-    niveau: '',
-    dateNaissance: '',
+    telephone: '',
+    ville: '',
+    
+    // 🏫 Établissement souhaité
+    etablissement: 'le-monceau-lissasfa',
+    
+    // 📌 Poste recherché
+    poste: 'enseignant-maternelle',
+    posteAutre: '',
+    
+    // 📋 Type de contrat souhaité
+    contrat: {
+      cdi: false,
+      cdd: false,
+      tempsPlein: false,
+      tempsPartiel: false
+    },
+    
+    // 📁 Pièces jointes
+    cv: null,
+    lettre: null,
+    diplomes: null,
+    
+    // 🕒 Disponibilité
+    disponibilite: '',
+    disponibiliteAutre: '',
+    
+    // 💬 Message
     message: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, type, checked } = e.target;
+    
+    if (name.startsWith('contrat.')) {
+      const contratField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        contrat: {
+          ...prev.contrat,
+          [contratField]: checked
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    const file = files[0];
+    
+    // Validation: max 5Mo pour le CV
+    if (name === 'cv' && file && file.size > 5 * 1024 * 1024) {
+      setErrors(prev => ({ ...prev, cv: 'Le CV ne doit pas dépasser 5 Mo' }));
+      return;
+    }
+    
+    // Validation types de fichiers
+    if (file) {
+      const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (name === 'cv' && !validTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, cv: 'Format accepté : PDF ou DOC' }));
+        return;
+      }
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: file
+    }));
+    
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Champs obligatoires
+    if (!formData.nom.trim()) newErrors.nom = 'Le nom est requis';
+    if (!formData.prenom.trim()) newErrors.prenom = 'Le prénom est requis';
+    if (!formData.email.trim()) {
+      newErrors.email = 'L\'email est requis';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email invalide';
+    }
+    if (!formData.telephone.trim()) newErrors.telephone = 'Le téléphone est requis';
+    if (!formData.ville.trim()) newErrors.ville = 'La ville est requise';
+    
+    // Au moins un type de contrat sélectionné
+    const hasContrat = Object.values(formData.contrat).some(v => v);
+    if (!hasContrat) newErrors.contrat = 'Veuillez sélectionner au moins un type de contrat';
+    
+    // Disponibilité requise
+    if (!formData.disponibilite) newErrors.disponibilite = 'Veuillez sélectionner votre disponibilité';
+    if (formData.disponibilite === 'autre' && !formData.disponibiliteAutre.trim()) {
+      newErrors.disponibiliteAutre = 'Veuillez préciser votre disponibilité';
+    }
+    
+    // CV obligatoire
+    if (!formData.cv) newErrors.cv = 'Le CV est requis';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      // Scroll to first error
+      const firstError = document.querySelector('.form-field.error');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    
     setIsSubmitting(true);
     
+    // Simulation d'envoi
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setIsSubmitting(false);
     setIsSuccess(true);
     
+    // Reset form after success
     setTimeout(() => {
       setIsSuccess(false);
       setFormData({
-        parentNom: '',
-        telephone: '',
+        nom: '',
+        prenom: '',
         email: '',
-        eleveNom: '',
-        etablissement: '',
-        niveau: '',
-        dateNaissance: '',
+        telephone: '',
+        ville: '',
+        etablissement: 'le-monceau-lissasfa',
+        poste: 'enseignant-maternelle',
+        posteAutre: '',
+        contrat: { cdi: false, cdd: false, tempsPlein: false, tempsPartiel: false },
+        cv: null,
+        lettre: null,
+        diplomes: null,
+        disponibilite: '',
+        disponibiliteAutre: '',
         message: ''
       });
-    }, 3000);
+      setErrors({});
+    }, 4000);
   };
 
-  const etablissements = [
-    { value: '', label: 'Sélectionnez un établissement' },
-    { value: 'maternelle', label: 'Maternelle' },
-    { value: 'primaire', label: 'Primaire' },
-    { value: 'college', label: 'Collège' },
-    { value: 'lycee', label: 'Lycée' }
-  ];
-
-  const niveaux = {
-    '': [{ value: '', label: 'Sélectionnez d\'abord un établissement' }],
-    'maternelle': [
-      { value: '', label: 'Sélectionnez un niveau' },
-      { value: 'petite-section', label: 'Petite Section (3-4 ans)' },
-      { value: 'moyenne-section', label: 'Moyenne Section (4-5 ans)' },
-      { value: 'grande-section', label: 'Grande Section (5-6 ans)' }
-    ],
-    'primaire': [
-      { value: '', label: 'Sélectionnez un niveau' },
-      { value: 'cp', label: 'CP - Cours Préparatoire' },
-      { value: 'ce1', label: 'CE1 - Cours Élémentaire 1' },
-      { value: 'ce2', label: 'CE2 - Cours Élémentaire 2' },
-      { value: 'cm1', label: 'CM1 - Cours Moyen 1' },
-      { value: 'cm2', label: 'CM2 - Cours Moyen 2' }
-    ],
-    'college': [
-      { value: '', label: 'Sélectionnez un niveau' },
-      { value: '6eme', label: '6ème' },
-      { value: '5eme', label: '5ème' },
-      { value: '4eme', label: '4ème' },
-      { value: '3eme', label: '3ème' }
-    ],
-    'lycee': [
-      { value: '', label: 'Sélectionnez un niveau' },
-      { value: 'seconde', label: 'Seconde' },
-      { value: 'premiere', label: 'Première' },
-      { value: 'terminale', label: 'Terminale' }
-    ]
+  const formatFileName = (file) => {
+    if (!file) return 'Aucun fichier sélectionné';
+    if (file.name.length > 25) {
+      return file.name.slice(0, 22) + '...';
+    }
+    return file.name;
   };
 
   return (
@@ -91,13 +182,13 @@ const JoinUs = () => {
       <header className="inscription-header-hero">
         <img 
           src="/inscrip2.jpg" 
-          alt="Inscription Groupe Scolaire L'Atome" 
+          alt="Recrutement Groupe Scolaire L'Atome" 
           className="hero-background"
         />
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h1 className="inscription-titre">Demande d'inscription</h1>
-          <p className="hero-subtitle">Rejoignez la communauté éducative d'excellence</p>
+          <h1 className="inscription-titre">Rejoignez notre équipe</h1>
+          <p className="hero-subtitle">Candidature spontanée & opportunités de carrière</p>
         </div>
       </header>
 
@@ -105,8 +196,8 @@ const JoinUs = () => {
         <div className="inscription-container">
           {/* En-tête */}
           <div className="inscription-header">
-            <span className="inscription-badge">Admissions 2026-2027</span>
-            <h2 className="inscription-title">Pré-inscription en ligne</h2>
+            <span className="inscription-badge">Recrutement 2026-2027</span>
+            <h2 className="inscription-title">Formulaire de candidature</h2>
             <div className="inscription-line"></div>
           </div>
 
@@ -116,39 +207,82 @@ const JoinUs = () => {
               <div className="success-icon">
                 <CheckCircle size={48} strokeWidth={1.5} />
               </div>
-              <h3>Demande envoyée avec succès !</h3>
-              <p>Nous vous contacterons dans les plus brefs délais pour finaliser l'inscription.</p>
+              <h3>Candidature envoyée avec succès !</h3>
+              <p>Nous étudierons votre profil et vous contacterons dans les plus brefs délais.</p>
               <div className="success-info">
-                <p>Un email de confirmation vous a été envoyé.</p>
+                <p>Un email de confirmation vous a été envoyé à {formData.email}</p>
               </div>
             </div>
           ) : (
-            <form className="inscription-form" onSubmit={handleSubmit}>
+            <form className="inscription-form" onSubmit={handleSubmit} encType="multipart/form-data">
+              
+              {/* 👤 Informations personnelles */}
               <div className="form-section">
                 <h3 className="form-section-title">
                   <User size={20} />
-                  Informations du parent
+                  Informations personnelles
                 </h3>
                 <div className="form-row">
-                  <div className="form-field">
-                    <label htmlFor="parentNom">
-                      Nom et prénom <span className="required">*</span>
+                  <div className={`form-field ${errors.nom ? 'error' : ''}`}>
+                    <label htmlFor="nom">
+                      Nom <span className="required">*</span>
                     </label>
                     <div className="input-wrapper">
                       <User size={18} className="input-icon" />
                       <input
                         type="text"
-                        id="parentNom"
-                        name="parentNom"
-                        value={formData.parentNom}
+                        id="nom"
+                        name="nom"
+                        value={formData.nom}
                         onChange={handleChange}
                         required
-                        placeholder="Votre nom complet"
+                        placeholder="Votre nom"
                       />
                     </div>
+                    {errors.nom && <span className="error-message">{errors.nom}</span>}
                   </div>
 
-                  <div className="form-field">
+                  <div className={`form-field ${errors.prenom ? 'error' : ''}`}>
+                    <label htmlFor="prenom">
+                      Prénom <span className="required">*</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <User size={18} className="input-icon" />
+                      <input
+                        type="text"
+                        id="prenom"
+                        name="prenom"
+                        value={formData.prenom}
+                        onChange={handleChange}
+                        required
+                        placeholder="Votre prénom"
+                      />
+                    </div>
+                    {errors.prenom && <span className="error-message">{errors.prenom}</span>}
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className={`form-field ${errors.email ? 'error' : ''}`}>
+                    <label htmlFor="email">
+                      Email <span className="required">*</span>
+                    </label>
+                    <div className="input-wrapper">
+                      <Mail size={18} className="input-icon" />
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="Votre adresse email"
+                      />
+                    </div>
+                    {errors.email && <span className="error-message">{errors.email}</span>}
+                  </div>
+
+                  <div className={`form-field ${errors.telephone ? 'error' : ''}`}>
                     <label htmlFor="telephone">
                       Téléphone <span className="required">*</span>
                     </label>
@@ -161,128 +295,301 @@ const JoinUs = () => {
                         value={formData.telephone}
                         onChange={handleChange}
                         required
-                        placeholder="+212 6 XX XX XX XX"
+                        placeholder="Votre numéro de téléphone"
                       />
                     </div>
+                    {errors.telephone && <span className="error-message">{errors.telephone}</span>}
                   </div>
                 </div>
 
-                <div className="form-field">
-                  <label htmlFor="email">
-                    Email <span className="optional">(facultatif)</span>
+                <div className={`form-field ${errors.ville ? 'error' : ''}`}>
+                  <label htmlFor="ville">
+                    Ville de résidence <span className="required">*</span>
                   </label>
                   <div className="input-wrapper">
-                    <Mail size={18} className="input-icon" />
+                    <MapPin size={18} className="input-icon" />
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
+                      type="text"
+                      id="ville"
+                      name="ville"
+                      value={formData.ville}
                       onChange={handleChange}
-                      placeholder="votre@email.com"
+                      required
+                      placeholder="Votre ville de résidence"
                     />
+                  </div>
+                  {errors.ville && <span className="error-message">{errors.ville}</span>}
+                </div>
+              </div>
+
+              {/* 🏫 Établissement souhaité */}
+              <div className="form-section">
+                <h3 className="form-section-title">
+                  <Building2 size={20} />
+                  Établissement souhaité
+                </h3>
+                <div className="form-field">
+                  <div className="input-wrapper">
+                    <Building2 size={18} className="input-icon" />
+                    <select
+                      id="etablissement"
+                      name="etablissement"
+                      value={formData.etablissement}
+                      onChange={handleChange}
+                      className="fixed-select"
+                    >
+                      <option value="le-monceau-lissasfa">Le Monceau – Lissasfa</option>
+                    </select>
                   </div>
                 </div>
               </div>
 
+              {/* 📌 Poste recherché */}
               <div className="form-section">
                 <h3 className="form-section-title">
-                  <GraduationCap size={20} />
-                  Informations de l'élève
+                  <Briefcase size={20} />
+                  Poste recherché
                 </h3>
-                <div className="form-row">
-                  <div className="form-field">
-                    <label htmlFor="eleveNom">
-                      Nom et prénom de l'élève <span className="required">*</span>
-                    </label>
-                    <div className="input-wrapper">
-                      <User size={18} className="input-icon" />
-                      <input
-                        type="text"
-                        id="eleveNom"
-                        name="eleveNom"
-                        value={formData.eleveNom}
-                        onChange={handleChange}
-                        required
-                        placeholder="Nom complet de l'élève"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-field">
-                    <label htmlFor="dateNaissance">
-                      Date de naissance <span className="required">*</span>
-                    </label>
-                    <div className="input-wrapper">
-                      <Calendar size={18} className="input-icon" />
-                      <input
-                        type="date"
-                        id="dateNaissance"
-                        name="dateNaissance"
-                        value={formData.dateNaissance}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
+                <div className="form-field">
+                  <div className="input-wrapper">
+                    <Briefcase size={18} className="input-icon" />
+                    <select
+                      id="poste"
+                      name="poste"
+                      value={formData.poste}
+                      onChange={handleChange}
+                    >
+                      <option value="enseignant-maternelle">Enseignant(e) Maternelle</option>
+                      <option value="enseignant-primaire">Enseignant(e) Primaire</option>
+                      <option value="enseignant-college">Enseignant(e) Collège</option>
+                      <option value="enseignant-lycee">Enseignant(e) Lycée</option>
+                      <option value="direction">Direction / Administration</option>
+                      <option value="support">Support & Services</option>
+                      <option value="autre">Autre</option>
+                    </select>
                   </div>
                 </div>
-
-                <div className="form-row">
-                  <div className="form-field">
-                    <label htmlFor="etablissement">
-                      Établissement <span className="required">*</span>
-                    </label>
-                    <div className="input-wrapper">
-                      <BookOpen size={18} className="input-icon" />
-                      <select
-                        id="etablissement"
-                        name="etablissement"
-                        value={formData.etablissement}
-                        onChange={handleChange}
-                        required
-                      >
-                        {etablissements.map(etab => (
-                          <option key={etab.value} value={etab.value}>
-                            {etab.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                
+                {formData.poste === 'autre' && (
+                  <div className="form-field sub-field">
+                    <label htmlFor="posteAutre">Si autre, précisez</label>
+                    <input
+                      type="text"
+                      id="posteAutre"
+                      name="posteAutre"
+                      value={formData.posteAutre}
+                      onChange={handleChange}
+                      placeholder="Précisez le poste"
+                    />
                   </div>
+                )}
+              </div>
 
-                  <div className="form-field">
-                    <label htmlFor="niveau">
-                      Niveau <span className="required">*</span>
+              {/* 📋 Type de contrat souhaité */}
+              <div className="form-section">
+                <h3 className="form-section-title">
+                  <FileText size={20} />
+                  Type de contrat souhaité
+                </h3>
+                <div className={`form-field checkbox-group ${errors.contrat ? 'error' : ''}`}>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="contrat.cdi"
+                      checked={formData.contrat.cdi}
+                      onChange={handleChange}
+                    />
+                    <span className="checkbox-custom"></span>
+                    CDI
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="contrat.cdd"
+                      checked={formData.contrat.cdd}
+                      onChange={handleChange}
+                    />
+                    <span className="checkbox-custom"></span>
+                    CDD
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="contrat.tempsPlein"
+                      checked={formData.contrat.tempsPlein}
+                      onChange={handleChange}
+                    />
+                    <span className="checkbox-custom"></span>
+                    Temps plein
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="contrat.tempsPartiel"
+                      checked={formData.contrat.tempsPartiel}
+                      onChange={handleChange}
+                    />
+                    <span className="checkbox-custom"></span>
+                    Temps partiel
+                  </label>
+                  {errors.contrat && <span className="error-message">{errors.contrat}</span>}
+                </div>
+              </div>
+
+              {/* 📁 Pièces jointes */}
+              <div className="form-section">
+                <h3 className="form-section-title">
+                  <Upload size={20} />
+                  Pièces jointes
+                </h3>
+                
+                <div className={`form-field ${errors.cv ? 'error' : ''}`}>
+                  <label htmlFor="cv">
+                    CV (PDF, DOC – max 5 Mo) <span className="required">*</span>
+                  </label>
+                  <div className="file-upload-wrapper">
+                    <input
+                      type="file"
+                      id="cv"
+                      name="cv"
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx"
+                      required
+                      className="file-input"
+                    />
+                    <label htmlFor="cv" className="file-label">
+                      <Upload size={16} />
+                      {formData.cv ? formatFileName(formData.cv) : 'Parcourir...'}
                     </label>
-                    <div className="input-wrapper">
-                      <GraduationCap size={18} className="input-icon" />
-                      <select
-                        id="niveau"
-                        name="niveau"
-                        value={formData.niveau}
-                        onChange={handleChange}
-                        required
-                        disabled={!formData.etablissement}
-                      >
-                        {(niveaux[formData.etablissement] || niveaux['']).map(niv => (
-                          <option key={niv.value} value={niv.value}>
-                            {niv.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <span className="file-name">{formData.cv ? formatFileName(formData.cv) : 'Aucun fichier sélectionné'}</span>
+                  </div>
+                  {errors.cv && <span className="error-message">{errors.cv}</span>}
+                </div>
+
+                <div className="form-field">
+                  <label htmlFor="lettre">Lettre de motivation (optionnelle)</label>
+                  <div className="file-upload-wrapper">
+                    <input
+                      type="file"
+                      id="lettre"
+                      name="lettre"
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx"
+                      className="file-input"
+                    />
+                    <label htmlFor="lettre" className="file-label">
+                      <Upload size={16} />
+                      {formData.lettre ? formatFileName(formData.lettre) : 'Parcourir...'}
+                    </label>
+                    <span className="file-name">{formData.lettre ? formatFileName(formData.lettre) : 'Aucun fichier sélectionné'}</span>
                   </div>
                 </div>
 
                 <div className="form-field">
-                  <label htmlFor="message">Message <span className="optional">(facultatif)</span></label>
+                  <label htmlFor="diplomes">Diplômes ou attestations</label>
+                  <div className="file-upload-wrapper">
+                    <input
+                      type="file"
+                      id="diplomes"
+                      name="diplomes"
+                      onChange={handleFileChange}
+                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                      multiple
+                      className="file-input"
+                    />
+                    <label htmlFor="diplomes" className="file-label">
+                      <Upload size={16} />
+                      {formData.diplomes ? `${formData.diplomes.length} fichier(s)` : 'Parcourir...'}
+                    </label>
+                    <span className="file-name">{formData.diplomes ? `${formData.diplomes.length} fichier(s) sélectionné(s)` : 'Aucun fichier sélectionné'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 🕒 Disponibilité */}
+              <div className="form-section">
+                <h3 className="form-section-title">
+                  <Calendar size={20} />
+                  Disponibilité
+                </h3>
+                <div className={`form-field radio-group ${errors.disponibilite ? 'error' : ''}`}>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="disponibilite"
+                      value="immediate"
+                      checked={formData.disponibilite === 'immediate'}
+                      onChange={handleChange}
+                    />
+                    <span className="radio-custom"></span>
+                    Immédiate
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="disponibilite"
+                      value="1mois"
+                      checked={formData.disponibilite === '1mois'}
+                      onChange={handleChange}
+                    />
+                    <span className="radio-custom"></span>
+                    Dans 1 mois
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="disponibilite"
+                      value="rentree"
+                      checked={formData.disponibilite === 'rentree'}
+                      onChange={handleChange}
+                    />
+                    <span className="radio-custom"></span>
+                    À la rentrée prochaine
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="disponibilite"
+                      value="autre"
+                      checked={formData.disponibilite === 'autre'}
+                      onChange={handleChange}
+                    />
+                    <span className="radio-custom"></span>
+                    Autre
+                  </label>
+                  {errors.disponibilite && <span className="error-message">{errors.disponibilite}</span>}
+                </div>
+                
+                {formData.disponibilite === 'autre' && (
+                  <div className={`form-field sub-field ${errors.disponibiliteAutre ? 'error' : ''}`}>
+                    <label htmlFor="disponibiliteAutre">Si autre, précisez</label>
+                    <input
+                      type="text"
+                      id="disponibiliteAutre"
+                      name="disponibiliteAutre"
+                      value={formData.disponibiliteAutre}
+                      onChange={handleChange}
+                      placeholder="Précisez votre disponibilité"
+                    />
+                    {errors.disponibiliteAutre && <span className="error-message">{errors.disponibiliteAutre}</span>}
+                  </div>
+                )}
+              </div>
+
+              {/* 💬 Message complémentaire */}
+              <div className="form-section">
+                <h3 className="form-section-title">
+                  <FileText size={20} />
+                  Message ou informations complémentaires
+                </h3>
+                <div className="form-field">
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows="4"
-                    placeholder="Questions particulières, informations complémentaires..."
+                    rows="5"
+                    placeholder="Motivations, expériences pertinentes, questions..."
                   />
                 </div>
               </div>
@@ -299,15 +606,16 @@ const JoinUs = () => {
                   </>
                 ) : (
                   <>
-                    Envoyer ma demande
+                    Envoyer ma candidature
                     <Send size={18} />
                   </>
                 )}
               </button>
 
               <p className="form-footer">
-                En soumettant ce formulaire, vous acceptez d'être contacté par notre équipe pédagogique.
-                Vos données sont traitées en toute confidentialité.
+                En soumettant ce formulaire, vous acceptez que vos données soient traitées 
+                dans le cadre de notre processus de recrutement. Conformément à la loi, 
+                vous disposez d'un droit d'accès et de rectification.
               </p>
             </form>
           )}
@@ -459,6 +767,10 @@ const JoinUs = () => {
           gap: 8px;
         }
 
+        .form-field.error label {
+          color: #ef4444;
+        }
+
         .form-field label {
           font-family: 'Inter', sans-serif;
           font-size: 0.85rem;
@@ -486,6 +798,7 @@ const JoinUs = () => {
           left: 14px;
           color: #94a3b8;
           pointer-events: none;
+          z-index: 1;
         }
 
         .form-field input,
@@ -501,6 +814,12 @@ const JoinUs = () => {
           background: #ffffff;
           outline: none;
           transition: all 0.2s ease;
+        }
+
+        .form-field select.fixed-select {
+          background-color: #f8fafc;
+          cursor: not-allowed;
+          color: #64748b;
         }
 
         .form-field textarea {
@@ -524,6 +843,159 @@ const JoinUs = () => {
           background: #f8fafc;
           cursor: not-allowed;
           color: #94a3b8;
+        }
+
+        .error-message {
+          font-size: 0.75rem;
+          color: #ef4444;
+          margin-top: 4px;
+          font-family: 'Inter', sans-serif;
+        }
+
+        /* Checkbox & Radio styles */
+        .checkbox-group,
+        .radio-group {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          padding: 8px 0;
+        }
+
+        .checkbox-label,
+        .radio-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9rem;
+          color: #334155;
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .checkbox-label input,
+        .radio-label input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        .checkbox-custom,
+        .radio-custom {
+          width: 20px;
+          height: 20px;
+          border: 2px solid #e2e8f0;
+          border-radius: 4px;
+          background: #fff;
+          transition: all 0.2s ease;
+          flex-shrink: 0;
+        }
+
+        .radio-custom {
+          border-radius: 50%;
+        }
+
+        .checkbox-label input:checked ~ .checkbox-custom,
+        .radio-label input:checked ~ .radio-custom {
+          background: #f97316;
+          border-color: #f97316;
+        }
+
+        .checkbox-custom::after {
+          content: '';
+          position: absolute;
+          display: none;
+          left: 6px;
+          top: 2px;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+
+        .checkbox-label input:checked ~ .checkbox-custom::after {
+          display: block;
+        }
+
+        .radio-custom::after {
+          content: '';
+          position: absolute;
+          display: none;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: white;
+        }
+
+        .radio-label input:checked ~ .radio-custom::after {
+          display: block;
+        }
+
+        /* File upload styles */
+        .file-upload-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .file-input {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+
+        .file-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          background: #f1f5f9;
+          border: 2px solid #e2e8f0;
+          border-radius: 10px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          color: #334155;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .file-label:hover {
+          border-color: #f97316;
+          background: #fff7ed;
+        }
+
+        .file-name {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.85rem;
+          color: #64748b;
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .sub-field {
+          margin-top: 16px;
+          padding-left: 32px;
+          border-left: 2px solid #fef3e8;
+        }
+
+        .sub-field input {
+          padding-left: 16px !important;
         }
 
         .inscription-submit {
@@ -574,6 +1046,7 @@ const JoinUs = () => {
           color: #94a3b8;
           text-align: center;
           margin-top: 24px;
+          line-height: 1.5;
         }
 
         .inscription-success {
@@ -650,6 +1123,22 @@ const JoinUs = () => {
           .form-section {
             margin-bottom: 24px;
             padding-bottom: 24px;
+          }
+
+          .checkbox-group,
+          .radio-group {
+            flex-direction: column;
+            gap: 8px;
+          }
+
+          .file-upload-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+          }
+
+          .file-name {
+            width: 100%;
           }
         }
 
