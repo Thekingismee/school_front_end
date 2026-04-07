@@ -17,6 +17,11 @@ import Maternelle from "./pages/Maternelle";
 import College from "./pages/College";
 import Lycee from "./pages/Lycee";
 import Primaire from "./pages/Primaire";
+import Why from "./pages/Why";
+import ModalitesInscription from "./pages/ModalitesInscription";
+import RendezVous from "./pages/RendezVous";
+import JoinUs from "./pages/JoinUs";
+import TarifsFrais from "./pages/TarifsFrais";
 class App extends Component {
     render() {
         return (
@@ -39,6 +44,11 @@ class App extends Component {
                         <Route path="/college" component={College} />
                         <Route path="/lycee" component={Lycee} />
                         <Route path="/primaire" component={Primaire} />
+                        <Route path="/why" component={Why} />
+                        <Route path="/ModalitesInscription" component={ModalitesInscription} />
+                        <Route path="/rendez-vous" component={RendezVous} />
+                        <Route path="/join-us" component={JoinUs} />
+                        <Route path="/tarifs-et-frais" component={TarifsFrais} />
 
                         {/* <Route path="/contact" component={Contact} /> */}
                     </Switch>

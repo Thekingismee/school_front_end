@@ -69,12 +69,12 @@ const Navbar = () => {
             </a>
             {activeDropdown === 'admin' && (
               <ul className="dropdown-menu">
-                <li><a href="/admin1">Pourquoi L'Atome</a></li>
-                <li><a href="/admin2">Modalites d'inscription</a></li>
+                <li><a href="/why">Pourquoi L'Atome</a></li>
+                <li><a href="/ModalitesInscription">Modalites d'inscription</a></li>
                 <li><a href="/inscription">Demande d'inscription</a></li>
-                <li><a href="/admin4">Demande de visite/ Rendez-vous</a></li>
-                <li><a href="/admin5">Nous rejoindre</a></li>
-                <li><a href="/admin6">Tarfis et frais de scolarité</a></li>
+                <li><a href="/rendez-vous">Demande de visite/ Rendez-vous</a></li>
+                <li><a href="/join-us">Nous rejoindre</a></li>
+                <li><a href="/tarifs-et-frais">Tarfis et frais de scolarité</a></li>
               </ul>
             )}
           </li>
