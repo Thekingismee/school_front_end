@@ -158,7 +158,7 @@
 // export default College;
 
 import CycleTemplate from "../components/Cycle/CycleTemplate";
-import ActivitesCollege from "../components/College/ActivitesCollege";
+import ActivitesCollege from "../components/Collège/ActivitesCollege.jsx";
 
 const College = () => {
     return (
@@ -188,9 +188,9 @@ const College = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/Back.jpg");
+                    background-image: url("/collg3.jpg");
                     background-size: cover;
-                    background-position: center 30%;
+                    background-position: center center;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
@@ -227,24 +227,24 @@ const College = () => {
                     animation: fadeInUp 0.8s ease-out;
                 }
 
-                .inscription-titre::after {
-                    content: "";
-                    position: absolute;
-                    bottom: -15px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 80px;
-                    height: 3px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        #ffa500,
-                        #ff6b35,
-                        transparent
-                    );
-                    border-radius: 3px;
-                    animation: fadeInUp 0.8s ease-out 0.3s both;
-                }
+                // .inscription-titre::after {
+                //     content: "";
+                //     position: absolute;
+                //     bottom: -15px;
+                //     left: 50%;
+                //     transform: translateX(-50%);
+                //     width: 80px;
+                //     height: 3px;
+                //     background: linear-gradient(
+                //         90deg,
+                //         transparent,
+                //         #ffa500,
+                //         #ff6b35,
+                //         transparent
+                //     );
+                //     border-radius: 3px;
+                //     animation: fadeInUp 0.8s ease-out 0.3s both;
+                // }
 
                 @keyframes fadeInUp {
                     from {

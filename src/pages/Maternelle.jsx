@@ -166,7 +166,7 @@ const Maternelle = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/openb.jpg");
+                    background-image: url("/matmat3.jpg");
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;

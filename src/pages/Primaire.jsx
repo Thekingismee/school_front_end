@@ -1016,7 +1016,7 @@ const Primaire = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/openb.jpg");
+                    background-image: url("/primprim2.jpg");
                     background-size: cover;
                     background-position: center 30%;
                     background-repeat: no-repeat;
@@ -1072,24 +1072,24 @@ const Primaire = () => {
                     }
                 }
 
-                .inscription-titre::after {
-                    content: "";
-                    position: absolute;
-                    bottom: -15px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 80px;
-                    height: 3px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        #ffa500,
-                        #ff6b35,
-                        transparent
-                    );
-                    border-radius: 3px;
-                    animation: fadeInUp 0.8s ease-out 0.3s both;
-                }
+                // .inscription-titre::after {
+                //     content: "";
+                //     position: absolute;
+                //     bottom: -15px;
+                //     left: 50%;
+                //     transform: translateX(-50%);
+                //     width: 80px;
+                //     height: 3px;
+                //     background: linear-gradient(
+                //         90deg,
+                //         transparent,
+                //         #ffa500,
+                //         #ff6b35,
+                //         transparent
+                //     );
+                //     border-radius: 3px;
+                //     animation: fadeInUp 0.8s ease-out 0.3s both;
+                // }
 
                 @media (max-width: 992px) {
                     .header1 {

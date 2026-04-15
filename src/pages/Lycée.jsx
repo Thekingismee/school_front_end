@@ -217,8 +217,7 @@
 // export default Lycee;
 
 import CycleTemplate from "../components/Cycle/CycleTemplate";
-import ActivitesLycee from "../components/Lycee/ActivitesLycee";
-
+import ActivitesLycee from "../components/Lycée/ActivitesLycee.jsx";
 const Lycee = () => {
     return (
         <>
@@ -240,6 +239,23 @@ const Lycee = () => {
             />
 
             <style jsx>{`
+                // .header1 {
+                //     position: relative;
+                //     text-align: center;
+                //     padding: 200px 70px;
+                //     font-size: 2rem;
+                //     font-weight: bold;
+                //     color: #fff;
+                //     background-image: url("/graduation.jpg");
+                //     background-size: cover;
+                //     background-position: center 30%;
+                //     background-repeat: no-repeat;
+                //     background-attachment: fixed;
+                //     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                //     z-index: 1;
+                //     image-rendering: -webkit-optimize-contrast;
+                //     image-rendering: crisp-edges;
+                // }
                 .header1 {
                     position: relative;
                     text-align: center;
@@ -247,11 +263,13 @@ const Lycee = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/Back.jpg");
+                    background-image: url("/graduation.jpg");
                     background-size: cover;
                     background-position: center 30%;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
+                    /* AJOUTER CETTE LIGNE CI-DESSOUS POUR CENTRER L'IMAGE */
+                    background-position: center center; /* ← AJOUTE CETTE PROPRIÉTÉ */
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
                     z-index: 1;
                     image-rendering: -webkit-optimize-contrast;
@@ -303,24 +321,24 @@ const Lycee = () => {
                     }
                 }
 
-                .inscription-titre::after {
-                    content: "";
-                    position: absolute;
-                    bottom: -15px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 80px;
-                    height: 3px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        #ffa500,
-                        #ff6b35,
-                        transparent
-                    );
-                    border-radius: 3px;
-                    animation: fadeInUp 0.8s ease-out 0.3s both;
-                }
+                // .inscription-titre::after {
+                //     content: "";
+                //     position: absolute;
+                //     bottom: -15px;
+                //     left: 50%;
+                //     transform: translateX(-50%);
+                //     width: 80px;
+                //     height: 3px;
+                //     background: linear-gradient(
+                //         90deg,
+                //         transparent,
+                //         #ffa500,
+                //         #ff6b35,
+                //         transparent
+                //     );
+                //     border-radius: 3px;
+                //     animation: fadeInUp 0.8s ease-out 0.3s both;
+                // }
 
                 @media (max-width: 992px) {
                     .header1 {
