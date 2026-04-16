@@ -83,6 +83,7 @@ import ModalitesInscription from "./pages/ModalitesInscription";
 import RendezVous from "./pages/RendezVous";
 import JoinUs from "./pages/JoinUs";
 import TarifsFrais from "./pages/TarifsFrais";
+import ActualiteDetail from "./components/Actualites/ActualiteDetail";
 
 class App extends Component {
     render() {
@@ -114,6 +115,7 @@ class App extends Component {
                         />
                         <Route path="/rendez-vous" component={RendezVous} />
                         <Route path="/join-us" component={JoinUs} />
+                        <Route path="/actualites/:id" component={ActualiteDetail} />
                         <Route
                             path="/tarifs-et-frais"
                             component={TarifsFrais}

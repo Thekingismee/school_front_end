@@ -21,7 +21,7 @@ function Home() {
         <HomeInfo/>
         <CyclesSection />
         <HomeValeurs />
-          <Services />
+        <Services />
         <Cantine />
         <Partenaires />
         <Temoignages />
@@ -30,7 +30,6 @@ function Home() {
           Inscrivez vos enfants dès maintenant <RightOutlined style={{ marginLeft: '10px', fontSize: '20px' }} />
         </Button>
         <HomeActualites />
-
 
     </div>
 

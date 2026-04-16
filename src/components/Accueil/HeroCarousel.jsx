@@ -502,7 +502,7 @@ const HeroCarousel = () => {
     const slides = [
         {
             id: 2,
-            image: "/1maternelle.jpg",
+            image: "/Bannière hero section atome.png",
             fallbackImage:
                 "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=80",
             titleBgColor: "#1e3a8a",
@@ -513,7 +513,7 @@ const HeroCarousel = () => {
         },
         {
             id: 1,
-            image: "/AAtome.jpg",
+            image: "/Bannière hero section atome.png",
             fallbackImage:
                 "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80",
             titleBgColor: "#f24d42ff",
@@ -572,7 +572,8 @@ const HeroCarousel = () => {
                         }}
                     >
                         {/* Image de fond */}
-                        <div className="slide-background">
+                         <a href="/inscription"
+                            className="slide-background">
                             <img
                                 src={slide.image}
                                 alt={slide.title}
@@ -581,12 +582,11 @@ const HeroCarousel = () => {
                                 }}
                             />
                             <div className="overlay" />
-                        </div>
+                        </a>
 
                         {/* Contenu textuel à gauche */}
-                        <div className="slide-content">
+                        {/* <div className="slide-content">
                             <div className="content-wrapper">
-                                {/* Titre avec animation slide from left */}
                                 <div
                                     className="title-container"
                                     style={{ "--title-bg": slide.titleBgColor }}
@@ -602,7 +602,6 @@ const HeroCarousel = () => {
                                     </h1>
                                 </div>
 
-                                {/* Paragraphe avec animation fade in */}
                                 <p
                                     className={`paragraph ${
                                         index === currentSlide
@@ -613,7 +612,6 @@ const HeroCarousel = () => {
                                     {slide.paragraph}
                                 </p>
 
-                                {/* Bouton avec animation slide from bottom */}
                                 <div className="button-wrapper">
                                     <a
                                         href={slide.buttonLink}
@@ -638,7 +636,7 @@ const HeroCarousel = () => {
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 ))}
 
@@ -682,7 +680,7 @@ const HeroCarousel = () => {
                 .hero-section {
                     position: relative;
                     width: 100%;
-                    height: 100vh;
+                    // height: 100vh;
                     min-height: 600px;
                     max-height: 700px;
                     overflow: hidden;

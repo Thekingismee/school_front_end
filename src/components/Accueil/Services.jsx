@@ -322,7 +322,7 @@ const Services = () => {
             title: "Cantine",
             description:
                 "Réchauffage des lunchboxes préparées par les mamans dans un espace dédié. Service de commande  pour plus de variété et de praticité.",
-            link: "/services/cantine"
+            link: "/VieScolaire#services-cantine-transport-garderie"
         },
         {
             id: 2,
@@ -330,7 +330,7 @@ const Services = () => {
             title: "Transport",
             description:
                 "Service de navettes sécurisées avec accompagnement pour assurer le confort et la sérénité des familles.",
-            link: "/services/transport"
+            link: "/VieScolaire#services-cantine-transport-garderie"
         },
         {
             id: 3,
@@ -338,7 +338,7 @@ const Services = () => {
             title: "Ateliers Créatifs",
             description:
                 "Activités artistiques et manuelles : peinture, sculpture, théâtre, musique. Développez la créativité et l'expression personnelle de votre enfant.",
-            link: "/services/ateliers"
+            link: "/VieScolaire#services-cantine-transport-garderie"
         },
         {
             id: 4,
@@ -346,7 +346,7 @@ const Services = () => {
             title: "Garde",
             description:
                 "Accueil personnalisé avant et après les cours avec une équipe éducative attentive et bienveillante.",
-            link: "/services/garde"
+            link: "/VieScolaire#services-cantine-transport-garderie"
         }
     ];
 

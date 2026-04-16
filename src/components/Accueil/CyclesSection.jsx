@@ -394,7 +394,7 @@ const CyclesSection = () => {
         },
         {
             id: 3,
-            title: "Collège",
+            title: "College",
             image: "/college.jpg",
             fallbackImage:
                 "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80",
@@ -404,7 +404,7 @@ const CyclesSection = () => {
         },
         {
             id: 4,
-            title: "Lycée",
+            title: "Lycee",
             image: "/lycee.jpg",
             fallbackImage:
                 "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&q=80",

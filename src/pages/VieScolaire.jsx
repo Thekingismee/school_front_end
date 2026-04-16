@@ -397,7 +397,10 @@ function VieScolaire() {
             <HomeGallery />
             <Activites />
             {/* <Services/> */}
-            <ServicesCantineTransportGarderie />
+            {/* <ServicesCantineTransportGarderie /> */}
+            <div id="services-cantine-transport-garderie" className="target-section-wrapper">
+                <ServicesCantineTransportGarderie />
+            </div>
 
             <SecuriteSante />
             <Temoignages />
@@ -408,6 +411,74 @@ function VieScolaire() {
 
             <style jsx>{`
                 /* ===== HERO SECTION MODERNISÉE AVEC OVERLAY BLANC TRANSPARENT ===== */
+
+               /* État initial : section légèrement décalée vers le haut + transparente */
+    .target-section-wrapper {
+        scroll-margin-top: 100px; /* Compensation pour header fixe */
+    }
+    
+    /* Classe ajoutée dynamiquement quand on arrive via lien */
+    .target-section-wrapper.highlight-descend {
+        animation: descendHighlight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    
+    @keyframes descendHighlight {
+        0% {
+            opacity: 0.85;
+            transform: translateY(-30px) scale(0.98);
+            filter: brightness(1.1);
+        }
+        40% {
+            opacity: 1;
+            transform: translateY(8px) scale(1.01);
+            filter: brightness(1);
+            box-shadow: 0 20px 40px rgba(238, 114, 31, 0.25);
+        }
+        70% {
+            transform: translateY(-4px) scale(0.995);
+            box-shadow: 0 12px 25px rgba(238, 114, 31, 0.15);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            box-shadow: 0 8px 20px rgba(238, 114, 31, 0.1);
+        }
+    }
+    
+    /* Effet de "vague descendante" optionnel (décoration) */
+    .target-section-wrapper.highlight-descend::before {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            180deg,
+            rgba(238, 114, 31, 0.15) 0%,
+            transparent 60%
+        );
+        pointer-events: none;
+        animation: waveDescend 0.8s ease-out forwards;
+        z-index: -1;
+    }
+    
+    @keyframes waveDescend {
+        0% {
+            top: -100%;
+            opacity: 1;
+        }
+        100% {
+            top: 100%;
+            opacity: 0;
+        }
+    }
+    
+    /* Scroll fluide global avec easing "doux" */
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 100px;
+    }
                 .hero-section {
                     position: relative;
                     min-height: 85vh;
