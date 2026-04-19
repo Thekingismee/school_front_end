@@ -1,1012 +1,5 @@
-// import React, { useState } from 'react';
-
-// const Inscription = () => {
-//   const [formData, setFormData] = useState({
-//     parentNom: '',
-//     telephone: '',
-//     email: '',
-//     eleveNom: '',
-//     etablissement: '',
-//     niveau: ''
-//   });
-
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [isSuccess, setIsSuccess] = useState(false);
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsSubmitting(true);
-    
-//     // Simulation envoi
-//     await new Promise(resolve => setTimeout(resolve, 1500));
-    
-//     setIsSubmitting(false);
-//     setIsSuccess(true);
-    
-//     setTimeout(() => {
-//       setIsSuccess(false);
-//       setFormData({
-//         parentNom: '',
-//         telephone: '',
-//         email: '',
-//         eleveNom: '',
-//         etablissement: '',
-//         niveau: ''
-//       });
-//     }, 3000);
-//   };
-
-//   const etablissements = [
-//     { value: '', label: 'Sélectionnez un établissement' },
-//     { value: 'maternelle', label: 'Maternelle' },
-//     { value: 'primaire', label: 'Primaire' },
-//     { value: 'college', label: 'Collège' },
-//     { value: 'lycee', label: 'Lycée' }
-//   ];
-
-//   const niveaux = {
-//     '': [{ value: '', label: 'Sélectionnez d\'abord un établissement' }],
-//     'maternelle': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'petite-section', label: 'Petite Section' },
-//       { value: 'moyenne-section', label: 'Moyenne Section' },
-//       { value: 'grande-section', label: 'Grande Section' }
-//     ],
-//     'primaire': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'cp', label: 'CP' },
-//       { value: 'ce1', label: 'CE1' },
-//       { value: 'ce2', label: 'CE2' },
-//       { value: 'cm1', label: 'CM1' },
-//       { value: 'cm2', label: 'CM2' }
-//     ],
-//     'college': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: '6eme', label: '6ème' },
-//       { value: '5eme', label: '5ème' },
-//       { value: '4eme', label: '4ème' },
-//       { value: '3eme', label: '3ème' }
-//     ],
-//     'lycee': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'seconde', label: 'Seconde' },
-//       { value: 'premiere', label: 'Première' },
-//       { value: 'terminale', label: 'Terminale' }
-//     ]
-//   };
-
-//   return (
-//     <>
-//         <header>
-//             <h1 className='inscription-titre'>Demande d’inscription</h1>
-//         </header>
-//     <section className="inscription-section">
-//       <div className="inscription-container">
-//         {/* En-tête */}
-//         <div className="inscription-header">
-//           <span className="inscription-badge">Admissions 2026-2027</span>
-//           <h2 className="inscription-title">
-//             Rejoignez Nous !
-//           </h2>
-//           <p className="inscription-subtitle">
-//             Inscrivez vos enfants dès maintenant
-//           </p>
-//           <div className="inscription-line" />
-//         </div>
-
-//         {/* Formulaire */}
-//         {isSuccess ? (
-//           <div className="inscription-success">
-//             <div className="success-icon">
-//               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-//                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-//                 <polyline points="22 4 12 14.01 9 11.01" />
-//               </svg>
-//             </div>
-//             <h3>Demande envoyée !</h3>
-//             <p>Nous vous contacterons très prochainement.</p>
-//           </div>
-//         ) : (
-//           <form className="inscription-form" onSubmit={handleSubmit}>
-//             {/* Ligne 1: Nom parent + Téléphone */}
-//             <div className="inscription-row">
-//               <div className="inscription-field">
-//                 <label htmlFor="parentNom">
-//                   Nom et prénom <span className="required">*</span>
-//                 </label>
-//                 <input
-//                   type="text"
-//                   id="parentNom"
-//                   name="parentNom"
-//                   value={formData.parentNom}
-//                   onChange={handleChange}
-//                   required
-//                   placeholder="Votre nom complet"
-//                 />
-//               </div>
-
-//               <div className="inscription-field">
-//                 <label htmlFor="telephone">
-//                   Numéro de téléphone <span className="required">*</span>
-//                 </label>
-//                 <input
-//                   type="tel"
-//                   id="telephone"
-//                   name="telephone"
-//                   value={formData.telephone}
-//                   onChange={handleChange}
-//                   required
-//                   placeholder="+212 6 00 00 00 00"
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Email */}
-//             <div className="inscription-field full-width">
-//               <label htmlFor="email">
-//                 Email <span className="optional">(facultatif)</span>
-//               </label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 placeholder="votre@email.com"
-//               />
-//             </div>
-
-//             {/* Nom élève */}
-//             <div className="inscription-field full-width">
-//               <label htmlFor="eleveNom">
-//                 Nom et prénom de l'élève <span className="required">*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 id="eleveNom"
-//                 name="eleveNom"
-//                 value={formData.eleveNom}
-//                 onChange={handleChange}
-//                 required
-//                 placeholder="Nom complet de l'élève"
-//               />
-//             </div>
-
-//             {/* Ligne 2: Établissement + Niveau */}
-//             <div className="inscription-row">
-//               <div className="inscription-field">
-//                 <label htmlFor="etablissement">
-//                   Établissement concerné <span className="required">*</span>
-//                 </label>
-//                 <select
-//                   id="etablissement"
-//                   name="etablissement"
-//                   value={formData.etablissement}
-//                   onChange={handleChange}
-//                   required
-//                 >
-//                   {etablissements.map(etab => (
-//                     <option key={etab.value} value={etab.value}>
-//                       {etab.label}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-
-//               <div className="inscription-field">
-//                 <label htmlFor="niveau">
-//                   Niveau <span className="required">*</span>
-//                 </label>
-//                 <select
-//                   id="niveau"
-//                   name="niveau"
-//                   value={formData.niveau}
-//                   onChange={handleChange}
-//                   required
-//                   disabled={!formData.etablissement}
-//                 >
-//                   {(niveaux[formData.etablissement] || niveaux['']).map(niv => (
-//                     <option key={niv.value} value={niv.value}>
-//                       {niv.label}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-//             </div>
-
-//             {/* Bouton submit */}
-//             <button 
-//               type="submit" 
-//               className="inscription-submit"
-//               disabled={isSubmitting}
-//             >
-//               {isSubmitting ? (
-//                 <>
-//                   <span className="spinner" />
-//                   Envoi en cours...
-//                 </>
-//               ) : (
-//                 <>
-//                   Envoyer ma demande
-//                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-//                     <line x1="22" y1="2" x2="11" y2="13" />
-//                     <polygon points="22 2 15 22 11 13 2 9 22 2" />
-//                   </svg>
-//                 </>
-//               )}
-//             </button>
-//           </form>
-//         )}
-//       </div>
-//       <style jsx>{`
-
-//       header{
-//   text-align: center;
-//   padding: 130px  70px;
-//   font-size: 2rem;
-//   font-weight: bold;
-//   color: #fff;
-// //   background: #780000;
-//   background-image: url("/serv.jpg");
-//   background-size: cover;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   clip-path: shape(from 0 0,vline to 100%,curve to 4.17% calc(100% - 15.5px) with 2.78% calc(100% - 15px),curve to 6.94% calc(100% - 9px) with 5.56% calc(100% - 16px),curve to 9.72% calc(100% - 20px) with 8.33% calc(100% - 2px),curve to 12.5% calc(100% - 44px) with 11.11% calc(100% - 38px),curve to 15.28% calc(100% - 27.5px) with 13.89% calc(100% - 50px),curve to 18.06% calc(100% - 20.5px) with 16.67% calc(100% - 5px),curve to 20.83% calc(100% - 23.5px) with 19.44% calc(100% - 36px),curve to 23.61% calc(100% - 10.5px) with 22.22% calc(100% - 11px),curve to 26.39% calc(100% - 5.5px) with 25% calc(100% - 10px),curve to 29.17% calc(100% - 9.5px) with 27.78% calc(100% - 1px),curve to 31.94% calc(100% - 11.5px) with 30.56% calc(100% - 18px),curve to 34.72% calc(100% - 20px) with 33.33% calc(100% - 5px),curve to 37.5% calc(100% - 23px) with 36.11% calc(100% - 35px),curve to 40.28% calc(100% - 28px) with 38.89% calc(100% - 11px),curve to 43.06% calc(100% - 24.5px) with 41.67% calc(100% - 45px),curve to 45.83% calc(100% - 25.5px) with 44.44% calc(100% - 4px),curve to 48.61% calc(100% - 44.5px) with 47.22% calc(100% - 47px),curve to 51.39% calc(100% - 31px) with 50% calc(100% - 42px),curve to 54.17% calc(100% - 26.5px) with 52.78% calc(100% - 20px),curve to 56.94% calc(100% - 23.5px) with 55.56% calc(100% - 33px),curve to 59.72% calc(100% - 13.5px) with 58.33% calc(100% - 14px),curve to 62.5% calc(100% - 26.5px) with 61.11% calc(100% - 13px),curve to 65.28% calc(100% - 41px) with 63.89% calc(100% - 40px),curve to 68.06% calc(100% - 28.5px) with 66.67% calc(100% - 42px),curve to 70.83% calc(100% - 7.5px) with 69.44% calc(100% - 15px),curve to 73.61% calc(100% - 12.5px) with 72.22% calc(100% - 0px),curve to 76.39% calc(100% - 27.5px) with 75% calc(100% - 25px),curve to 79.17% calc(100% - 28px) with 77.78% calc(100% - 30px),curve to 81.94% calc(100% - 27px) with 80.56% calc(100% - 26px),curve to 84.72% calc(100% - 34px) with 83.33% calc(100% - 28px),curve to 87.5% calc(100% - 28px) with 86.11% calc(100% - 40px),curve to 90.28% calc(100% - 31px) with 88.89% calc(100% - 16px),curve to 93.06% calc(100% - 37px) with 91.67% calc(100% - 46px),curve to 95.83% calc(100% - 23.5px) with 94.44% calc(100% - 28px),curve to 100% 100% with 97.22% calc(100% - 19px),vline to 0, hline to 0);
-// }
-//   .inscription-titre{
-//     text-shadow: 2px 2px 30px #000;
-//     font-size: 4rem;
-//     font-weight: bold;
-//     font-family: "Courier New", Courier, monospace;
-//     color: #fff;
-//   }
-//         .inscription-section {
-//           padding: 80px 24px;
-//           position: relative;
-//         }
-
-//         // .inscription-section::before {
-//         //   content: '';
-//         //   position: absolute;
-//         //   top: 0;
-//         //   left: 0;
-//         //   right: 0;
-//         //   height: 4px;
-//         //   background: linear-gradient(90deg, #f97316, #1e3a8a);
-//         // }
-
-//         .inscription-container {
-//           max-width: 700px;
-//           margin: 0 auto;
-//         }
-
-//         /* En-tête */
-//         .inscription-header {
-//           text-align: center;
-//           margin-bottom: 48px;
-//         }
-
-//         .inscription-badge {
-//           display: inline-block;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 0.75rem;
-//           font-weight: 600;
-//           letter-spacing: 0.1em;
-//           text-transform: uppercase;
-//           color: #f97316;
-//           padding: 8px 16px;
-//           border-radius: 20px;
-//           margin-bottom: 20px;
-//         }
-
-//         .inscription-title {
-//           font-family: 'Georgia', serif;
-//           font-size: clamp(2rem, 5vw, 2.8rem);
-//           color: #0f172a;
-//           margin: 0 0 12px 0;
-//           line-height: 1.2;
-//         }
-
-//         .inscription-subtitle {
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1.2rem;
-//           color: #64748b;
-//           margin: 0 0 24px 0;
-//         }
-
-//         .inscription-line {
-//           width: 60px;
-//           height: 4px;
-//           background: linear-gradient(90deg, #f97316, #1e3a8a);
-//           margin: 0 auto;
-//           border-radius: 2px;
-//         }
-
-//         /* Formulaire */
-//         .inscription-form {
-//           background: #ffffff;
-//           padding: 40px;
-//           border-radius: 16px;
-//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//           display: flex;
-//           flex-direction: column;
-//           gap: 24px;
-//         }
-
-//         .inscription-row {
-//           display: grid;
-//           grid-template-columns: 1fr 1fr;
-//           gap: 20px;
-//         }
-
-//         .inscription-field {
-//           display: flex;
-//           flex-direction: column;
-//           gap: 8px;
-//         }
-
-//         .inscription-field.full-width {
-//           grid-column: 1 / -1;
-//         }
-
-//         .inscription-field label {
-//           font-family: 'Arial', sans-serif;
-//           font-size: 0.9rem;
-//           font-weight: 600;
-//           color: #374151;
-//         }
-
-//         .required {
-//           color: #ef4444;
-//         }
-
-//         .optional {
-//           color: #9ca3af;
-//           font-weight: 400;
-//         }
-
-//         .inscription-field input,
-//         .inscription-field select {
-//           padding: 14px 16px;
-//           border: 2px solid #e5e7eb;
-//           border-radius: 4px;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1rem;
-//           color: #0f172a;
-//           background: #ffffff;
-//           outline: none;
-//           transition: all 0.2s ease;
-//         }
-
-//         .inscription-field input:focus,
-//         .inscription-field select:focus {
-//           border-color: #f97316;
-//           box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-//         }
-
-//         .inscription-field input::placeholder {
-//           color: #9ca3af;
-//         }
-
-//         .inscription-field select:disabled {
-//           background: #f3f4f6;
-//           cursor: not-allowed;
-//         }
-
-//         /* Bouton */
-//         .inscription-submit {
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 12px;
-//           padding: 16px 32px;
-//           background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-//           color: #ffffff;
-//           border: none;
-//           border-radius: 8px;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1.05rem;
-//           font-weight: 600;
-//           cursor: pointer;
-//           transition: all 0.3s ease;
-//           margin-top: 16px;
-//         }
-
-//         .inscription-submit:hover:not(:disabled) {
-//         //   transform: translateY(-2px);
-//           box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
-//         }
-
-//         .inscription-submit:disabled {
-//           opacity: 0.7;
-//           cursor: not-allowed;
-//         }
-
-//         .spinner {
-//           width: 20px;
-//           height: 20px;
-//           border: 2px solid rgba(255, 255, 255, 0.3);
-//           border-top-color: #ffffff;
-//           border-radius: 50%;
-//           animation: spin 0.8s linear infinite;
-//         }
-
-//         @keyframes spin {
-//           to { transform: rotate(360deg); }
-//         }
-
-//         /* Success */
-//         .inscription-success {
-//           background: #ffffff;
-//           padding: 60px 40px;
-//           border-radius: 16px;
-//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//           text-align: center;
-//           animation: fadeIn 0.5s ease;
-//         }
-
-//         .success-icon {
-//           width: 80px;
-//           height: 80px;
-//           background: #d1fae5;
-//           border-radius: 50%;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           margin: 0 auto 24px;
-//           color: #059669;
-//         }
-
-//         .inscription-success h3 {
-//           font-family: 'Georgia', serif;
-//           font-size: 1.5rem;
-//           color: #0f172a;
-//           margin: 0 0 12px 0;
-//         }
-
-//         .inscription-success p {
-//           font-family: 'Arial', sans-serif;
-//           color: #64748b;
-//           margin: 0;
-//         }
-
-//         @keyframes fadeIn {
-//           from { opacity: 0; transform: translateY(10px); }
-//           to { opacity: 1; transform: translateY(0); }
-//         }
-
-//         /* Responsive */
-//         @media (max-width: 640px) {
-//           .inscription-form {
-//             padding: 24px;
-//           }
-
-//           .inscription-row {
-//             grid-template-columns: 1fr;
-//           }
-//         }
-//       `}</style>
-//     </section>
-//     </>
-//   );
-// };
-
-// export default Inscription;
-
-
-
-// import React, { useState } from 'react';
-
-// const Inscription = () => {
-//   const [formData, setFormData] = useState({
-//     parentNom: '',
-//     telephone: '',
-//     email: '',
-//     eleveNom: '',
-//     etablissement: '',
-//     niveau: ''
-//   });
-
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [isSuccess, setIsSuccess] = useState(false);
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsSubmitting(true);
-    
-//     // Simulation envoi
-//     await new Promise(resolve => setTimeout(resolve, 1500));
-    
-//     setIsSubmitting(false);
-//     setIsSuccess(true);
-    
-//     setTimeout(() => {
-//       setIsSuccess(false);
-//       setFormData({
-//         parentNom: '',
-//         telephone: '',
-//         email: '',
-//         eleveNom: '',
-//         etablissement: '',
-//         niveau: ''
-//       });
-//     }, 3000);
-//   };
-
-//   const etablissements = [
-//     { value: '', label: 'Sélectionnez un établissement' },
-//     { value: 'maternelle', label: 'Maternelle' },
-//     { value: 'primaire', label: 'Primaire' },
-//     { value: 'college', label: 'Collège' },
-//     { value: 'lycee', label: 'Lycée' }
-//   ];
-
-//   const niveaux = {
-//     '': [{ value: '', label: 'Sélectionnez d\'abord un établissement' }],
-//     'maternelle': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'petite-section', label: 'Petite Section' },
-//       { value: 'moyenne-section', label: 'Moyenne Section' },
-//       { value: 'grande-section', label: 'Grande Section' }
-//     ],
-//     'primaire': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'cp', label: 'CP' },
-//       { value: 'ce1', label: 'CE1' },
-//       { value: 'ce2', label: 'CE2' },
-//       { value: 'cm1', label: 'CM1' },
-//       { value: 'cm2', label: 'CM2' }
-//     ],
-//     'college': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: '6eme', label: '6ème' },
-//       { value: '5eme', label: '5ème' },
-//       { value: '4eme', label: '4ème' },
-//       { value: '3eme', label: '3ème' }
-//     ],
-//     'lycee': [
-//       { value: '', label: 'Sélectionnez un niveau' },
-//       { value: 'seconde', label: 'Seconde' },
-//       { value: 'premiere', label: 'Première' },
-//       { value: 'terminale', label: 'Terminale' }
-//     ]
-//   };
-
-//   return (
-//     <>
-//         <header>
-//             <h1 className='inscription-titre'>Demande d’inscription</h1>
-//         </header>
-//     <section className="inscription-section">
-//       <div className="inscription-container">
-//         {/* En-tête */}
-//         <div className="inscription-header">
-//           <span className="inscription-badge">Admissions 2026-2027</span>
-//           <h2 className="inscription-title">
-//             Rejoignez Nous !
-//           </h2>
-//           <p className="inscription-subtitle">
-//             Inscrivez vos enfants dès maintenant
-//           </p>
-//           <div className="inscription-line" />
-//         </div>
-
-//         {/* Formulaire */}
-//         {isSuccess ? (
-//           <div className="inscription-success">
-//             <div className="success-icon">
-//               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-//                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-//                 <polyline points="22 4 12 14.01 9 11.01" />
-//               </svg>
-//             </div>
-//             <h3>Demande envoyée !</h3>
-//             <p>Nous vous contacterons très prochainement.</p>
-//           </div>
-//         ) : (
-//           <form className="inscription-form" onSubmit={handleSubmit}>
-//             {/* Ligne 1: Nom parent + Téléphone */}
-//             <div className="inscription-row">
-//               <div className="inscription-field">
-//                 <label htmlFor="parentNom">
-//                   Nom et prénom <span className="required">*</span>
-//                 </label>
-//                 <input
-//                   type="text"
-//                   id="parentNom"
-//                   name="parentNom"
-//                   value={formData.parentNom}
-//                   onChange={handleChange}
-//                   required
-//                   placeholder="Votre nom complet"
-//                 />
-//               </div>
-
-//               <div className="inscription-field">
-//                 <label htmlFor="telephone">
-//                   Numéro de téléphone <span className="required">*</span>
-//                 </label>
-//                 <input
-//                   type="tel"
-//                   id="telephone"
-//                   name="telephone"
-//                   value={formData.telephone}
-//                   onChange={handleChange}
-//                   required
-//                   placeholder="+212 6 00 00 00 00"
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Email */}
-//             <div className="inscription-field full-width">
-//               <label htmlFor="email">
-//                 Email <span className="optional">(facultatif)</span>
-//               </label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 placeholder="votre@email.com"
-//               />
-//             </div>
-
-//             {/* Nom élève */}
-//             <div className="inscription-field full-width">
-//               <label htmlFor="eleveNom">
-//                 Nom et prénom de l'élève <span className="required">*</span>
-//               </label>
-//               <input
-//                 type="text"
-//                 id="eleveNom"
-//                 name="eleveNom"
-//                 value={formData.eleveNom}
-//                 onChange={handleChange}
-//                 required
-//                 placeholder="Nom complet de l'élève"
-//               />
-//             </div>
-
-//             {/* Ligne 2: Établissement + Niveau */}
-//             <div className="inscription-row">
-//               <div className="inscription-field">
-//                 <label htmlFor="etablissement">
-//                   Établissement concerné <span className="required">*</span>
-//                 </label>
-//                 <select
-//                   id="etablissement"
-//                   name="etablissement"
-//                   value={formData.etablissement}
-//                   onChange={handleChange}
-//                   required
-//                 >
-//                   {etablissements.map(etab => (
-//                     <option key={etab.value} value={etab.value}>
-//                       {etab.label}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-
-//               <div className="inscription-field">
-//                 <label htmlFor="niveau">
-//                   Niveau <span className="required">*</span>
-//                 </label>
-//                 <select
-//                   id="niveau"
-//                   name="niveau"
-//                   value={formData.niveau}
-//                   onChange={handleChange}
-//                   required
-//                   disabled={!formData.etablissement}
-//                 >
-//                   {(niveaux[formData.etablissement] || niveaux['']).map(niv => (
-//                     <option key={niv.value} value={niv.value}>
-//                       {niv.label}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-//             </div>
-
-//             {/* Bouton submit */}
-//             <button 
-//               type="submit" 
-//               className="inscription-submit"
-//               disabled={isSubmitting}
-//             >
-//               {isSubmitting ? (
-//                 <>
-//                   <span className="spinner" />
-//                   Envoi en cours...
-//                 </>
-//               ) : (
-//                 <>
-//                   Envoyer ma demande
-//                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-//                     <line x1="22" y1="2" x2="11" y2="13" />
-//                     <polygon points="22 2 15 22 11 13 2 9 22 2" />
-//                   </svg>
-//                 </>
-//               )}
-//             </button>
-//           </form>
-//         )}
-//       </div>
-//       <style jsx>{`
-
-//       header{
-//   text-align: center;
-//   padding: 130px  70px;
-//   font-size: 2rem;
-//   font-weight: bold;
-//   color: #fff;
-// //   background: #780000;
-//   background-image: url("/serv.jpg");
-//   background-size: cover;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   clip-path: shape(from 0 0,vline to 100%,curve to 4.17% calc(100% - 15.5px) with 2.78% calc(100% - 15px),curve to 6.94% calc(100% - 9px) with 5.56% calc(100% - 16px),curve to 9.72% calc(100% - 20px) with 8.33% calc(100% - 2px),curve to 12.5% calc(100% - 44px) with 11.11% calc(100% - 38px),curve to 15.28% calc(100% - 27.5px) with 13.89% calc(100% - 50px),curve to 18.06% calc(100% - 20.5px) with 16.67% calc(100% - 5px),curve to 20.83% calc(100% - 23.5px) with 19.44% calc(100% - 36px),curve to 23.61% calc(100% - 10.5px) with 22.22% calc(100% - 11px),curve to 26.39% calc(100% - 5.5px) with 25% calc(100% - 10px),curve to 29.17% calc(100% - 9.5px) with 27.78% calc(100% - 1px),curve to 31.94% calc(100% - 11.5px) with 30.56% calc(100% - 18px),curve to 34.72% calc(100% - 20px) with 33.33% calc(100% - 5px),curve to 37.5% calc(100% - 23px) with 36.11% calc(100% - 35px),curve to 40.28% calc(100% - 28px) with 38.89% calc(100% - 11px),curve to 43.06% calc(100% - 24.5px) with 41.67% calc(100% - 45px),curve to 45.83% calc(100% - 25.5px) with 44.44% calc(100% - 4px),curve to 48.61% calc(100% - 44.5px) with 47.22% calc(100% - 47px),curve to 51.39% calc(100% - 31px) with 50% calc(100% - 42px),curve to 54.17% calc(100% - 26.5px) with 52.78% calc(100% - 20px),curve to 56.94% calc(100% - 23.5px) with 55.56% calc(100% - 33px),curve to 59.72% calc(100% - 13.5px) with 58.33% calc(100% - 14px),curve to 62.5% calc(100% - 26.5px) with 61.11% calc(100% - 13px),curve to 65.28% calc(100% - 41px) with 63.89% calc(100% - 40px),curve to 68.06% calc(100% - 28.5px) with 66.67% calc(100% - 42px),curve to 70.83% calc(100% - 7.5px) with 69.44% calc(100% - 15px),curve to 73.61% calc(100% - 12.5px) with 72.22% calc(100% - 0px),curve to 76.39% calc(100% - 27.5px) with 75% calc(100% - 25px),curve to 79.17% calc(100% - 28px) with 77.78% calc(100% - 30px),curve to 81.94% calc(100% - 27px) with 80.56% calc(100% - 26px),curve to 84.72% calc(100% - 34px) with 83.33% calc(100% - 28px),curve to 87.5% calc(100% - 28px) with 86.11% calc(100% - 40px),curve to 90.28% calc(100% - 31px) with 88.89% calc(100% - 16px),curve to 93.06% calc(100% - 37px) with 91.67% calc(100% - 46px),curve to 95.83% calc(100% - 23.5px) with 94.44% calc(100% - 28px),curve to 100% 100% with 97.22% calc(100% - 19px),vline to 0, hline to 0);
-// }
-//   .inscription-titre{
-//     text-shadow: 2px 2px 30px #000;
-//     font-size: 4rem;
-//     font-weight: bold;
-//     font-family: "Courier New", Courier, monospace;
-//     color: #fff;
-//   }
-//         .inscription-section {
-//           padding: 80px 24px;
-//           position: relative;
-//         }
-
-//         // .inscription-section::before {
-//         //   content: '';
-//         //   position: absolute;
-//         //   top: 0;
-//         //   left: 0;
-//         //   right: 0;
-//         //   height: 4px;
-//         //   background: linear-gradient(90deg, #f97316, #1e3a8a);
-//         // }
-
-//         .inscription-container {
-//           max-width: 700px;
-//           margin: 0 auto;
-//         }
-
-//         /* En-tête */
-//         .inscription-header {
-//           text-align: center;
-//           margin-bottom: 48px;
-//         }
-
-//         .inscription-badge {
-//           display: inline-block;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 0.75rem;
-//           font-weight: 600;
-//           letter-spacing: 0.1em;
-//           text-transform: uppercase;
-//           color: #f97316;
-//           padding: 8px 16px;
-//           border-radius: 20px;
-//           margin-bottom: 20px;
-//         }
-
-//         .inscription-title {
-//           font-family: 'Georgia', serif;
-//           font-size: clamp(2rem, 5vw, 2.8rem);
-//           color: #0f172a;
-//           margin: 0 0 12px 0;
-//           line-height: 1.2;
-//         }
-
-//         .inscription-subtitle {
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1.2rem;
-//           color: #64748b;
-//           margin: 0 0 24px 0;
-//         }
-
-//         .inscription-line {
-//           width: 60px;
-//           height: 4px;
-//           background: linear-gradient(90deg, #f97316, #1e3a8a);
-//           margin: 0 auto;
-//           border-radius: 2px;
-//         }
-
-//         /* Formulaire */
-//         .inscription-form {
-//           background: #ffffff;
-//           padding: 40px;
-//           border-radius: 16px;
-//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//           display: flex;
-//           flex-direction: column;
-//           gap: 24px;
-//         }
-
-//         .inscription-row {
-//           display: grid;
-//           grid-template-columns: 1fr 1fr;
-//           gap: 20px;
-//         }
-
-//         .inscription-field {
-//           display: flex;
-//           flex-direction: column;
-//           gap: 8px;
-//         }
-
-//         .inscription-field.full-width {
-//           grid-column: 1 / -1;
-//         }
-
-//         .inscription-field label {
-//           font-family: 'Arial', sans-serif;
-//           font-size: 0.9rem;
-//           font-weight: 600;
-//           color: #374151;
-//         }
-
-//         .required {
-//           color: #ef4444;
-//         }
-
-//         .optional {
-//           color: #9ca3af;
-//           font-weight: 400;
-//         }
-
-//         .inscription-field input,
-//         .inscription-field select {
-//           padding: 14px 16px;
-//           border: 2px solid #e5e7eb;
-//           border-radius: 4px;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1rem;
-//           color: #0f172a;
-//           background: #ffffff;
-//           outline: none;
-//           transition: all 0.2s ease;
-//         }
-
-//         .inscription-field input:focus,
-//         .inscription-field select:focus {
-//           border-color: #f97316;
-//           box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-//         }
-
-//         .inscription-field input::placeholder {
-//           color: #9ca3af;
-//         }
-
-//         .inscription-field select:disabled {
-//           background: #f3f4f6;
-//           cursor: not-allowed;
-//         }
-
-//         /* Bouton */
-//         .inscription-submit {
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           gap: 12px;
-//           padding: 16px 32px;
-//           background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-//           color: #ffffff;
-//           border: none;
-//           border-radius: 8px;
-//           font-family: 'Arial', sans-serif;
-//           font-size: 1.05rem;
-//           font-weight: 600;
-//           cursor: pointer;
-//           transition: all 0.3s ease;
-//           margin-top: 16px;
-//         }
-
-//         .inscription-submit:hover:not(:disabled) {
-//         //   transform: translateY(-2px);
-//           box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
-//         }
-
-//         .inscription-submit:disabled {
-//           opacity: 0.7;
-//           cursor: not-allowed;
-//         }
-
-//         .spinner {
-//           width: 20px;
-//           height: 20px;
-//           border: 2px solid rgba(255, 255, 255, 0.3);
-//           border-top-color: #ffffff;
-//           border-radius: 50%;
-//           animation: spin 0.8s linear infinite;
-//         }
-
-//         @keyframes spin {
-//           to { transform: rotate(360deg); }
-//         }
-
-//         /* Success */
-//         .inscription-success {
-//           background: #ffffff;
-//           padding: 60px 40px;
-//           border-radius: 16px;
-//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//           text-align: center;
-//           animation: fadeIn 0.5s ease;
-//         }
-
-//         .success-icon {
-//           width: 80px;
-//           height: 80px;
-//           background: #d1fae5;
-//           border-radius: 50%;
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           margin: 0 auto 24px;
-//           color: #059669;
-//         }
-
-//         .inscription-success h3 {
-//           font-family: 'Georgia', serif;
-//           font-size: 1.5rem;
-//           color: #0f172a;
-//           margin: 0 0 12px 0;
-//         }
-
-//         .inscription-success p {
-//           font-family: 'Arial', sans-serif;
-//           color: #64748b;
-//           margin: 0;
-//         }
-
-//         @keyframes fadeIn {
-//           from { opacity: 0; transform: translateY(10px); }
-//           to { opacity: 1; transform: translateY(0); }
-//         }
-
-//         /* Responsive */
-//         @media (max-width: 640px) {
-//           .inscription-form {
-//             padding: 24px;
-//           }
-
-//           .inscription-row {
-//             grid-template-columns: 1fr;
-//           }
-//         }
-//       `}</style>
-//     </section>
-//     </>
-//   );
-// };
-
-// export default Inscription;
-
-
 import React, { useState } from 'react';
-import { Send, CheckCircle, User, Phone, Mail, BookOpen, GraduationCap, Calendar } from 'lucide-react';
+import { Send, CheckCircle, User, Phone, Mail, BookOpen, GraduationCap, Calendar, AlertCircle } from 'lucide-react';
 
 const Inscription = () => {
   const [formData, setFormData] = useState({
@@ -1022,25 +15,58 @@ const Inscription = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(null);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
+    if (apiError) setApiError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrors({});
+    setApiError(null);
     
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    setTimeout(() => {
-      setIsSuccess(false);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/inscriptions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Gestion des erreurs de validation Laravel (422)
+        if (response.status === 422 && data.errors) {
+          // Transformer les erreurs Laravel en format compatible
+          const formattedErrors = {};
+          Object.entries(data.errors).forEach(([key, messages]) => {
+            // Convertir snake_case vers camelCase si nécessaire
+            const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+            formattedErrors[camelKey] = messages[0]; // Prendre le premier message d'erreur
+          });
+          setErrors(formattedErrors);
+          throw new Error('Veuillez corriger les erreurs du formulaire');
+        }
+        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
+      }
+
+      // Succès
+      setIsSuccess(true);
       setFormData({
         parentNom: '',
         telephone: '',
@@ -1051,7 +77,19 @@ const Inscription = () => {
         dateNaissance: '',
         message: ''
       });
-    }, 3000);
+      
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+
+    } catch (error) {
+      console.error('Erreur d\'envoi:', error);
+      if (error.message !== 'Veuillez corriger les erreurs du formulaire') {
+        setApiError(error.message || 'Erreur de connexion au serveur');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const etablissements = [
@@ -1130,7 +168,15 @@ const Inscription = () => {
               </div>
             </div>
           ) : (
-            <form className="inscription-form" onSubmit={handleSubmit}>
+            <form className="inscription-form" onSubmit={handleSubmit} noValidate>
+              {/* Erreur API globale */}
+              {apiError && (
+                <div className="form-error-global">
+                  <AlertCircle size={18} />
+                  <span>{apiError}</span>
+                </div>
+              )}
+
               <div className="form-section">
                 <h3 className="form-section-title">
                   <User size={20} />
@@ -1151,8 +197,10 @@ const Inscription = () => {
                         onChange={handleChange}
                         required
                         placeholder="Votre nom complet"
+                        className={errors.parentNom ? 'input-error' : ''}
                       />
                     </div>
+                    {errors.parentNom && <span className="field-error">{errors.parentNom}</span>}
                   </div>
 
                   <div className="form-field">
@@ -1169,8 +217,10 @@ const Inscription = () => {
                         onChange={handleChange}
                         required
                         placeholder="+212 6 XX XX XX XX"
+                        className={errors.telephone ? 'input-error' : ''}
                       />
                     </div>
+                    {errors.telephone && <span className="field-error">{errors.telephone}</span>}
                   </div>
                 </div>
 
@@ -1187,8 +237,10 @@ const Inscription = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="votre@email.com"
+                      className={errors.email ? 'input-error' : ''}
                     />
                   </div>
+                  {errors.email && <span className="field-error">{errors.email}</span>}
                 </div>
               </div>
 
@@ -1212,8 +264,10 @@ const Inscription = () => {
                         onChange={handleChange}
                         required
                         placeholder="Nom complet de l'élève"
+                        className={errors.eleveNom ? 'input-error' : ''}
                       />
                     </div>
+                    {errors.eleveNom && <span className="field-error">{errors.eleveNom}</span>}
                   </div>
 
                   <div className="form-field">
@@ -1229,8 +283,10 @@ const Inscription = () => {
                         value={formData.dateNaissance}
                         onChange={handleChange}
                         required
+                        className={errors.dateNaissance ? 'input-error' : ''}
                       />
                     </div>
+                    {errors.dateNaissance && <span className="field-error">{errors.dateNaissance}</span>}
                   </div>
                 </div>
 
@@ -1247,6 +303,7 @@ const Inscription = () => {
                         value={formData.etablissement}
                         onChange={handleChange}
                         required
+                        className={errors.etablissement ? 'input-error' : ''}
                       >
                         {etablissements.map(etab => (
                           <option key={etab.value} value={etab.value}>
@@ -1255,6 +312,7 @@ const Inscription = () => {
                         ))}
                       </select>
                     </div>
+                    {errors.etablissement && <span className="field-error">{errors.etablissement}</span>}
                   </div>
 
                   <div className="form-field">
@@ -1270,6 +328,7 @@ const Inscription = () => {
                         onChange={handleChange}
                         required
                         disabled={!formData.etablissement}
+                        className={errors.niveau ? 'input-error' : ''}
                       >
                         {(niveaux[formData.etablissement] || niveaux['']).map(niv => (
                           <option key={niv.value} value={niv.value}>
@@ -1278,6 +337,7 @@ const Inscription = () => {
                         ))}
                       </select>
                     </div>
+                    {errors.niveau && <span className="field-error">{errors.niveau}</span>}
                   </div>
                 </div>
 
@@ -1290,7 +350,9 @@ const Inscription = () => {
                     onChange={handleChange}
                     rows="4"
                     placeholder="Questions particulières, informations complémentaires..."
+                    className={errors.message ? 'input-error' : ''}
                   />
+                  {errors.message && <span className="field-error">{errors.message}</span>}
                 </div>
               </div>
 
@@ -1425,6 +487,20 @@ const Inscription = () => {
           box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
         }
 
+        .form-error-global {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: #fef2f2;
+          border: 1px solid #fecaca;
+          color: #dc2626;
+          padding: 12px 16px;
+          border-radius: 12px;
+          margin-bottom: 24px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9rem;
+        }
+
         .form-section {
           margin-bottom: 32px;
           padding-bottom: 32px;
@@ -1520,6 +596,27 @@ const Inscription = () => {
         .form-field textarea:focus {
           border-color: #f97316;
           box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .form-field input.input-error,
+        .form-field select.input-error,
+        .form-field textarea.input-error {
+          border-color: #ef4444;
+          background: #fef2f2;
+        }
+
+        .form-field input.input-error:focus,
+        .form-field select.input-error:focus,
+        .form-field textarea.input-error:focus {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .field-error {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.75rem;
+          color: #ef4444;
+          margin-top: 4px;
         }
 
         .form-field input::placeholder,

@@ -503,23 +503,13 @@ const HeroCarousel = () => {
         {
             id: 2,
             image: "/Bannière hero section atome.png",
-            fallbackImage:
-                "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=80",
-            titleBgColor: "#1e3a8a",
-            title: "Inscriptions Ouvertes",
-            paragraph: "Apprentissage Amusant",
-            buttonText: "Inscrivez votre enfant dès maintenant",
+            fallbackImage:"https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=80",
             buttonLink: "/inscription"
         },
         {
             id: 1,
             image: "/Bannière hero section atome.png",
-            fallbackImage:
-                "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80",
-            titleBgColor: "#f24d42ff",
-            title: "Programes d'etudes conforme",
-            paragraph: "PLAISIR DE SAVOIR",
-            buttonText: "Inscrivez votre enfant dès maintenant",
+            fallbackImage:"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=80",
             buttonLink: "/inscription"
         }
     ];
@@ -584,59 +574,7 @@ const HeroCarousel = () => {
                             <div className="overlay" />
                         </a>
 
-                        {/* Contenu textuel à gauche */}
-                        {/* <div className="slide-content">
-                            <div className="content-wrapper">
-                                <div
-                                    className="title-container"
-                                    style={{ "--title-bg": slide.titleBgColor }}
-                                >
-                                    <h1
-                                        className={`title ${
-                                            index === currentSlide
-                                                ? "animate-slide-right"
-                                                : ""
-                                        }`}
-                                    >
-                                        {slide.title}
-                                    </h1>
-                                </div>
-
-                                <p
-                                    className={`paragraph ${
-                                        index === currentSlide
-                                            ? "animate-fade-in"
-                                            : ""
-                                    }`}
-                                >
-                                    {slide.paragraph}
-                                </p>
-
-                                <div className="button-wrapper">
-                                    <a
-                                        href={slide.buttonLink}
-                                        className={`cta-button ${
-                                            index === currentSlide
-                                                ? "animate-slide-up"
-                                                : ""
-                                        }`}
-                                    >
-                                        {slide.buttonText}
-                                        <svg
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            className="arrow-icon"
-                                        >
-                                            <path d="M5 12h14M12 5l7 7-7 7" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div> */}
+                        
                     </div>
                 ))}
 
@@ -969,9 +907,3 @@ const HeroCarousel = () => {
 };
 
 export default HeroCarousel;
-
-// ✅ Avant survol : Bouton bleu marine (#1e3a8a)
-
-// ✅ Au survol : Devient transparent
-
-// ✅ Au clic : Redirige vers la page d'inscription

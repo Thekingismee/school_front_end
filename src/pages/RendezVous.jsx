@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const HOURS = [
@@ -10,28 +10,40 @@ const HOURS = [
   "16:00", "16:15", "16:30", "16:45",
 ];
 
+const MONTH_NAMES_FR = [
+  "Janvier","Février","Mars","Avril","Mai","Juin",
+  "Juillet","Août","Septembre","Octobre","Novembre","Décembre"
+];
+
+// Helpers
 function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 function getFirstDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
+function formatDateForAPI(date) {
+  return date.toISOString().split('T')[0]; // YYYY-MM-DD
+}
 
-const MONTH_NAMES_FR = [
-  "Janvier","Février","Mars","Avril","Mai","Juin",
-  "Juillet","Août","Septembre","Octobre","Novembre","Décembre"
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function RendezVous() {
   const [showModal, setShowModal] = useState(false);
-  const [step, setStep] = useState("calendar"); // "calendar" | "hours" | "form"
+  const [step, setStep] = useState("calendar");
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [form, setForm] = useState({
     nom: "", email: "", invites: "", telephone: "", message: ""
   });
+  
+  // États API
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(null);
+  const [availableHours, setAvailableHours] = useState(HOURS);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -39,16 +51,56 @@ export default function RendezVous() {
   const firstDay = getFirstDayOfMonth(year, month);
   const firstDayAdj = firstDay === 0 ? 6 : firstDay - 1;
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // 🔍 Charger les heures disponibles quand une date est sélectionnée
+  useEffect(() => {
+    if (selectedDay && step === "hours") {
+      fetchAvailableHours();
+    }
+  }, [selectedDay, step]);
+
+  const fetchAvailableHours = async () => {
+    if (!selectedDay) return;
+    
+    try {
+      const dateStr = formatDateForAPI(new Date(selectedDay.year, selectedDay.month, selectedDay.day));
+      
+      // Optionnel : appeler l'API pour vérifier les créneaux pris
+      // const response = await fetch(`${API_URL}/appointments/available?date=${dateStr}&lieu=Lissasfa`);
+      // const data = await response.json();
+      // setAvailableHours(data.available || HOURS);
+      
+      // Pour l'instant, on filtre côté client les heures passées si c'est aujourd'hui
+      const selectedDate = new Date(selectedDay.year, selectedDay.month, selectedDay.day);
+      if (selectedDate.getTime() === today.getTime()) {
+        const now = new Date();
+        const currentHour = `${String(now.getHours()).padStart(2, '0')}:${now.getMinutes() < 30 ? '00' : '30'}`;
+        const filtered = HOURS.filter(h => h > currentHour);
+        setAvailableHours(filtered.length > 0 ? filtered : []);
+      } else {
+        setAvailableHours(HOURS);
+      }
+    } catch (err) {
+      console.error('Erreur chargement disponibilités:', err);
+      setAvailableHours(HOURS); // Fallback
+    }
+  };
 
   const handleDayClick = (day) => {
     const clicked = new Date(year, month, day);
-    if (clicked < new Date(today.getFullYear(), today.getMonth(), today.getDate())) return;
+    if (clicked < today) return;
+    
     setSelectedDay({ day, month, year });
+    setSelectedHour(null);
+    setErrors({});
+    setApiError(null);
     setStep("hours");
   };
 
   const handleHourClick = (hour) => {
     setSelectedHour(hour);
+    setErrors(prev => ({ ...prev, heure_rdv: null }));
   };
 
   const handleNext = () => {
@@ -58,13 +110,89 @@ export default function RendezVous() {
   };
 
   const handleBack = () => {
-    if (step === "hours") { setStep("calendar"); setSelectedHour(null); }
-    if (step === "form") { setStep("hours"); }
+    if (step === "hours") { 
+      setStep("calendar"); 
+      setSelectedHour(null); 
+    }
+    if (step === "form") { 
+      setStep("hours"); 
+    }
+    setApiError(null);
   };
 
-  const handleSubmit = () => {
-    if (!form.nom || !form.email || !form.telephone) return;
-    setSubmitted(true);
+  const handleSubmit = async () => {
+    // Validation client basique
+    if (!form.nom || !form.email || !form.telephone) {
+      setErrors({
+        nom: !form.nom ? 'Le nom est obligatoire' : null,
+        email: !form.email ? 'L\'email est obligatoire' : null,
+        telephone: !form.telephone ? 'Le téléphone est obligatoire' : null,
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setApiError(null);
+    setErrors({});
+
+    try {
+      const payload = {
+        nom: form.nom.trim(),
+        email: form.email.trim().toLowerCase(),
+        telephone: form.telephone.trim(),
+        invites: form.invites?.trim() || null,
+        message: form.message?.trim() || null,
+        date_rdv: formatDateForAPI(new Date(selectedDay.year, selectedDay.month, selectedDay.day)),
+        heure_rdv: selectedHour,
+        lieu: 'Lissasfa',
+        duree_minutes: 15,
+      };
+
+      const response = await fetch(`${API_URL}/appointments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Source': 'site',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 422 && data.errors) {
+          // Transformer les erreurs Laravel
+          const formatted = {};
+          Object.entries(data.errors).forEach(([key, msgs]) => {
+            formatted[key] = msgs[0];
+          });
+          setErrors(formatted);
+          
+          // Scroll vers le haut pour voir les erreurs
+          document.querySelector('.rdv-right')?.scrollTo({ top: 0, behavior: 'smooth' });
+          throw new Error('Veuillez corriger les erreurs');
+        }
+        if (response.status === 409) {
+          setApiError('Ce créneau vient d\'être réservé. Veuillez choisir un autre horaire.');
+          setStep("hours"); // Retourner aux heures
+          throw new Error('Créneau indisponible');
+        }
+        throw new Error(data.message || 'Une erreur est survenue');
+      }
+
+      // ✅ Succès
+      setSubmitted(true);
+      setForm({ nom: "", email: "", invites: "", telephone: "", message: "" });
+      
+    } catch (error) {
+      console.error('Erreur réservation:', error);
+      if (!['Veuillez corriger les erreurs', 'Créneau indisponible'].includes(error.message)) {
+        setApiError(error.message || 'Erreur de connexion au serveur');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -75,506 +203,125 @@ export default function RendezVous() {
       setSelectedHour(null);
       setForm({ nom: "", email: "", invites: "", telephone: "", message: "" });
       setSubmitted(false);
+      setErrors({});
+      setApiError(null);
+      setCurrentDate(new Date());
     }, 300);
   };
 
   const prevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
     setSelectedDay(null);
+    setSelectedHour(null);
     setStep("calendar");
   };
+  
   const nextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
-    setSelectedDay(null);
-    setStep("calendar");
+    // Limiter à +6 mois pour éviter les réservations trop lointaines
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 6);
+    if (new Date(year, month + 1, 1) <= maxDate) {
+      setCurrentDate(new Date(year, month + 1, 1));
+      setSelectedDay(null);
+      setSelectedHour(null);
+      setStep("calendar");
+    }
   };
 
   const isDisabled = (day) => {
-    return new Date(year, month, day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const date = new Date(year, month, day);
+    date.setHours(0, 0, 0, 0);
+    // Désactiver les jours passés
+    if (date < today) return true;
+    // Optionnel : Désactiver week-ends
+    // const dayOfWeek = date.getDay();
+    // if (dayOfWeek === 0 || dayOfWeek === 6) return true;
+    return false;
+  };
+
+  const getFieldError = (fieldName) => {
+    return errors[fieldName] || (step === "form" && apiError ? apiError : null);
   };
 
   return (
     <>
       <style>{`
-
-        .rdv-wrapper {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0;
-          background: #faf9f7;
-        }
-
-        .rdv-map-container {
-          width: 100%;
-          height: 420px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .rdv-map-container iframe {
-          width: 100%;
-          height: 100%;
-          border: none;
-          display: block;
-        }
-
-        .rdv-btn-bar {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          padding: 28px 0;
-        }
-
-        .rdv-btn {
-          font-size: 15px;
-          font-weight: 500;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          background: #f97316;
-          color: #fff;
-          border: none;
-          padding: 16px 48px;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-          transition: background 0.3s, transform 0.15s;
-          clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-        }
-
-        .rdv-btn:hover {
-          background: #b8683d;
-          transform: scale(1.03);
-        }
-
-        /* OVERLAY */
-        .rdv-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(10,10,10,0.65);
-          backdrop-filter: blur(4px);
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: fadeIn 0.25s ease;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        /* MODAL */
-        .rdv-modal {
-          background: #fff;
-          width: 880px;
-          max-width: 97vw;
-          max-height: 92vh;
-          display: flex;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.28);
-          animation: slideUp 0.3s cubic-bezier(0.16,1,0.3,1);
-        }
-
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* LEFT PANEL */
-        .rdv-left {
-          width: 260px;
-          min-width: 220px;
-          background: white;
-          color: #000;
-          border-right:1px solid #cecece;
-          padding: 40px 28px 32px;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .rdv-left::before {
-          content: '';
-          position: absolute;
-          top: -60px; right: -60px;
-          width: 200px; height: 200px;
-          background: radial-gradient(circle, #f9731622 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        .rdv-left-logo {
-          font-size: 22px;
-          font-weight: 700;
-          color: #f97316;
-          line-height: 1.2;
-        }
-
-        .rdv-left-divider {
-          width: 40px;
-          height: 2px;
-          background: #f97316;
-          border-radius: 2px;
-        }
-
-        .rdv-left-title {
-          font-size: 17px;
-          font-weight: 600;
-          color: #000;
-          line-height: 1.4;
-        }
-
-        .rdv-left-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #f9731622;
-          border: 1px solid #f9731655;
-          color: #f97316;
-          font-size: 12px;
-          padding: 5px 12px;
-          border-radius: 20px;
-          width: fit-content;
-        }
-
-        .rdv-left-desc {
-          font-size: 13px;
-          color: #aaa;
-          line-height: 1.7;
-        }
-
-        .rdv-left-addr {
-          font-size: 12px;
-          color: #777;
-          margin-top: auto;
-          line-height: 1.6;
-          display: flex;
-          align-items: flex-start;
-          gap: 6px;
-        }
-
+        /* ... (mêmes styles que votre composant original) ... */
+        .rdv-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0; background: #faf9f7; }
+        .rdv-map-container { width: 100%; height: 420px; position: relative; overflow: hidden; }
+        .rdv-map-container iframe { width: 100%; height: 100%; border: none; display: block; }
+        .rdv-btn-bar { width: 100%; display: flex; justify-content: center; padding: 28px 0; }
+        .rdv-btn { font-size: 15px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; background: #f97316; color: #fff; border: none; padding: 16px 48px; cursor: pointer; position: relative; overflow: hidden; transition: background 0.3s, transform 0.15s; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); }
+        .rdv-btn:hover { background: #b8683d; transform: scale(1.03); }
+        .rdv-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.65); backdrop-filter: blur(4px); z-index: 9999; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .rdv-modal { background: #fff; width: 880px; max-width: 97vw; max-height: 92vh; display: flex; border-radius: 8px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.28); animation: slideUp 0.3s cubic-bezier(0.16,1,0.3,1); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .rdv-left { width: 260px; min-width: 220px; background: white; color: #000; border-right:1px solid #cecece; padding: 40px 28px 32px; display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden; }
+        .rdv-left::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, #f9731622 0%, transparent 70%); pointer-events: none; }
+        .rdv-left-logo { font-size: 22px; font-weight: 700; color: #f97316; line-height: 1.2; }
+        .rdv-left-divider { width: 40px; height: 2px; background: #f97316; border-radius: 2px; }
+        .rdv-left-title { font-size: 17px; font-weight: 600; color: #000; line-height: 1.4; }
+        .rdv-left-tag { display: inline-flex; align-items: center; gap: 6px; background: #f9731622; border: 1px solid #f9731655; color: #f97316; font-size: 12px; padding: 5px 12px; border-radius: 20px; width: fit-content; }
+        .rdv-left-desc { font-size: 13px; color: #aaa; line-height: 1.7; }
+        .rdv-left-addr { font-size: 12px; color: #777; margin-top: auto; line-height: 1.6; display: flex; align-items: flex-start; gap: 6px; }
         .rdv-left-addr svg { flex-shrink: 0; margin-top: 2px; }
-
-        .rdv-selected-info {
-          background: #f9731618;
-          border-left: 3px solid #f97316;
-          padding: 10px 12px;
-          border-radius: 2px;
-          font-size: 13px;
-          color: #ddd;
-          line-height: 1.6;
-        }
-
-        /* RIGHT PANEL */
-        .rdv-right {
-          flex: 1;
-          padding: 36px 32px 28px;
-          display: flex;
-          flex-direction: column;
-          overflow-y: auto;
-          min-width: 0;
-        }
-
-        .rdv-close {
-          position: absolute;
-          top: 16px; right: 20px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          color: #888;
-          font-size: 22px;
-          line-height: 1;
-          z-index: 10;
-          transition: color 0.2s;
-        }
+        .rdv-selected-info { background: #f9731618; border-left: 3px solid #f97316; padding: 10px 12px; border-radius: 2px; font-size: 13px; color: #333; line-height: 1.6; }
+        .rdv-right { flex: 1; padding: 36px 32px 28px; display: flex; flex-direction: column; overflow-y: auto; min-width: 0; }
+        .rdv-close { position: absolute; top: 16px; right: 20px; background: none; border: none; cursor: pointer; color: #888; font-size: 22px; line-height: 1; z-index: 10; transition: color 0.2s; }
         .rdv-close:hover { color: #222; }
-
-        /* CALENDAR */
-        .rdv-cal-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 24px;
-        }
-
-        .rdv-cal-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #1a1a1a;
-        }
-
-        .rdv-cal-nav {
-          background: none;
-          border: 1px solid #e0e0e0;
-          width: 32px; height: 32px;
-          border-radius: 50%;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #555;
-          transition: border-color 0.2s, color 0.2s;
-        }
+        .rdv-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .rdv-cal-title { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+        .rdv-cal-nav { background: none; border: 1px solid #e0e0e0; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; transition: border-color 0.2s, color 0.2s; }
         .rdv-cal-nav:hover { border-color: #f97316; color: #f97316; }
-
-        .rdv-cal-grid {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 4px;
-        }
-
-        .rdv-cal-day-header {
-          text-align: center;
-          font-size: 11px;
-          font-weight: 500;
-          color: #aaa;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          padding: 6px 0;
-        }
-
-        .rdv-cal-day {
-          aspect-ratio: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          border-radius: 50%;
-          cursor: pointer;
-          color: #333;
-          transition: background 0.15s, color 0.15s;
-          border: none;
-          background: none;
-        }
-
-        .rdv-cal-day:hover:not(.disabled):not(.empty) {
-          background: #f5edd8;
-          color: #1a1a1a;
-        }
-
-        .rdv-cal-day.today {
-          font-weight: 700;
-          color: #f97316;
-        }
-
-        .rdv-cal-day.selected {
-          background: #f97316;
-          color: #fff;
-          font-weight: 600;
-        }
-
-        .rdv-cal-day.disabled {
-          color: #ddd;
-          cursor: not-allowed;
-        }
-
-        .rdv-cal-day.empty {
-          pointer-events: none;
-        }
-
-        /* HOURS */
-        .rdv-hours-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #1a1a1a;
-          margin-bottom: 8px;
-        }
-
-        .rdv-hours-subtitle {
-          font-size: 13px;
-          color: #888;
-          margin-bottom: 24px;
-        }
-
-        .rdv-hours-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
-          flex: 1;
-          align-content: start;
-        }
-
-        .rdv-hour-btn {
-          border: 1px solid #e8e8e8;
-          background: none;
-          padding: 10px 6px;
-          font-size: 14px;
-          color: #444;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: border-color 0.15s, background 0.15s, color 0.15s;
-        }
-
-        .rdv-hour-btn:hover {
-          border-color: #f97316;
-          color: #f97316;
-        }
-
-        .rdv-hour-btn.selected {
-          background: #f97316;
-          border-color: #f97316;
-          color: #fff;
-          font-weight: 500;
-        }
-
-        /* FORM */
-        .rdv-form-title {
-          font-size: 20px;
-          font-weight: 600;
-          color: #1a1a1a;
-          margin-bottom: 24px;
-        }
-
-        .rdv-field {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-          margin-bottom: 16px;
-        }
-
-        .rdv-label {
-          font-size: 12px;
-          font-weight: 500;
-          color: #555;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-          display: flex;
-          align-items: center;
-          gap: 3px;
-        }
-
+        .rdv-cal-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+        .rdv-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .rdv-cal-day-header { text-align: center; font-size: 11px; font-weight: 500; color: #aaa; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 0; }
+        .rdv-cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; border-radius: 50%; cursor: pointer; color: #333; transition: background 0.15s, color 0.15s; border: none; background: none; }
+        .rdv-cal-day:hover:not(.disabled):not(.empty) { background: #f5edd8; color: #1a1a1a; }
+        .rdv-cal-day.today { font-weight: 700; color: #f97316; }
+        .rdv-cal-day.selected { background: #f97316; color: #fff; font-weight: 600; }
+        .rdv-cal-day.disabled { color: #ddd; cursor: not-allowed; }
+        .rdv-cal-day.empty { pointer-events: none; }
+        .rdv-hours-title { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
+        .rdv-hours-subtitle { font-size: 13px; color: #888; margin-bottom: 24px; }
+        .rdv-hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; flex: 1; align-content: start; }
+        .rdv-hour-btn { border: 1px solid #e8e8e8; background: none; padding: 10px 6px; font-size: 14px; color: #444; border-radius: 4px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+        .rdv-hour-btn:hover { border-color: #f97316; color: #f97316; }
+        .rdv-hour-btn.selected { background: #f97316; border-color: #f97316; color: #fff; font-weight: 500; }
+        .rdv-hour-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #f5f5f5; color: #999; }
+        .rdv-form-title { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 24px; }
+        .rdv-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+        .rdv-label { font-size: 12px; font-weight: 500; color: #555; letter-spacing: 0.04em; text-transform: uppercase; display: flex; align-items: center; gap: 3px; }
         .rdv-label span { color: #f97316; }
-
-        .rdv-input {
-          border: 1px solid #e0e0e0;
-          padding: 11px 14px;
-          font-size: 14px;
-          color: #222;
-          border-radius: 3px;
-          outline: none;
-          transition: border-color 0.2s;
-          background: #fafaf9;
-        }
-
+        .rdv-input { border: 1px solid #e0e0e0; padding: 11px 14px; font-size: 14px; color: #222; border-radius: 3px; outline: none; transition: border-color 0.2s; background: #fafaf9; }
         .rdv-input:focus { border-color: #f97316; background: #fff; }
-
-        .rdv-phone-row {
-          display: flex;
-          gap: 0;
-        }
-
-        .rdv-phone-prefix {
-          border: 1px solid #e0e0e0;
-          border-right: none;
-          padding: 11px 12px;
-          font-size: 14px;
-          color: #555;
-          background: #f0ede8;
-          border-radius: 3px 0 0 3px;
-          white-space: nowrap;
-        }
-
-        .rdv-phone-input {
-          flex: 1;
-          border-radius: 0 3px 3px 0;
-        }
-
-        .rdv-textarea {
-          resize: vertical;
-          min-height: 80px;
-        }
-
-        /* BOTTOM BAR */
-        .rdv-bottom {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-top: auto;
-          padding-top: 24px;
-          border-top: 1px solid #f0f0f0;
-          flex-shrink: 0;
-        }
-
-        .rdv-back-btn {
-          background: none;
-          border: none;
-          font-size: 14px;
-          color: #888;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          transition: color 0.2s;
-          padding: 0;
-        }
+        .rdv-input.error { border-color: #ef4444; background: #fef2f2; }
+        .rdv-input.error:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
+        .field-error { font-size: 11px; color: #ef4444; margin-top: 2px; font-weight: 500; }
+        .rdv-phone-row { display: flex; gap: 0; }
+        .rdv-phone-prefix { border: 1px solid #e0e0e0; border-right: none; padding: 11px 12px; font-size: 14px; color: #555; background: #f0ede8; border-radius: 3px 0 0 3px; white-space: nowrap; }
+        .rdv-phone-input { flex: 1; border-radius: 0 3px 3px 0; }
+        .rdv-textarea { resize: vertical; min-height: 80px; }
+        .rdv-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 24px; border-top: 1px solid #f0f0f0; flex-shrink: 0; }
+        .rdv-back-btn { background: none; border: none; font-size: 14px; color: #888; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s; padding: 0; }
         .rdv-back-btn:hover { color: #333; }
-
-        .rdv-next-btn {
-          background: #1a1a1a;
-          color: #fff;
-          border: none;
-          font-size: 14px;
-          font-weight: 500;
-          padding: 13px 36px;
-          cursor: pointer;
-          border-radius: 2px;
-          transition: background 0.2s;
-          letter-spacing: 0.04em;
-        }
+        .rdv-next-btn { background: #1a1a1a; color: #fff; border: none; font-size: 14px; font-weight: 500; padding: 13px 36px; cursor: pointer; border-radius: 2px; transition: background 0.2s; letter-spacing: 0.04em; }
         .rdv-next-btn:hover:not(:disabled) { background: #f97316; }
         .rdv-next-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
-        /* SUCCESS */
-        .rdv-success {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          flex: 1;
-          gap: 16px;
-          text-align: center;
-          padding: 40px 20px;
-        }
-
-        .rdv-success-icon {
-          width: 64px; height: 64px;
-          background: #f97316;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 28px;
-          color: #fff;
-        }
-
-        .rdv-success h3 {
-          font-size: 22px;
-          color: #1a1a1a;
-          margin: 0;
-        }
-
-        .rdv-success p {
-          font-size: 14px;
-          color: #888;
-          margin: 0;
-          line-height: 1.6;
-        }
-
-        @media (max-width: 640px) {
-          .rdv-modal { flex-direction: column; max-height: 96vh; }
-          .rdv-left { width: 100%; min-height: unset; padding: 24px 20px 16px; flex-direction: row; flex-wrap: wrap; gap: 10px; }
-          .rdv-left-addr, .rdv-left-desc { display: none; }
-          .rdv-right { padding: 20px 16px; }
-          .rdv-hours-grid { grid-template-columns: repeat(3, 1fr); }
-        }
+        .rdv-success { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 16px; text-align: center; padding: 40px 20px; }
+        .rdv-success-icon { width: 64px; height: 64px; background: #f97316; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; }
+        .rdv-success h3 { font-size: 22px; color: #1a1a1a; margin: 0; }
+        .rdv-success p { font-size: 14px; color: #888; margin: 0; line-height: 1.6; }
+        .rdv-error-global { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .rdv-error-global svg { flex-shrink: 0; }
+        .rdv-loading { display: inline-flex; align-items: center; gap: 8px; }
+        .rdv-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 640px) { .rdv-modal { flex-direction: column; max-height: 96vh; } .rdv-left { width: 100%; min-height: unset; padding: 24px 20px 16px; flex-direction: row; flex-wrap: wrap; gap: 10px; } .rdv-left-addr, .rdv-left-desc { display: none; } .rdv-right { padding: 20px 16px; } .rdv-hours-grid { grid-template-columns: repeat(3, 1fr); } }
       `}</style>
 
       <div className="rdv-wrapper">
-        {/* MAP */}
         <div className="rdv-map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.1!2d-7.66!3d33.53!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDMxJzQ4LjAiTiA3wrAzOSczNi4wIlc!5e0!3m2!1sfr!2sma!4v1680000000000!5m2!1sfr!2sma&q=Lissasfa,Casablanca"
@@ -584,8 +331,6 @@ export default function RendezVous() {
             title="L'Atome Lissasfa"
           />
         </div>
-
-        {/* BUTTON BAR */}
         <div className="rdv-btn-bar">
           <button className="rdv-btn" onClick={() => setShowModal(true)}>
             Réservez votre visite
@@ -593,11 +338,9 @@ export default function RendezVous() {
         </div>
       </div>
 
-      {/* MODAL */}
       {showModal && (
         <div className="rdv-overlay" onClick={(e) => e.target === e.currentTarget && handleClose()}>
           <div className="rdv-modal">
-            {/* LEFT */}
             <div className="rdv-left">
               <div className="rdv-left-logo">L'Atome</div>
               <div className="rdv-left-divider" />
@@ -609,16 +352,14 @@ export default function RendezVous() {
                 15 min
               </div>
               <div className="rdv-left-desc">
-                Bla bla bla — venez découvrir notre espace unique dédié à la créativité et à l'innovation.
+                Venez découvrir notre espace unique dédié à la créativité et à l'innovation.
               </div>
-
               {selectedDay && (
                 <div className="rdv-selected-info">
                   📅 {selectedDay.day} {MONTH_NAMES_FR[selectedDay.month]} {selectedDay.year}
                   {selectedHour && <><br />🕐 {selectedHour}</>}
                 </div>
               )}
-
               <div className="rdv-left-addr">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
@@ -627,39 +368,41 @@ export default function RendezVous() {
               </div>
             </div>
 
-            {/* RIGHT */}
             <div className="rdv-right" style={{ position: "relative" }}>
-              <button className="rdv-close" onClick={handleClose}>✕</button>
+              <button className="rdv-close" onClick={handleClose} aria-label="Fermer">✕</button>
 
               {submitted ? (
                 <div className="rdv-success">
                   <div className="rdv-success-icon">✓</div>
                   <h3>Rendez-vous confirmé !</h3>
                   <p>
-                    Votre visite est planifiée le {selectedDay?.day} {MONTH_NAMES_FR[selectedDay?.month]} à {selectedHour}.<br />
-                    Un e-mail de confirmation vous sera envoyé.
+                    Votre visite est planifiée le {selectedDay?.day} {MONTH_NAMES_FR[selectedDay?.month]} {selectedDay?.year} à {selectedHour}.<br />
+                    Un e-mail de confirmation vous sera envoyé sous peu.
                   </p>
                   <button className="rdv-next-btn" onClick={handleClose}>Fermer</button>
                 </div>
               ) : (
                 <>
-                  {/* CALENDAR */}
                   {step === "calendar" && (
                     <>
                       <div className="rdv-cal-header">
-                        <button className="rdv-cal-nav" onClick={prevMonth}>
+                        <button className="rdv-cal-nav" onClick={prevMonth} aria-label="Mois précédent">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <polyline points="15 18 9 12 15 6"/>
                           </svg>
                         </button>
                         <div className="rdv-cal-title">{MONTH_NAMES_FR[month]} {year}</div>
-                        <button className="rdv-cal-nav" onClick={nextMonth}>
+                        <button 
+                          className="rdv-cal-nav" 
+                          onClick={nextMonth}
+                          disabled={new Date(year, month + 1, 1) > new Date(new Date().setMonth(new Date().getMonth() + 6))}
+                          aria-label="Mois suivant"
+                        >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <polyline points="9 18 15 12 9 6"/>
                           </svg>
                         </button>
                       </div>
-
                       <div className="rdv-cal-grid">
                         {DAYS.map(d => (
                           <div key={d} className="rdv-cal-day-header">{d}</div>
@@ -677,6 +420,8 @@ export default function RendezVous() {
                               key={day}
                               className={`rdv-cal-day${isToday ? " today" : ""}${isSel ? " selected" : ""}${dis ? " disabled" : ""}`}
                               onClick={() => !dis && handleDayClick(day)}
+                              disabled={dis}
+                              aria-label={`${day} ${MONTH_NAMES_FR[month]} ${year}${dis ? ' (indisponible)' : ''}`}
                             >
                               {day}
                             </button>
@@ -686,58 +431,86 @@ export default function RendezVous() {
                     </>
                   )}
 
-                  {/* HOURS */}
                   {step === "hours" && (
                     <>
                       <div className="rdv-hours-title">Choisissez une heure</div>
                       <div className="rdv-hours-subtitle">
                         {selectedDay?.day} {MONTH_NAMES_FR[selectedDay?.month]} {selectedDay?.year} — Durée : 15 min
                       </div>
-                      <div className="rdv-hours-grid">
-                        {HOURS.map(h => (
-                          <button
-                            key={h}
-                            className={`rdv-hour-btn${selectedHour === h ? " selected" : ""}`}
-                            onClick={() => setSelectedHour(h)}
-                          >
-                            {h}
-                          </button>
-                        ))}
-                      </div>
+                      
+                      {availableHours.length === 0 ? (
+                        <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', padding: '20px' }}>
+                          Aucun créneau disponible pour cette date.
+                        </p>
+                      ) : (
+                        <div className="rdv-hours-grid">
+                          {HOURS.map(h => {
+                            const isAvailable = availableHours.includes(h);
+                            return (
+                              <button
+                                key={h}
+                                className={`rdv-hour-btn${selectedHour === h ? " selected" : ""}`}
+                                onClick={() => isAvailable && handleHourClick(h)}
+                                disabled={!isAvailable}
+                                aria-label={`Créneau ${h}${isAvailable ? '' : ' (indisponible)'}`}
+                              >
+                                {h}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
                     </>
                   )}
 
-                  {/* FORM */}
                   {step === "form" && (
                     <>
+                      {/* Erreur globale API */}
+                      {apiError && (
+                        <div className="rdv-error-global">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                          </svg>
+                          <span>{apiError}</span>
+                        </div>
+                      )}
+
                       <div className="rdv-form-title">Indiquez vos informations</div>
 
                       <div className="rdv-field">
                         <label className="rdv-label">Nom <span>*</span></label>
                         <input
-                          className="rdv-input"
+                          className={`rdv-input${getFieldError('nom') ? ' error' : ''}`}
                           placeholder="Votre nom complet"
                           value={form.nom}
-                          onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
+                          onChange={e => {
+                            setForm(f => ({ ...f, nom: e.target.value }));
+                            if (errors.nom) setErrors(prev => ({ ...prev, nom: null }));
+                          }}
                         />
+                        {errors.nom && <span className="field-error">{errors.nom}</span>}
                       </div>
 
                       <div className="rdv-field">
                         <label className="rdv-label">E-mail <span>*</span></label>
                         <input
-                          className="rdv-input"
+                          className={`rdv-input${getFieldError('email') ? ' error' : ''}`}
                           type="email"
                           placeholder="votre@email.com"
                           value={form.email}
-                          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                          onChange={e => {
+                            setForm(f => ({ ...f, email: e.target.value }));
+                            if (errors.email) setErrors(prev => ({ ...prev, email: null }));
+                          }}
                         />
+                        {errors.email && <span className="field-error">{errors.email}</span>}
                       </div>
 
                       <div className="rdv-field">
                         <label className="rdv-label">Ajouter des invités</label>
                         <input
                           className="rdv-input"
-                          placeholder="email@exemple.com"
+                          placeholder="email@exemple.com (séparés par des virgules)"
                           value={form.invites}
                           onChange={e => setForm(f => ({ ...f, invites: e.target.value }))}
                         />
@@ -748,13 +521,17 @@ export default function RendezVous() {
                         <div className="rdv-phone-row">
                           <span className="rdv-phone-prefix">🇲🇦 +212</span>
                           <input
-                            className="rdv-input rdv-phone-input"
+                            className={`rdv-input rdv-phone-input${getFieldError('telephone') ? ' error' : ''}`}
                             type="tel"
                             placeholder="6 XX XX XX XX"
                             value={form.telephone}
-                            onChange={e => setForm(f => ({ ...f, telephone: e.target.value }))}
+                            onChange={e => {
+                              setForm(f => ({ ...f, telephone: e.target.value }));
+                              if (errors.telephone) setErrors(prev => ({ ...prev, telephone: null }));
+                            }}
                           />
                         </div>
+                        {errors.telephone && <span className="field-error">{errors.telephone}</span>}
                       </div>
 
                       <div className="rdv-field">
@@ -769,7 +546,6 @@ export default function RendezVous() {
                     </>
                   )}
 
-                  {/* BOTTOM */}
                   <div className="rdv-bottom">
                     {step !== "calendar" ? (
                       <button className="rdv-back-btn" onClick={handleBack}>
@@ -787,7 +563,7 @@ export default function RendezVous() {
                     {step === "hours" && (
                       <button
                         className="rdv-next-btn"
-                        disabled={!selectedHour}
+                        disabled={!selectedHour || availableHours.length === 0}
                         onClick={handleNext}
                       >
                         Suivant →
@@ -797,10 +573,17 @@ export default function RendezVous() {
                     {step === "form" && (
                       <button
                         className="rdv-next-btn"
-                        disabled={!form.nom || !form.email || !form.telephone}
+                        disabled={isSubmitting || !form.nom || !form.email || !form.telephone}
                         onClick={handleSubmit}
                       >
-                        Confirmer le RDV
+                        {isSubmitting ? (
+                          <span className="rdv-loading">
+                            <span className="rdv-spinner" />
+                            Réservation...
+                          </span>
+                        ) : (
+                          "Confirmer le RDV"
+                        )}
                       </button>
                     )}
                   </div>

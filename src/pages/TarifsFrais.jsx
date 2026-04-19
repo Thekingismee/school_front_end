@@ -1,21 +1,6 @@
 import React, { useState } from "react";
 import ContactPopup from "../components/Accueil/ContactPopup";
-import {
-    Calendar,
-    TrendingUp,
-    Clock,
-    Users,
-    Shield,
-    FileText,
-    CheckCircle,
-    Bus,
-    Utensils,
-    Home,
-    GraduationCap,
-    Heart,
-    Star,
-    Sparkles
-} from "lucide-react";
+import { FileText, ChevronDown, ChevronUp, Shield } from "lucide-react";
 
 function Tarifs() {
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -25,104 +10,32 @@ function Tarifs() {
         setActiveFaq(activeFaq === index ? null : index);
     };
 
-    // Modalités de paiement
-    const modalitesPaiement = [
-        {
-            titre: "Paiement Annuel",
-            icon: <Calendar size={32} />,
-            details: [
-                "Paiement unique à la rentrée",
-                "Économisez 3% sur le total annuel"
-            ],
-            recommended: false,
-            couleur: "#004494"
-        },
-        {
-            titre: "Paiement Trimestriel",
-            icon: <TrendingUp size={32} />,
-            details: [
-                "3 versements (40% - 30% - 30%)",
-                "Sans frais supplémentaires",
-                "Formule la plus plébiscitée"
-            ],
-            recommended: true,
-            couleur: "#ee721f"
-        },
-        {
-            titre: "Paiement Mensuel",
-            icon: <Clock size={32} />,
-            details: [
-                "10 mensualités de septembre à juin",
-                "Sans frais supplémentaires",
-                "Maximum de flexibilité"
-            ],
-            recommended: false,
-            couleur: "#004494"
-        }
-    ];
-
-    // Réductions familiales
-    const reductions = [
-        {
-            enfants: "Deuxième enfant",
-            reduction: "5%",
-            description: "Réduction sur l'intégralité des frais de scolarité",
-            icon: <Heart size={22} />
-        },
-        {
-            enfants: "Troisième enfant",
-            reduction: "8%",
-            description: "Réduction sur l'intégralité des frais de scolarité",
-            icon: <Heart size={22} />
-        },
-        {
-            enfants: "Quatrième enfant et plus",
-            reduction: "12%",
-            description: "Réduction sur l'intégralité des frais de scolarité",
-            icon: <Heart size={22} />
-        },
-        {
-            enfants: "Inscription anticipée",
-            reduction: "5%",
-            description: "Pour toute inscription avant le 31 mars",
-            icon: <Star size={22} />
-        },
-        {
-            enfants: "Paiement comptant",
-            reduction: "3%",
-            description: "Remise supplémentaire sur le total annuel",
-            icon: <Sparkles size={22} />
-        }
-    ];
-
-    // FAQ Dynamique
     const faqItems = [
         {
-            question:
-                "Les frais de scolarité sont-ils déductibles des impôts ?",
+            question: "Les frais de scolarité sont-ils déductibles des impôts ?",
             reponse:
                 "Oui, sous certaines conditions. Notre équipe vous fournit les attestations nécessaires pour votre déclaration fiscale. Nous vous conseillons de consulter votre expert-comptable pour plus de détails."
         },
         {
             question: "Existe-t-il des aides financières ?",
             reponse:
-                "Absolument ! Nous avons mis en place un fonds de solidarité interne qui étudie chaque situation avec bienveillance et confidentialité. N'hésitez pas à nous contacter pour en discuter."
+                "Absolument. Nous avons mis en place un fonds de solidarité interne qui étudie chaque situation avec bienveillance et confidentialité. N'hésitez pas à nous contacter pour en discuter librement."
         },
         {
             question: "Peut-on modifier la formule en cours d'année ?",
             reponse:
-                "Oui, un passage d'une formule à l'autre est possible en cours d'année, sans aucun frais supplémentaire. Il suffit d'en faire la demande auprès de notre service financier."
+                "Oui, un passage d'une formule à l'autre est possible en cours d'année, sans frais supplémentaires. Il suffit d'en faire la demande auprès de notre service financier."
         },
         {
             question: "Les fournitures sont-elles incluses ?",
             reponse:
-                "Oui, les manuels scolaires et les fournitures de base sont inclus dans les frais de scolarité pour tous les niveaux. Seuls les équipements spécifiques (trotinette, calculatrice scientifique, etc.) sont à la charge des familles."
+                "Les manuels scolaires et fournitures de base sont inclus pour tous les niveaux. Seuls quelques équipements spécifiques (calculatrice scientifique, matériel de sport…) restent à la charge des familles."
         }
     ];
 
     return (
-        <div>
-            {/* Hero Section - Style cohérent avec la page Why */}
+        <div className="tarifs-page">
+            {/* Hero sobre */}
             <header className="hero-section">
                 <div className="hero-overlay"></div>
                 <div className="hero-content">
@@ -132,234 +45,218 @@ function Tarifs() {
                 </div>
             </header>
 
-            {/* Section introduction avec valeurs */}
-            <section className="intro-section">
-                <div className="container">
-                    <div className="intro-grid">
-                        <div className="intro-card">
-                            <div className="intro-icon">🔍</div>
-                            <h3>Transparence totale</h3>
-                            <p>
-                                Pas de frais cachés, pas de surprises. Chaque
-                                euro est justifié et expliqué clairement.
-                            </p>
-                        </div>
-                        <div className="intro-card">
-                            <div className="intro-icon">🤝</div>
-                            <h3>Accompagnement personnalisé</h3>
-                            <p>
-                                Notre équipe est à votre écoute pour trouver la
-                                solution de paiement la plus adaptée.
-                            </p>
-                        </div>
-                        <div className="intro-card">
-                            <div className="intro-icon">⚖️</div>
-                            <h3>Équité & Solidarité</h3>
-                            <p>
-                                Un fonds d'entraide existe pour les familles
-                                traversant des difficultés passagères.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            {/* Modalités de paiement - Version humanisée */}
-            <section className="modalites-section">
-                <div className="container">
-                    <div className="section-header">
-                        <span className="section-badge">
-                            Flexibilité maximale
-                        </span>
-                        <h2>Des modalités de paiement pensées pour vous</h2>
-                        <p>
-                            Choisissez la formule qui s'adapte le mieux à votre
-                            situation familiale
-                        </p>
-                    </div>
-
-                    <div className="modalites-grid">
-                        {modalitesPaiement.map((modalite, index) => (
-                            <div
-                                key={index}
-                                className={`modalite-card ${
-                                    modalite.recommended ? "recommended" : ""
-                                }`}
-                            >
-                                {modalite.recommended && (
-                                    <div className="recommended-badge">
-                                        ⭐ Formule recommandée
-                                    </div>
-                                )}
-                                <div
-                                    className="modalite-icon"
-                                    style={{ color: modalite.couleur }}
-                                >
-                                    {modalite.icon}
-                                </div>
-                                <h3>{modalite.titre}</h3>
-                                <ul>
-                                    {modalite.details.map((detail, i) => (
-                                        <li key={i}>
-                                            <CheckCircle size={18} />
-                                            <span>{detail}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button
-                                    className="btn-choose"
-                                    onClick={() => setIsContactOpen(true)}
-                                >
-                                    Je choisis cette formule
-                                </button>
+            {/* Valeurs courtes */}
+            <section className="valeurs">
+                <div className="wrap">
+                    <div className="valeurs-liste">
+                        <div className="valeur-item">
+                            <span className="valeur-puce">—</span>
+                            <div>
+                                <strong>Transparence totale</strong>
+                                <p>Chaque poste est expliqué, rien n'est caché.</p>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Réductions familiales - Version améliorée avec cartes alignées */}
-            <section className="reductions-section">
-                <div className="container">
-                    <div className="reductions-header">
-                        <span className="section-badge white">
-                            Avantages familiaux
-                        </span>
-                        <h2>Des réductions pour les fratries</h2>
-                        <p>
-                            Nous encourageons les familles nombreuses en offrant
-                            des remises progressives et attractives
-                        </p>
-                    </div>
-
-                    <div className="reductions-grid">
-                        {reductions.map((red, index) => (
-                            <div key={index} className="reduction-card">
-                                <div className="reduction-icon-wrapper">
-                                    <div className="reduction-icon">
-                                        {red.icon}
-                                    </div>
-                                </div>
-                                <div className="reduction-content">
-                                    <h4>{red.enfants}</h4>
-                                    <div className="reduction-percent">
-                                        {red.reduction}
-                                    </div>
-                                    <p>{red.description}</p>
-                                </div>
+                        </div>
+                        <div className="valeur-item">
+                            <span className="valeur-puce">—</span>
+                            <div>
+                                <strong>Écoute et souplesse</strong>
+                                <p>Nous adaptons la formule à votre situation.</p>
                             </div>
-                        ))}
-                    </div>
-
-                    <div className="reductions-note">
-                        <Shield size={20} />
-                        <p>
-                            Ces réductions sont cumulables dans la limite de 15%
-                            du montant total des frais de scolarité.
-                        </p>
+                        </div>
+                        <div className="valeur-item">
+                            <span className="valeur-puce">—</span>
+                            <div>
+                                <strong>Solidarité réelle</strong>
+                                <p>Un fonds d'entraide pour les moments difficiles.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Section Règlement financier */}
-            <section className="reglement-section">
-                <div className="container">
-                    <div className="reglement-card">
-                        <div className="reglement-icon">
-                            <FileText size={32} />
-                        </div>
-                        <div className="reglement-text">
-                            <h3>Règlement financier complet</h3>
-                            <p>
-                                Consultez notre document officiel pour plus de
-                                détails sur les conditions générales, les
-                                garanties et les procédures en cas de
-                                difficultés de paiement.
+            {/* Modalités de paiement */}
+            <section className="modalites">
+                <div className="wrap">
+                    <div className="section-intro">
+                        <h2>Comment régler les frais de scolarité ?</h2>
+                        <p>Trois formules, pensées pour s'adapter à votre budget.</p>
+                    </div>
+
+                    <div className="modalites-grille">
+                        <div className="modalite">
+                            <div className="modalite-top">
+                                <h3>Annuel</h3>
+                                <span className="badge-economie">−3%</span>
+                            </div>
+                            <p className="modalite-desc">
+                                Un seul paiement à la rentrée. Simple et avantageux.
                             </p>
+                            <ul className="modalite-details">
+                                <li>Règlement unique en septembre</li>
+                                <li>Remise de 3 % sur le total annuel</li>
+                            </ul>
+                            <button className="btn-choisir" onClick={() => setIsContactOpen(true)}>
+                                Choisir cette formule
+                            </button>
                         </div>
-                        <button
-                            className="btn-reglement"
-                            onClick={() => setIsContactOpen(true)}
-                        >
-                            <FileText size={18} />
-                            Télécharger le règlement
+
+                        <div className="modalite modalite-phare">
+                            <div className="phare-label">La plus choisie</div>
+                            <div className="modalite-top">
+                                <h3>Trimestriel</h3>
+                            </div>
+                            <p className="modalite-desc">
+                                Trois versements répartis sur l'année. L'équilibre parfait.
+                            </p>
+                            <ul className="modalite-details">
+                                <li>40 % en septembre</li>
+                                <li>30 % en janvier</li>
+                                <li>30 % en avril</li>
+                            </ul>
+                            <button className="btn-choisir btn-phare" onClick={() => setIsContactOpen(true)}>
+                                Choisir cette formule
+                            </button>
+                        </div>
+
+                        <div className="modalite">
+                            <div className="modalite-top">
+                                <h3>Mensuel</h3>
+                            </div>
+                            <p className="modalite-desc">
+                                Dix mensualités de septembre à juin. Le maximum de flexibilité.
+                            </p>
+                            <ul className="modalite-details">
+                                <li>10 prélèvements réguliers</li>
+                                <li>Sans frais supplémentaires</li>
+                            </ul>
+                            <button className="btn-choisir" onClick={() => setIsContactOpen(true)}>
+                                Choisir cette formule
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Réductions */}
+            <section className="reductions">
+                <div className="wrap">
+                    <div className="section-intro">
+                        <h2>Réductions pour les familles</h2>
+                        <p>Plus vos enfants sont inscrits chez nous, plus vous bénéficiez d'avantages.</p>
+                    </div>
+
+                    <div className="reductions-grille">
+                        <div className="reduction-ligne">
+                            <span className="reduction-label">2ème enfant inscrit</span>
+                            <span className="reduction-taux">5 %</span>
+                            <span className="reduction-detail">sur les frais de scolarité</span>
+                        </div>
+                        <div className="reduction-ligne">
+                            <span className="reduction-label">3ème enfant inscrit</span>
+                            <span className="reduction-taux">8 %</span>
+                            <span className="reduction-detail">sur les frais de scolarité</span>
+                        </div>
+                        <div className="reduction-ligne">
+                            <span className="reduction-label">4ème enfant et plus</span>
+                            <span className="reduction-taux">12 %</span>
+                            <span className="reduction-detail">sur les frais de scolarité</span>
+                        </div>
+                        <div className="reduction-ligne reduction-separateur">
+                            <span className="reduction-label">Inscription avant le 31 mars</span>
+                            <span className="reduction-taux">5 %</span>
+                            <span className="reduction-detail">inscription anticipée</span>
+                        </div>
+                        <div className="reduction-ligne">
+                            <span className="reduction-label">Paiement comptant</span>
+                            <span className="reduction-taux">3 %</span>
+                            <span className="reduction-detail">remise supplémentaire</span>
+                        </div>
+                    </div>
+
+                    <p className="reductions-note">
+                        <Shield size={15} />
+                        Les réductions sont cumulables dans la limite de 15 % du total annuel.
+                    </p>
+                </div>
+            </section>
+
+            {/* Règlement financier */}
+            <section className="reglement">
+                <div className="wrap">
+                    <div className="reglement-bloc">
+                        <div className="reglement-texte">
+                            <FileText size={20} className="reglement-icone" />
+                            <div>
+                                <h3>Règlement financier complet</h3>
+                                <p>
+                                    Conditions générales, garanties, procédures en cas de difficultés —
+                                    tout est consigné dans notre document officiel.
+                                </p>
+                            </div>
+                        </div>
+                        <button className="btn-telechargement" onClick={() => setIsContactOpen(true)}>
+                            Télécharger le document
                         </button>
                     </div>
                 </div>
             </section>
 
-            {/* FAQ Dynamique - Version interactive */}
-            <section className="faq-section">
-                <div className="container">
-                    <div className="section-header">
-                        <span className="section-badge">
-                            Questions fréquentes
-                        </span>
-                        <h2>On répond à vos questions</h2>
-                        <p>
-                            Retrouvez les réponses aux interrogations les plus
-                            courantes
-                        </p>
+            {/* FAQ */}
+            <section className="faq">
+                <div className="wrap wrap-etroit">
+                    <div className="section-intro">
+                        <h2>Questions fréquentes</h2>
                     </div>
 
-                    <div className="faq-container">
+                    <div className="faq-liste">
                         {faqItems.map((item, index) => (
                             <div
                                 key={index}
-                                className={`faq-item ${
-                                    activeFaq === index ? "active" : ""
-                                }`}
+                                className={`faq-item ${activeFaq === index ? "ouvert" : ""}`}
                             >
-                                <div
+                                <button
                                     className="faq-question"
                                     onClick={() => toggleFaq(index)}
                                 >
-                                    <span className="faq-icon">
-                                        {activeFaq === index ? "−" : "+"}
-                                    </span>
-                                    <h3>{item.question}</h3>
-                                </div>
-                                <div className="faq-reponse">
-                                    <p>{item.reponse}</p>
-                                </div>
+                                    <span>{item.question}</span>
+                                    {activeFaq === index
+                                        ? <ChevronUp size={18} />
+                                        : <ChevronDown size={18} />
+                                    }
+                                </button>
+                                {activeFaq === index && (
+                                    <div className="faq-reponse">
+                                        <p>{item.reponse}</p>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
 
-                    <div className="faq-contact">
-                        <p>Vous n'avez pas trouvé votre réponse ?</p>
-                        <button
-                            className="btn-contact-faq"
-                            onClick={() => setIsContactOpen(true)}
-                        >
-                            Contactez notre service financier
+                    <div className="faq-bas">
+                        <p>Une question sans réponse ici ?</p>
+                        <button className="btn-contact" onClick={() => setIsContactOpen(true)}>
+                            Écrire à notre équipe financière
                         </button>
                     </div>
                 </div>
             </section>
 
-            {/* CTA Final */}
-            <section className="cta-section">
-                <div className="cta-overlay"></div>
-                <div className="cta-content">
-                    <h2>Prêt à inscrire votre enfant ?</h2>
-                    <p>
-                        Une équipe dédiée vous accompagne dans toutes vos
-                        démarches administratives et financières
-                    </p>
-                    <div className="cta-buttons">
-                        <button
-                            className="btn-primary"
-                            onClick={() => setIsContactOpen(true)}
-                        >
-                            Demander un rendez-vous
-                        </button>
-                        <button
-                            className="btn-secondary"
-                            onClick={() => setIsContactOpen(true)}
-                        >
-                            Télécharger la brochure
-                        </button>
+            {/* CTA final sobre */}
+            <section className="cta-final">
+                <div className="wrap">
+                    <div className="cta-contenu">
+                        <h2>Prêt à inscrire votre enfant ?</h2>
+                        <p>Notre équipe vous accompagne à chaque étape, administrativement et financièrement.</p>
+                        <div className="cta-boutons">
+                            <button className="btn-rdv" onClick={() => setIsContactOpen(true)}>
+                                Demander un rendez-vous
+                            </button>
+                            <button className="btn-brochure" onClick={() => setIsContactOpen(true)}>
+                                Télécharger la brochure
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -370,8 +267,11 @@ function Tarifs() {
             />
 
             <style jsx>{`
-                /* ===== HERO SECTION - STYLE COHÉRENT AVEC PAGE WHY ===== */
-                .hero-section {
+                /* ─── BASE ─── */
+
+
+
+                  .hero-section {
                     position: relative;
                     min-height: 85vh;
                     display: flex;
@@ -464,601 +364,559 @@ function Tarifs() {
                     }
                 }
 
-                /* Intro Section */
-                .intro-section {
-                    padding: 60px 5%;
-                    background: #ffffff;
+                
+                .tarifs-page {
+                    font-family: "Inter", "Helvetica Neue", sans-serif;
+                    color: #1a1a1a;
                 }
 
-                .container {
-                    max-width: 1200px;
+                .wrap {
+                    max-width: 1100px;
                     margin: 0 auto;
+                    padding: 0 24px;
                 }
 
-                .intro-grid {
+                .wrap-etroit {
+                    max-width: 760px;
+                    margin: 0 auto;
+                    padding: 0 24px;
+                }
+
+                /* ─── HERO ─── */
+                .hero {
+                    background: #f9f6f1;
+                    border-bottom: 1px solid #e8e2d9;
+                    padding: 90px 24px 80px;
+                    text-align: center;
+                }
+
+                .hero-eyebrow {
+                    font-size: 0.78rem;
+                    letter-spacing: 0.12em;
+                    text-transform: uppercase;
+                    color: #9e8b78;
+                    margin: 0 0 18px;
+                }
+
+                .hero h1 {
+                    font-size: 3.2rem;
+                    font-weight: 700;
+                    color: #1a1a1a;
+                    margin: 0 0 20px;
+                    letter-spacing: -0.02em;
+                    line-height: 1.1;
+                }
+
+                .hero-sub {
+                    font-size: 1.1rem;
+                    color: #666;
+                    max-width: 520px;
+                    margin: 0 auto;
+                    line-height: 1.65;
+                }
+
+                /* ─── VALEURS ─── */
+                .valeurs {
+                    padding: 60px 0;
+                    background: #fff;
+                    border-bottom: 1px solid #efefef;
+                }
+
+                .valeurs-liste {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    gap: 30px;
+                    gap: 40px;
                 }
 
-                .intro-card {
-                    text-align: center;
-                    padding: 35px 25px;
-                    background: #f8fafc;
-                    border-radius: 20px;
-                    transition: all 0.3s ease;
-                }
-
-                .intro-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-                }
-
-                .intro-icon {
-                    font-size: 2.5rem;
-                    margin-bottom: 20px;
-                }
-
-                .intro-card h3 {
-                    color: #004494;
-                    margin-bottom: 12px;
-                    font-size: 1.2rem;
-                }
-
-                .intro-card p {
-                    color: #64748b;
-                    line-height: 1.6;
-                    font-size: 0.9rem;
-                }
-
-                /* Modalités section */
-                .modalites-section {
-                    padding: 80px 5%;
-                    background: linear-gradient(
-                        135deg,
-                        #f8fafc 0%,
-                        #ffffff 100%
-                    );
-                }
-
-                .section-header {
-                    text-align: center;
-                    margin-bottom: 50px;
-                }
-
-                .section-badge {
-                    display: inline-block;
-                    background: rgba(238, 114, 31, 0.1);
-                    color: #ee721f;
-                    padding: 6px 20px;
-                    border-radius: 40px;
-                    font-size: 0.8rem;
-                    font-weight: 600;
-                    margin-bottom: 16px;
-                }
-
-                .section-header h2 {
-                    font-size: 2.2rem;
-                    color: #004494;
-                    margin-bottom: 16px;
-                    font-family: "Playfair Display", serif;
-                }
-
-                .section-header p {
-                    color: #64748b;
-                    max-width: 600px;
-                    margin: 0 auto;
-                }
-
-                .modalites-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 30px;
-                }
-
-                .modalite-card {
-                    background: white;
-                    padding: 40px 25px;
-                    border-radius: 24px;
-                    text-align: center;
-                    position: relative;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-                    transition: all 0.3s ease;
-                }
-
-                .modalite-card:hover {
-                    transform: translateY(-8px);
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                }
-
-                .modalite-card.recommended {
-                    border: 2px solid #ee721f;
-                    transform: scale(1.02);
-                }
-
-                .recommended-badge {
-                    position: absolute;
-                    top: -12px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: #ee721f;
-                    color: white;
-                    padding: 5px 18px;
-                    border-radius: 30px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    white-space: nowrap;
-                }
-
-                .modalite-icon {
-                    margin-bottom: 25px;
-                }
-
-                .modalite-card h3 {
-                    font-size: 1.4rem;
-                    color: #004494;
-                    margin-bottom: 20px;
-                }
-
-                .modalite-card ul {
-                    list-style: none;
-                    padding: 0;
-                    margin-bottom: 30px;
-                }
-
-                .modalite-card li {
+                .valeur-item {
                     display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 8px 0;
-                    color: #4a5568;
-                    font-size: 0.9rem;
+                    gap: 14px;
+                    align-items: flex-start;
                 }
 
-                .modalite-card li svg {
-                    color: #22c55e;
+                .valeur-puce {
+                    color: #e07020;
+                    font-size: 1.2rem;
+                    font-weight: 300;
+                    margin-top: 2px;
                     flex-shrink: 0;
                 }
 
-                .btn-choose {
-                    background: transparent;
-                    border: 2px solid #ee721f;
-                    color: #ee721f;
-                    padding: 10px 24px;
-                    border-radius: 40px;
-                    cursor: pointer;
+                .valeur-item strong {
+                    display: block;
+                    font-size: 0.95rem;
                     font-weight: 600;
-                    transition: all 0.3s ease;
+                    color: #1a1a1a;
+                    margin-bottom: 5px;
                 }
 
-                .btn-choose:hover {
-                    background: #ee721f;
-                    color: white;
+                .valeur-item p {
+                    font-size: 0.88rem;
+                    color: #777;
+                    line-height: 1.55;
+                    margin: 0;
                 }
 
-                /* Réductions section - Version améliorée */
-                .reductions-section {
-                    padding: 80px 5%;
-                    background: linear-gradient(
-                        135deg,
-                        #004494 0%,
-                        #003377 100%
-                    );
-                    color: white;
+                /* ─── SECTION INTRO ─── */
+                .section-intro {
+                    margin-bottom: 44px;
                 }
 
-                .reductions-header {
-                    text-align: center;
-                    margin-bottom: 50px;
+                .section-intro h2 {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #1a1a1a;
+                    margin: 0 0 10px;
+                    letter-spacing: -0.01em;
                 }
 
-                .reductions-header .section-badge.white {
-                    background: rgba(255, 255, 255, 0.2);
-                    color: #ee721f;
+                .section-intro p {
+                    font-size: 0.95rem;
+                    color: #777;
+                    margin: 0;
                 }
 
-                .reductions-header h2 {
-                    font-size: 2rem;
-                    margin-bottom: 16px;
-                    color: white;
-                    font-family: "Playfair Display", serif;
+                /* ─── MODALITÉS ─── */
+                .modalites {
+                    padding: 72px 0;
+                    background: #fff;
                 }
 
-                .reductions-header p {
-                    color: rgba(255, 255, 255, 0.85);
-                }
-
-                .reductions-grid {
+                .modalites-grille {
                     display: grid;
-                    grid-template-columns: repeat(5, 1fr);
-                    gap: 20px;
-                    margin-bottom: 30px;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 24px;
                 }
 
-                .reduction-card {
-                    background: rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(10px);
-                    border-radius: 16px;
-                    padding: 20px;
-                    text-align: center;
-                    transition: all 0.3s ease;
+                .modalite {
+                    border: 1.5px solid #e8e4df;
+                    border-radius: 14px;
+                    padding: 32px 28px;
+                    position: relative;
+                    background: #fdfcfb;
+                    transition: border-color 0.2s;
                 }
 
-                .reduction-card:hover {
-                    background: rgba(255, 255, 255, 0.18);
-                    transform: translateY(-5px);
+                .modalite:hover {
+                    border-color: #c8c0b8;
                 }
 
-                .reduction-icon-wrapper {
-                    display: flex;
-                    justify-content: center;
-                    margin-bottom: 15px;
+                .modalite-phare {
+                    border-color: #e07020;
+                    background: #fff;
                 }
 
-                .reduction-icon {
-                    width: 55px;
-                    height: 55px;
-                    background: rgba(238, 114, 31, 0.25);
-                    border-radius: 50%;
+                .phare-label {
+                    position: absolute;
+                    top: -12px;
+                    left: 24px;
+                    background: #e07020;
+                    color: #fff;
+                    font-size: 0.72rem;
+                    font-weight: 600;
+                    letter-spacing: 0.06em;
+                    text-transform: uppercase;
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                }
+
+                .modalite-top {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    color: #ee721f;
+                    gap: 10px;
+                    margin-bottom: 10px;
                 }
 
-                .reduction-content h4 {
-                    font-size: 1rem;
-                    margin-bottom: 8px;
-                    color: white;
-                }
-
-                .reduction-percent {
-                    font-size: 1.8rem;
-                    font-weight: 800;
-                    color: #ee721f;
-                    margin-bottom: 8px;
-                }
-
-                .reduction-content p {
-                    font-size: 0.7rem;
-                    opacity: 0.85;
+                .modalite-top h3 {
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #1a1a1a;
                     margin: 0;
+                }
+
+                .badge-economie {
+                    background: #fef3e8;
+                    color: #c85c10;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    padding: 3px 8px;
+                    border-radius: 6px;
+                }
+
+                .modalite-desc {
+                    font-size: 0.88rem;
+                    color: #888;
+                    line-height: 1.55;
+                    margin: 0 0 18px;
+                }
+
+                .modalite-details {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0 0 28px;
+                    border-top: 1px solid #eee;
+                    padding-top: 16px;
+                }
+
+                .modalite-details li {
+                    font-size: 0.85rem;
+                    color: #555;
+                    padding: 5px 0;
+                    padding-left: 14px;
+                    position: relative;
+                }
+
+                .modalite-details li::before {
+                    content: "·";
+                    position: absolute;
+                    left: 0;
+                    color: #e07020;
+                    font-size: 1.2rem;
+                    line-height: 1;
+                    top: 3px;
+                }
+
+                .btn-choisir {
+                    width: 100%;
+                    padding: 11px 0;
+                    border: 1.5px solid #1a1a1a;
+                    background: transparent;
+                    color: #1a1a1a;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .btn-choisir:hover {
+                    background: #1a1a1a;
+                    color: #fff;
+                }
+
+                .btn-phare {
+                    border-color: #e07020;
+                    color: #e07020;
+                }
+
+                .btn-phare:hover {
+                    background: #e07020;
+                    color: #fff;
+                }
+
+                /* ─── RÉDUCTIONS ─── */
+                .reductions {
+                    padding: 72px 0;
+                    background: #f9f6f1;
+                    border-top: 1px solid #efefef;
+                    border-bottom: 1px solid #efefef;
+                }
+
+                .reductions-grille {
+                    border: 1.5px solid #e4ddd6;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    background: #fff;
+                    margin-bottom: 18px;
+                }
+
+                .reduction-ligne {
+                    display: grid;
+                    grid-template-columns: 1fr auto auto;
+                    align-items: center;
+                    gap: 20px;
+                    padding: 18px 28px;
+                    border-bottom: 1px solid #f0ece7;
+                }
+
+                .reduction-ligne:last-child {
+                    border-bottom: none;
+                }
+
+                .reduction-separateur {
+                    border-top: 2px solid #f0ece7;
+                }
+
+                .reduction-label {
+                    font-size: 0.92rem;
+                    color: #333;
+                    font-weight: 500;
+                }
+
+                .reduction-taux {
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    color: #e07020;
+                    min-width: 52px;
+                    text-align: right;
+                }
+
+                .reduction-detail {
+                    font-size: 0.78rem;
+                    color: #aaa;
+                    min-width: 160px;
+                    text-align: right;
                 }
 
                 .reductions-note {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                    padding: 15px;
-                    background: rgba(255, 255, 255, 0.08);
-                    border-radius: 12px;
-                    font-size: 0.85rem;
-                    text-align: center;
+                    gap: 7px;
+                    font-size: 0.8rem;
+                    color: #999;
                 }
 
-                /* Règlement section */
-                .reglement-section {
-                    padding: 60px 5%;
-                    background: #f8fafc;
+                .reductions-note svg {
+                    flex-shrink: 0;
+                    color: #bbb;
                 }
 
-                .reglement-card {
-                    max-width: 900px;
-                    margin: 0 auto;
+                /* ─── RÈGLEMENT ─── */
+                .reglement {
+                    padding: 60px 0;
+                    background: #fff;
+                }
+
+                .reglement-bloc {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    gap: 30px;
-                    background: white;
-                    padding: 30px 40px;
-                    border-radius: 20px;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    gap: 24px;
+                    padding: 28px 32px;
+                    border: 1.5px solid #e8e4df;
+                    border-radius: 12px;
+                    background: #fdfcfb;
                 }
 
-                .reglement-icon {
-                    color: #ee721f;
-                }
-
-                .reglement-text {
-                    flex: 1;
-                }
-
-                .reglement-text h3 {
-                    color: #004494;
-                    margin-bottom: 8px;
-                }
-
-                .reglement-text p {
-                    color: #64748b;
-                    font-size: 0.9rem;
-                }
-
-                .btn-reglement {
+                .reglement-texte {
                     display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    background: transparent;
-                    border: 2px solid #ee721f;
-                    color: #ee721f;
-                    padding: 12px 28px;
-                    border-radius: 40px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
+                    align-items: flex-start;
+                    gap: 14px;
                 }
 
-                .btn-reglement:hover {
-                    background: #ee721f;
-                    color: white;
-                }
-
-                /* FAQ Dynamique */
-                .faq-section {
-                    padding: 80px 5%;
-                    background: #ffffff;
-                }
-
-                .faq-container {
-                    max-width: 900px;
-                    margin: 0 auto 40px;
-                }
-
-                .faq-item {
-                    background: #f8fafc;
-                    border-radius: 16px;
-                    margin-bottom: 16px;
-                    overflow: hidden;
-                    transition: all 0.3s ease;
-                }
-
-                .faq-question {
-                    display: flex;
-                    align-items: center;
-                    gap: 15px;
-                    padding: 20px 25px;
-                    cursor: pointer;
-                    transition: background 0.3s ease;
-                }
-
-                .faq-question:hover {
-                    background: #f1f5f9;
-                }
-
-                .faq-icon {
-                    width: 28px;
-                    height: 28px;
-                    background: #ee721f;
-                    color: white;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.2rem;
-                    font-weight: bold;
+                .reglement-icone {
+                    color: #e07020;
+                    margin-top: 2px;
                     flex-shrink: 0;
                 }
 
-                .faq-question h3 {
+                .reglement-texte h3 {
                     font-size: 1rem;
-                    color: #004494;
+                    font-weight: 700;
+                    color: #1a1a1a;
+                    margin: 0 0 5px;
+                }
+
+                .reglement-texte p {
+                    font-size: 0.85rem;
+                    color: #888;
                     margin: 0;
+                    line-height: 1.55;
+                }
+
+                .btn-telechargement {
+                    flex-shrink: 0;
+                    padding: 11px 24px;
+                    border: 1.5px solid #e07020;
+                    background: transparent;
+                    color: #e07020;
+                    font-size: 0.85rem;
                     font-weight: 600;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    white-space: nowrap;
+                }
+
+                .btn-telechargement:hover {
+                    background: #e07020;
+                    color: #fff;
+                }
+
+                /* ─── FAQ ─── */
+                .faq {
+                    padding: 72px 0;
+                    background: #fff;
+                    border-top: 1px solid #efefef;
+                }
+
+                .faq-liste {
+                    margin-bottom: 40px;
+                }
+
+                .faq-item {
+                    border-bottom: 1px solid #eee;
+                }
+
+                .faq-question {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 16px;
+                    padding: 20px 0;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    text-align: left;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    color: #1a1a1a;
+                    transition: color 0.2s;
+                }
+
+                .faq-question:hover {
+                    color: #e07020;
+                }
+
+                .faq-question svg {
+                    flex-shrink: 0;
+                    color: #bbb;
                 }
 
                 .faq-reponse {
-                    max-height: 0;
-                    padding: 0 25px;
-                    overflow: hidden;
-                    transition: all 0.4s ease;
-                }
-
-                .faq-item.active .faq-reponse {
-                    max-height: 200px;
-                    padding: 0 25px 20px 65px;
+                    padding-bottom: 20px;
                 }
 
                 .faq-reponse p {
-                    color: #64748b;
-                    line-height: 1.6;
                     font-size: 0.9rem;
+                    color: #666;
+                    line-height: 1.65;
                     margin: 0;
                 }
 
-                .faq-contact {
+                .faq-bas {
+                    padding: 28px;
+                    background: #f9f6f1;
+                    border-radius: 10px;
                     text-align: center;
-                    margin-top: 40px;
-                    padding: 30px;
-                    background: #f8fafc;
-                    border-radius: 20px;
                 }
 
-                .faq-contact p {
-                    margin-bottom: 15px;
-                    color: #004494;
-                    font-weight: 500;
+                .faq-bas p {
+                    font-size: 0.9rem;
+                    color: #888;
+                    margin: 0 0 12px;
                 }
 
-                .btn-contact-faq {
-                    background: #ee721f;
-                    color: white;
-                    border: none;
-                    padding: 12px 32px;
-                    border-radius: 40px;
-                    cursor: pointer;
+                .btn-contact {
+                    background: transparent;
+                    border: 1.5px solid #1a1a1a;
+                    color: #1a1a1a;
+                    padding: 10px 24px;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
                     font-weight: 600;
-                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    transition: all 0.2s;
                 }
 
-                .btn-contact-faq:hover {
-                    background: #004494;
-                    transform: translateY(-2px);
+                .btn-contact:hover {
+                    background: #1a1a1a;
+                    color: #fff;
                 }
 
-                /* CTA Section */
-                .cta-section {
-                    position: relative;
-                    padding: 80px 20px;
-                    text-align: center;
-                    background-image: url("/cta-bg.jpg");
-                    background-size: cover;
-                    background-position: center;
-                    background-attachment: fixed;
+                /* ─── CTA FINAL ─── */
+                .cta-final {
+                    padding: 80px 0;
+                    background: #1a1a1a;
                 }
 
-                .cta-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 68, 148, 0.92);
+                .cta-contenu {
+                    max-width: 600px;
                 }
 
-                .cta-content {
-                    position: relative;
-                    z-index: 2;
-                    max-width: 700px;
-                    margin: 0 auto;
-                }
-
-                .cta-content h2 {
-                    color: white;
+                .cta-contenu h2 {
                     font-size: 2rem;
-                    margin-bottom: 15px;
-                    font-family: "Playfair Display", serif;
+                    font-weight: 700;
+                    color: #fff;
+                    margin: 0 0 12px;
+                    letter-spacing: -0.01em;
                 }
 
-                .cta-content p {
-                    color: rgba(255, 255, 255, 0.9);
-                    margin-bottom: 30px;
+                .cta-contenu p {
+                    font-size: 0.95rem;
+                    color: #aaa;
+                    margin: 0 0 32px;
+                    line-height: 1.6;
                 }
 
-                .cta-buttons {
+                .cta-boutons {
                     display: flex;
-                    gap: 20px;
-                    justify-content: center;
+                    gap: 14px;
                     flex-wrap: wrap;
                 }
 
-                .btn-primary {
-                    background: #ee721f;
-                    color: white;
+                .btn-rdv {
+                    padding: 13px 28px;
+                    background: #e07020;
+                    color: #fff;
                     border: none;
-                    padding: 14px 32px;
-                    border-radius: 40px;
-                    cursor: pointer;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
                     font-weight: 600;
-                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    transition: all 0.2s;
                 }
 
-                .btn-primary:hover {
-                    background: white;
-                    color: #004494;
-                    transform: translateY(-2px);
+                .btn-rdv:hover {
+                    background: #c85c10;
                 }
 
-                .btn-secondary {
+                .btn-brochure {
+                    padding: 13px 28px;
                     background: transparent;
-                    border: 2px solid white;
-                    color: white;
-                    padding: 12px 30px;
-                    border-radius: 40px;
-                    cursor: pointer;
+                    color: #fff;
+                    border: 1.5px solid rgba(255, 255, 255, 0.3);
+                    border-radius: 8px;
+                    font-size: 0.9rem;
                     font-weight: 600;
-                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    transition: all 0.2s;
                 }
 
-                .btn-secondary:hover {
-                    background: white;
-                    color: #004494;
+                .btn-brochure:hover {
+                    border-color: rgba(255, 255, 255, 0.7);
                 }
 
-                /* Responsive */
-                @media (max-width: 1024px) {
-                    .hero-title-accent {
-                        font-size: 3.5rem;
-                    }
-
-                    .intro-grid {
-                        grid-template-columns: repeat(3, 1fr);
-                    }
-
-                    .modalites-grid {
-                        grid-template-columns: repeat(3, 1fr);
-                    }
-
-                    .reductions-grid {
-                        grid-template-columns: repeat(3, 1fr);
-                    }
-                }
-
+                /* ─── RESPONSIVE ─── */
                 @media (max-width: 768px) {
-                    .hero-section {
-                        min-height: 70vh;
+                    .hero h1 {
+                        font-size: 2.2rem;
                     }
 
-                    .hero-title-accent {
-                        font-size: 2.5rem;
+                    .valeurs-liste {
+                        grid-template-columns: 1fr;
+                        gap: 24px;
                     }
 
-                    .hero-title-accent::before {
-                        width: 60px;
-                    }
-
-                    .intro-grid {
+                    .modalites-grille {
                         grid-template-columns: 1fr;
                     }
 
-                    .modalites-grid {
-                        grid-template-columns: 1fr;
+                    .reduction-ligne {
+                        grid-template-columns: 1fr auto;
+                        grid-template-rows: auto auto;
                     }
 
-                    .reductions-grid {
-                        grid-template-columns: 1fr;
+                    .reduction-detail {
+                        grid-column: 1;
+                        text-align: left;
+                        color: #bbb;
                     }
 
-                    .reglement-card {
+                    .reglement-bloc {
                         flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .cta-boutons {
+                        flex-direction: column;
+                    }
+
+                    .btn-rdv,
+                    .btn-brochure {
+                        width: 100%;
                         text-align: center;
-                    }
-
-                    .section-header h2 {
-                        font-size: 1.5rem;
-                    }
-
-                    .cta-buttons {
-                        flex-direction: column;
-                        align-items: center;
-                    }
-
-                    .btn-primary,
-                    .btn-secondary {
-                        width: 80%;
-                    }
-
-                    .faq-question {
-                        padding: 15px 20px;
-                    }
-
-                    .faq-item.active .faq-reponse {
-                        padding: 0 20px 15px 55px;
-                    }
-
-                    .faq-icon {
-                        width: 24px;
-                        height: 24px;
-                        font-size: 1rem;
-                    }
-                }
-
-                @media (max-width: 576px) {
-                    .hero-section {
-                        min-height: 60vh;
-                    }
-
-                    .hero-title-accent {
-                        font-size: 2rem;
                     }
                 }
             `}</style>

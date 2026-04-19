@@ -11,35 +11,69 @@ const ContactPopup = ({ isOpen, onClose }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear errors when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
+    if (apiError) setApiError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrors({});
+    setApiError(null);
     
-    // Simulation d'envoi
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSent(true);
-    
-    setTimeout(() => {
-      setIsSent(false);
-      setFormData({
-        nom: '',
-        email: '',
-        telephone: '',
-        sujet: '',
-        message: ''
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/contact-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Source': 'popup', // Optionnel : tracker la source
+        },
+        body: JSON.stringify(formData),
       });
-      onClose();
-    }, 2000);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Gestion des erreurs de validation Laravel (422)
+        if (response.status === 422 && data.errors) {
+          const formattedErrors = {};
+          Object.entries(data.errors).forEach(([key, messages]) => {
+            formattedErrors[key] = messages[0];
+          });
+          setErrors(formattedErrors);
+          throw new Error('Veuillez corriger les erreurs du formulaire');
+        }
+        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
+      }
+
+      // ✅ Succès
+      setIsSent(true);
+      setFormData({ nom: '', email: '', telephone: '', sujet: '', message: '' });
+      
+      setTimeout(() => {
+        setIsSent(false);
+        onClose();
+      }, 2000);
+
+    } catch (error) {
+      console.error('Erreur d\'envoi:', error);
+      if (error.message !== 'Veuillez corriger les erreurs du formulaire') {
+        setApiError(error.message || 'Erreur de connexion au serveur');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -48,7 +82,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
     <div className="contactpopup-overlay" onClick={onClose}>
       <div className="contactpopup-modal" onClick={(e) => e.stopPropagation()}>
         {/* Bouton fermer */}
-        <button className="contactpopup-close" onClick={onClose}>
+        <button className="contactpopup-close" onClick={onClose} aria-label="Fermer">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
@@ -72,7 +106,19 @@ const ContactPopup = ({ isOpen, onClose }) => {
             <p>Message envoyé avec succès !</p>
           </div>
         ) : (
-          <form className="contactpopup-form" onSubmit={handleSubmit}>
+          <form className="contactpopup-form" onSubmit={handleSubmit} noValidate>
+            {/* Erreur API globale */}
+            {apiError && (
+              <div className="contactpopup-error-global">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>{apiError}</span>
+              </div>
+            )}
+
             <div className="contactpopup-row">
               <div className="contactpopup-field">
                 <label htmlFor="nom">Nom complet *</label>
@@ -84,7 +130,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   required
                   placeholder="Votre nom"
+                  className={errors.nom ? 'input-error' : ''}
                 />
+                {errors.nom && <span className="field-error">{errors.nom}</span>}
               </div>
               
               <div className="contactpopup-field">
@@ -97,7 +145,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   required
                   placeholder="votre@email.com"
+                  className={errors.email ? 'input-error' : ''}
                 />
+                {errors.email && <span className="field-error">{errors.email}</span>}
               </div>
             </div>
 
@@ -111,7 +161,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   value={formData.telephone}
                   onChange={handleChange}
                   placeholder="+212 6 00 00 00 00"
+                  className={errors.telephone ? 'input-error' : ''}
                 />
+                {errors.telephone && <span className="field-error">{errors.telephone}</span>}
               </div>
               
               <div className="contactpopup-field">
@@ -122,6 +174,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   value={formData.sujet}
                   onChange={handleChange}
                   required
+                  className={errors.sujet ? 'input-error' : ''}
                 >
                   <option value="">Choisir un sujet</option>
                   <option value="admission">Admission</option>
@@ -129,6 +182,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                   <option value="visite">Visite guidée</option>
                   <option value="autre">Autre</option>
                 </select>
+                {errors.sujet && <span className="field-error">{errors.sujet}</span>}
               </div>
             </div>
 
@@ -142,7 +196,9 @@ const ContactPopup = ({ isOpen, onClose }) => {
                 required
                 rows="5"
                 placeholder="Votre message..."
+                className={errors.message ? 'input-error' : ''}
               />
+              {errors.message && <span className="field-error">{errors.message}</span>}
             </div>
 
             <button 
@@ -215,7 +271,6 @@ const ContactPopup = ({ isOpen, onClose }) => {
           }
         }
 
-        /* Bouton fermer */
         .contactpopup-close {
           position: absolute;
           top: 20px;
@@ -238,7 +293,6 @@ const ContactPopup = ({ isOpen, onClose }) => {
           color: #0f172a;
         }
 
-        /* En-tête */
         .contactpopup-header {
           text-align: center;
           margin-bottom: 32px;
@@ -259,11 +313,23 @@ const ContactPopup = ({ isOpen, onClose }) => {
           line-height: 1.5;
         }
 
-        /* Formulaire */
         .contactpopup-form {
           display: flex;
           flex-direction: column;
           gap: 20px;
+        }
+
+        .contactpopup-error-global {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: #fef2f2;
+          border: 1px solid #fecaca;
+          color: #dc2626;
+          padding: 12px 16px;
+          border-radius: 8px;
+          font-family: 'Arial', sans-serif;
+          font-size: 0.9rem;
         }
 
         .contactpopup-row {
@@ -305,12 +371,31 @@ const ContactPopup = ({ isOpen, onClose }) => {
           border-color: #f97316;
         }
 
+        .contactpopup-field input.input-error,
+        .contactpopup-field select.input-error,
+        .contactpopup-field textarea.input-error {
+          border-color: #ef4444;
+          background: #fef2f2;
+        }
+
+        .contactpopup-field input.input-error:focus,
+        .contactpopup-field select.input-error:focus,
+        .contactpopup-field textarea.input-error:focus {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .field-error {
+          font-family: 'Arial', sans-serif;
+          font-size: 0.75rem;
+          color: #ef4444;
+        }
+
         .contactpopup-field textarea {
           resize: vertical;
           min-height: 120px;
         }
 
-        /* Bouton submit */
         .contactpopup-submit {
           display: flex;
           align-items: center;
@@ -339,7 +424,6 @@ const ContactPopup = ({ isOpen, onClose }) => {
           cursor: not-allowed;
         }
 
-        /* Spinner */
         .contactpopup-spinner {
           width: 20px;
           height: 20px;
@@ -353,7 +437,6 @@ const ContactPopup = ({ isOpen, onClose }) => {
           to { transform: rotate(360deg); }
         }
 
-        /* Success message */
         .contactpopup-success {
           display: flex;
           flex-direction: column;
@@ -372,7 +455,6 @@ const ContactPopup = ({ isOpen, onClose }) => {
           margin: 0;
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
           .contactpopup-modal {
             padding: 30px 20px;
