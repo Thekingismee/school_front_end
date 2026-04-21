@@ -403,50 +403,100 @@
 
 // export default HomeActualites;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const HomeActualites = () => {
-    const actualites = [
+    const [actualites, setActualites] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchActualites = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                const response = await fetch(`${API_URL}/actualites/recent`, {
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Formatage supplémentaire si nécessaire
+                    const formatted = result.data.map(actu => ({
+                        ...actu,
+                        // Assurer que fallbackImage a une valeur par défaut
+                        fallbackImage: actu.fallbackImage || 
+                            'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
+                        // Tronquer la description pour l'affichage grille
+                        excerpt: tronquerTexte(actu.description, 140),
+                    }));
+                    setActualites(formatted);
+                } else {
+                    throw new Error(result.message || 'Aucune donnée reçue');
+                }
+                
+            } catch (err) {
+                console.error('Erreur fetch actualités:', err);
+                setError(err.message);
+                // Fallback : données statiques en cas d'erreur API
+                setActualites(getFallbackActualites());
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchActualites();
+    }, []);
+
+    // 🔄 Données de secours en cas d'erreur API
+    const getFallbackActualites = () => [
         {
             id: 1,
             image: "/actu1.jpg",
-            fallbackImage:
-                "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80",
+            fallbackImage: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80",
             date: "15 Mars 2024",
             categorie: "Sport",
             titre: "Concours Sportifs Interclasses 2026",
-            description:
-                " Participez aux grands concours sportifs organisés par notre école. Venez encourager nos équipes, partager des moments de dépassement de soi et célébrer l’esprit d’équipe. Au programme : épreuves athlétiques, jeux collectifs et remise des prix en présence de tous les participants."
+            description: "Participez aux grands concours sportifs organisés par notre école. Venez encourager nos équipes, partager des moments de dépassement de soi et célébrer l'esprit d'équipe.",
+            slug: "concours-sportifs-2026"
         },
         {
             id: 2,
             image: "/marchv.jpg",
-            fallbackImage:
-                "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+            fallbackImage: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
             date: "10 Mars 2024",
             categorie: "Commémoration",
-            titre:
-                "Célébration de la Marche Verte : l’engagement de nos élèves",
-            description:
-                "À l’occasion de l’anniversaire de la Marche Verte, nos élèves ont organisé une journée de commémoration mêlant activités citoyennes et expressions artistiques. Au programme : expositions sur l’histoire nationale, chants patriotiques et témoignages autour des valeurs d’unité et de fidélité. Une belle occasion de transmettre la mémoire collective aux jeunes générations."
+            titre: "Célébration de la Marche Verte",
+            description: "À l'occasion de l'anniversaire de la Marche Verte, nos élèves ont organisé une journée de commémoration mêlant activités citoyennes et expressions artistiques.",
+            slug: "marche-verte-commemoration"
         },
         {
             id: 3,
             image: "/actu3.jpg",
-            fallbackImage:
-                "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80",
+            fallbackImage: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80",
             date: "05 Septembre 2026",
             categorie: "Vie Scolaire",
             titre: "Rentrée 2026: une nouvelle année commence !",
-            description:
-                "Sourires, cartables neufs et retrouvailles chaleureuses ont marqué le coup d'envoi de cette rentrée 2026 au Groupe Scolaire L'Atome. Élèves, familles et équipe éducative se sont retrouvés dans une ambiance festive et bienveillante pour accueillir cette nouvelle année scolaire. Un moment de joie et d'enthousiasme qui donne le ton d'une année placée sous le signe de la réussite et du partage."
+            description: "Sourires, cartables neufs et retrouvailles chaleureuses ont marqué le coup d'envoi de cette rentrée 2026 au Groupe Scolaire L'Atome.",
+            slug: "rentree-2026"
         }
     ];
 
     // Fonction pour tronquer le texte
     const tronquerTexte = (texte, maxLength = 120) => {
+        if (!texte) return '';
         if (texte.length <= maxLength) return texte;
-        return texte.substring(0, maxLength).trim() + "...";
+        return texte.substring(0, maxLength).trim() + '...';
     };
 
     return (
@@ -458,138 +508,125 @@ const HomeActualites = () => {
                     <h2 className="home-actu-main-title">Nos Actualités</h2>
                     <div className="home-actu-title-bar" />
                     <p className="home-actu-intro">
-                        Découvrez les dernières nouvelles de notre école et
-                        suivez la vie de notre communauté éducative.
+                        Découvrez les dernières nouvelles de notre école et suivez la vie de notre communauté éducative.
                     </p>
                 </div>
 
-                {/* Grille des actualités */}
-                <div className="home-actu-grid">
-                    {actualites.map((actu, index) => (
-                        <article key={actu.id} className="home-actu-card">
-                            {/* Conteneur image */}
-                            <div className="home-actu-image-wrapper">
-                                <div className="home-actu-image-box">
-                                    <img
-                                        src={actu.image}
-                                        alt={actu.titre}
-                                        className="home-actu-img"
-                                        onError={e => {
-                                            e.target.src = actu.fallbackImage;
-                                        }}
-                                    />
-                                    <div className="home-actu-image-overlay" />
-                                </div>
+                {/* États de chargement / erreur */}
+                {loading ? (
+                    <div className="home-actu-loading">
+                        <div className="home-actu-spinner" />
+                        <p>Chargement des actualités...</p>
+                    </div>
+                ) : error ? (
+                    <div className="home-actu-error">
+                        <svg className="home-actu-error-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <p>Impossible de charger les actualités</p>
+                        <button onClick={() => window.location.reload()} className="home-actu-retry-btn">
+                            Réessayer
+                        </button>
+                    </div>
+                ) : actualites.length === 0 ? (
+                    <div className="home-actu-empty">
+                        <p>Aucune actualité pour le moment</p>
+                    </div>
+                ) : (
+                    /* Grille des actualités */
+                    <div className="home-actu-grid">
+                        {actualites.map((actu) => (
+                            <article
+                                key={actu.id}
+                                className="home-actu-card"
+                            >
+                                {/* Conteneur image */}
+                                <div className="home-actu-image-wrapper">
+                                    <div className="home-actu-image-box">
+                                        <img
+                                            src={actu.image?.startsWith('http') ? actu.image : (actu.image ? `http://127.0.0.1:8000/storage/${actu.image}` : '')}
+                                            alt={actu.titre}
+                                            className="home-actu-img"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = actu.fallbackImage;
+                                            }}
+                                        />
+                                        <div className="home-actu-image-overlay" />
+                                    </div>
 
-                                {/* Badge catégorie */}
-                                <span className="home-actu-categorie">
-                                    {actu.categorie}
-                                </span>
-                            </div>
-
-                            {/* Contenu textuel */}
-                            <div className="home-actu-content">
-                                {/* Date */}
-                                <div className="home-actu-date-box">
-                                    <svg
-                                        className="home-actu-calendar-icon"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                    >
-                                        <rect
-                                            x="3"
-                                            y="4"
-                                            width="18"
-                                            height="18"
-                                            rx="2"
-                                            ry="2"
-                                        ></rect>
-                                        <line
-                                            x1="16"
-                                            y1="2"
-                                            x2="16"
-                                            y2="6"
-                                        ></line>
-                                        <line
-                                            x1="8"
-                                            y1="2"
-                                            x2="8"
-                                            y2="6"
-                                        ></line>
-                                        <line
-                                            x1="3"
-                                            y1="10"
-                                            x2="21"
-                                            y2="10"
-                                        ></line>
-                                    </svg>
-                                    <span className="home-actu-date-text">
-                                        {actu.date}
+                                    {/* Badge catégorie */}
+                                    <span className="home-actu-categorie">
+                                        {actu.categorie}
                                     </span>
                                 </div>
-                                <h3 className="home-actu-titre">
+
+                                {/* Contenu textuel */}
+                                <div className="home-actu-content">
+                                    {/* Date */}
+                                    <div className="home-actu-date-box">
+                                        <svg className="home-actu-calendar-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        <span className="home-actu-date-text">{actu.date}</span>
+                                    </div>
+                                    <h3 className="home-actu-titre">
+                                        <a href={`/actualites/${actu.slug || actu.id}`} className="home-actu-titre-link">
+                                            {actu.titre}
+                                        </a>
+                                    </h3>
+
+                                    <p className="home-actu-description">
+                                        {actu.excerpt || tronquerTexte(actu.description, 140)}
+                                    </p>
+
                                     <a
-                                        href={`/actualites/${actu.id}`}
-                                        className="home-actu-titre-link"
+                                        href={`/actualites/${actu.slug || actu.id}`}
+                                        className="home-actu-lire-suite"
                                     >
-                                        {actu.titre}
+                                        <span className="home-actu-lire-text">Lire la suite</span>
+                                        <svg
+                                            className={`home-actu-arrow`}
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                        >
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
                                     </a>
-                                </h3>
-
-                                <p className="home-actu-description">
-                                    {tronquerTexte(actu.description, 140)}
-                                </p>
-
-                                <a
-                                    href={`/actualites/${actu.id}`}
-                                    className="home-actu-lire-suite"
-                                >
-                                    <span className="home-actu-lire-text">
-                                        Lire la suite
-                                    </span>
-                                    <svg
-                                        className={`home-actu-arrow`}
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                    >
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </article>
-                    ))}
-                </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <style jsx>{`
-                .home-actu-section {
+              
+
+               .home-actu-section {
                     padding: 80px 24px;
                     background-color: #f8fafc;
                     position: relative;
-                    font-family: "Georgia", "Times New Roman", serif;
+                    font-family: 'Georgia', 'Times New Roman', serif;
                 }
 
                 .home-actu-section::before {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: 0;
                     left: 0;
                     right: 0;
                     height: 1px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        #e2e8f0,
-                        transparent
-                    );
+                    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
                 }
 
                 .home-actu-container {
@@ -605,7 +642,7 @@ const HomeActualites = () => {
 
                 .home-actu-surtitle {
                     display: inline-block;
-                    font-family: "Arial", sans-serif;
+                    font-family: 'Arial', sans-serif;
                     font-size: 0.8rem;
                     font-weight: 600;
                     letter-spacing: 0.15em;
@@ -631,13 +668,14 @@ const HomeActualites = () => {
                 }
 
                 .home-actu-intro {
-                    font-family: "Arial", sans-serif;
+                    font-family: 'Arial', sans-serif;
                     font-size: 1.05rem;
                     color: #64748b;
                     max-width: 600px;
                     margin: 0 auto;
                     line-height: 1.6;
                 }
+
 
                 /* Grille */
                 .home-actu-grid {

@@ -1,0 +1,1191 @@
+/* ============================================
+   VARIABLES & CONFIG GLOBALE
+   ============================================ */
+:root {
+  /* Couleurs principales */
+  --color-primary: #f97316;
+  --color-primary-hover: #ea580c;
+  --color-primary-light: #fff7ed;
+  --color-primary-text: #c2410c;
+  
+  /* Statuts */
+  --color-nouveau: #3b82f6;
+  --color-nouveau-bg: #dbeafe;
+  --color-nouveau-text: #1e40af;
+  --color-en-cours: #f59e0b;
+  --color-en-cours-bg: #fef3c7;
+  --color-en-cours-text: #92400e;
+  --color-contacte: #a855f7;
+  --color-contacte-bg: #f3e8ff;
+  --color-contacte-text: #6b21a8;
+  --color-entretien: #6366f1;
+  --color-entretien-bg: #e0e7ff;
+  --color-entretien-text: #3730a3;
+  --color-accepte: #22c55e;
+  --color-accepte-bg: #dcfce7;
+  --color-accepte-text: #166534;
+  --color-refuse: #ef4444;
+  --color-refuse-bg: #fee2e2;
+  --color-refuse-text: #991b1b;
+  --color-archive: #6b7280;
+  --color-archive-bg: #f3f4f6;
+  --color-archive-text: #374151;
+  
+  /* Priorités */
+  --color-priorite-faible: #6b7280;
+  --color-priorite-normale: #f97316;
+  --color-priorite-haute: #ef4444;
+  
+  /* Disponibilités */
+  --color-dispo-immediate: #22c55e;
+  --color-dispo-1mois: #3b82f6;
+  --color-dispo-rentree: #a855f7;
+  --color-dispo-autre: #6b7280;
+  
+  /* Fichiers */
+  --color-file-cv: #3b82f6;
+  --color-file-cv-bg: #dbeafe;
+  --color-file-cv-text: #1e40af;
+  --color-file-lettre: #22c55e;
+  --color-file-lettre-bg: #dcfce7;
+  --color-file-lettre-text: #166534;
+  --color-file-diplome: #a855f7;
+  --color-file-diplome-bg: #f3e8ff;
+  --color-file-diplome-text: #6b21a8;
+  
+  /* Grays */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  --color-white: #ffffff;
+  
+  /* Effets */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --transition-fast: 0.2s ease;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.joinus-container {
+  font-family: var(--font-sans);
+  color: var(--color-gray-900);
+  line-height: 1.5;
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   EN-TÊTE
+   ============================================ */
+.joinus-header {
+  margin-bottom: 24px;
+}
+
+.joinus-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.joinus-header p {
+  color: var(--color-gray-600);
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* ============================================
+   STATS BAR
+   ============================================ */
+.joinus-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.joinus-stat-card {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 16px;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.joinus-stat-card.nouveau { border-left: 4px solid var(--color-nouveau); }
+.joinus-stat-card.haute { border-left: 4px solid var(--color-priorite-haute); }
+.joinus-stat-card.accepte { border-left: 4px solid var(--color-accepte); }
+
+.joinus-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.joinus-stat-label {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* ============================================
+   BARRE DE FILTRES
+   ============================================ */
+.joinus-filters {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.joinus-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.joinus-filters-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.joinus-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.joinus-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.joinus-filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.joinus-filter-group select,
+.joinus-filter-group input[type="text"],
+.joinus-filter-group input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  background: var(--color-white);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+
+.joinus-filter-group select:focus,
+.joinus-filter-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Recherche avec icône */
+.joinus-search-wrapper {
+  position: relative;
+  grid-column: 1 / -1;
+}
+
+.joinus-search-wrapper input {
+  padding-left: 36px;
+}
+
+.joinus-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gray-400);
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* Actions filtres */
+.joinus-filters-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-100);
+  flex-wrap: wrap;
+}
+
+/* Contrôles de tri */
+.joinus-sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  flex-wrap: wrap;
+}
+
+.joinus-sort-btn {
+  padding: 6px 10px;
+  background: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.joinus-sort-btn:hover,
+.joinus-sort-btn.active {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.joinus-sort-icon {
+  width: 10px;
+  height: 10px;
+  transition: transform var(--transition-fast);
+}
+
+.joinus-sort-icon.asc { transform: rotate(-90deg); }
+.joinus-sort-icon.desc { transform: rotate(90deg); }
+
+/* Boutons actions */
+.joinus-btn-toggle,
+.joinus-btn-clear,
+.joinus-btn-primary {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.joinus-btn-toggle {
+  background: none;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+}
+
+.joinus-btn-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.joinus-btn-clear {
+  background: var(--color-gray-100);
+  border: none;
+  color: var(--color-gray-700);
+}
+
+.joinus-btn-clear:hover {
+  background: var(--color-gray-200);
+}
+
+.joinus-btn-primary {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+.joinus-btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ============================================
+   GRILLE DE CANDIDATURES
+   ============================================ */
+.joinus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ============================================
+   CARTE CANDIDATURE
+   ============================================ */
+.joinus-card {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  overflow: hidden;
+  position: relative;
+}
+
+.joinus-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.joinus-card.nouveau { border-left: 4px solid var(--color-nouveau); }
+.joinus-card.default { border-left: 4px solid var(--color-gray-200); }
+
+/* Header carte */
+.joinus-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-gray-100);
+  background: linear-gradient(to right, var(--color-gray-50), var(--color-white));
+}
+
+.joinus-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Badge statut */
+.joinus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.joinus-badge.nouveau {
+  background: var(--color-nouveau-bg);
+  color: var(--color-nouveau-text);
+  border-color: var(--color-nouveau);
+}
+.joinus-badge.en_cours {
+  background: var(--color-en-cours-bg);
+  color: var(--color-en-cours-text);
+  border-color: var(--color-en-cours);
+}
+.joinus-badge.contacte {
+  background: var(--color-contacte-bg);
+  color: var(--color-contacte-text);
+  border-color: var(--color-contacte);
+}
+.joinus-badge.entretien {
+  background: var(--color-entretien-bg);
+  color: var(--color-entretien-text);
+  border-color: var(--color-entretien);
+}
+.joinus-badge.accepte {
+  background: var(--color-accepte-bg);
+  color: var(--color-accepte-text);
+  border-color: var(--color-accepte);
+}
+.joinus-badge.refuse {
+  background: var(--color-refuse-bg);
+  color: var(--color-refuse-text);
+  border-color: var(--color-refuse);
+}
+.joinus-badge.archive {
+  background: var(--color-archive-bg);
+  color: var(--color-archive-text);
+  border-color: var(--color-archive);
+}
+
+/* Badge priorité */
+.joinus-badge-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.joinus-badge-priority.faible {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+}
+.joinus-badge-priority.normale {
+  background: #ffedd5;
+  color: #c2410c;
+}
+.joinus-badge-priority.haute {
+  background: var(--color-refuse-bg);
+  color: var(--color-refuse-text);
+}
+
+.joinus-priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.joinus-priority-dot.faible { background: var(--color-priorite-faible); }
+.joinus-priority-dot.normale { background: var(--color-priorite-normale); }
+.joinus-priority-dot.haute { background: var(--color-priorite-haute); }
+
+/* Dropdown menu */
+.joinus-dropdown {
+  position: relative;
+}
+
+.joinus-dropdown-btn {
+  padding: 8px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joinus-dropdown-btn:hover {
+  background: var(--color-gray-100);
+}
+
+.joinus-dropdown-btn svg {
+  color: var(--color-gray-500);
+  width: 18px;
+  height: 18px;
+}
+
+.joinus-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  width: 256px;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-gray-200);
+  padding: 4px 0;
+  z-index: 50;
+  min-width: max-content;
+}
+
+.joinus-dropdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.joinus-dropdown-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.joinus-dropdown-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.joinus-dropdown-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--color-gray-700);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background var(--transition-fast);
+}
+
+.joinus-dropdown-item:hover {
+  background: var(--color-gray-50);
+}
+
+.joinus-dropdown-item:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.joinus-dropdown-item.active {
+  background: var(--color-nouveau-bg);
+  color: var(--color-nouveau-text);
+  font-weight: 500;
+}
+
+.joinus-dropdown-item.danger {
+  color: var(--color-refuse);
+}
+
+.joinus-dropdown-item.danger:hover {
+  background: var(--color-refuse-bg);
+}
+
+.joinus-dropdown-divider {
+  border-top: 1px solid var(--color-gray-100);
+  margin: 4px 0;
+}
+
+.joinus-dropdown-checkmark {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+/* Contenu carte */
+.joinus-card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Section candidat */
+.joinus-card-visitor-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.joinus-card-visitor-name {
+  font-weight: 500;
+  color: var(--color-gray-900);
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.joinus-card-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.joinus-card-contact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-600);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.joinus-card-contact:hover {
+  color: var(--color-primary);
+}
+
+.joinus-card-contact svg {
+  width: 12px;
+  height: 12px;
+}
+
+.joinus-card-location {
+  font-size: 14px;
+  color: var(--color-gray-600);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Grid infos poste/dispo */
+.joinus-card-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.joinus-card-info-box {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.joinus-card-info-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.joinus-card-info-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-900);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.joinus-card-info-value.orange-icon svg {
+  color: var(--color-primary);
+}
+
+.joinus-card-info-value.dispo-immediate { color: var(--color-dispo-immediate); }
+.joinus-card-info-value.dispo-1mois { color: var(--color-dispo-1mois); }
+.joinus-card-info-value.dispo-rentree { color: var(--color-dispo-rentree); }
+.joinus-card-info-value.dispo-autre { color: var(--color-dispo-autre); }
+
+/* Contrats */
+.joinus-card-contrats-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.joinus-card-contrats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.joinus-contrat-tag {
+  padding: 2px 8px;
+  background: #ffedd5;
+  color: #c2410c;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Message */
+.joinus-card-message {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.joinus-card-message-text {
+  font-size: 14px;
+  color: var(--color-gray-700);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.joinus-card-message-text svg {
+  width: 14px;
+  height: 14px;
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Fichiers */
+.joinus-card-files-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.joinus-card-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.joinus-file-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+  min-width: 0;
+}
+
+.joinus-file-link:hover {
+  filter: brightness(0.98);
+}
+
+.joinus-file-link.cv {
+  background: var(--color-file-cv-bg);
+}
+.joinus-file-link.cv:hover {
+  background: var(--color-nouveau-bg);
+}
+
+.joinus-file-link.lettre {
+  background: var(--color-file-lettre-bg);
+}
+.joinus-file-link.lettre:hover {
+  background: var(--color-accepte-bg);
+}
+
+.joinus-file-link.diplome {
+  background: var(--color-file-diplome-bg);
+}
+.joinus-file-link.diplome:hover {
+  background: #f3e8ff;
+}
+
+.joinus-file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.joinus-file-info svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.joinus-file-link.cv .joinus-file-info svg { color: var(--color-file-cv); }
+.joinus-file-link.lettre .joinus-file-info svg { color: var(--color-file-lettre); }
+.joinus-file-link.diplome .joinus-file-info svg { color: var(--color-file-diplome); }
+
+.joinus-file-name {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.joinus-file-link.cv .joinus-file-name { color: var(--color-file-cv-text); }
+.joinus-file-link.lettre .joinus-file-name { color: var(--color-file-lettre-text); }
+.joinus-file-link.diplome .joinus-file-name { color: var(--color-file-diplome-text); }
+
+.joinus-file-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.joinus-file-size {
+  font-size: 12px;
+}
+
+.joinus-file-link.cv .joinus-file-size { color: var(--color-file-cv); }
+.joinus-file-link.lettre .joinus-file-size { color: var(--color-file-lettre); }
+.joinus-file-link.diplome .joinus-file-size { color: var(--color-file-diplome); }
+
+.joinus-file-download {
+  transition: transform var(--transition-fast);
+}
+
+.joinus-file-link.cv .joinus-file-download { color: var(--color-file-cv); }
+.joinus-file-link.lettre .joinus-file-download { color: var(--color-file-lettre); }
+.joinus-file-link.diplome .joinus-file-download { color: var(--color-file-diplome); }
+
+.joinus-file-link:hover .joinus-file-download {
+  transform: scale(1.1);
+}
+
+/* Note recruteur */
+.joinus-card-note {
+  background: var(--color-primary-light);
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.joinus-card-note-text {
+  font-size: 12px;
+  color: var(--color-primary-text);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.joinus-card-note-text svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.joinus-card-note-contact {
+  font-size: 12px;
+  color: var(--color-primary-text);
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* Métadonnées */
+.joinus-card-meta {
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+.joinus-card-meta-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.joinus-card-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--color-gray-100);
+  border-radius: 4px;
+}
+
+.joinus-card-source svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Badge "Nouveau" animé */
+.joinus-card-new-badge {
+  position: absolute;
+  top: 16px;
+  right: 56px;
+}
+
+.joinus-new-dot {
+  position: relative;
+  display: flex;
+  height: 12px;
+  width: 12px;
+}
+
+.joinus-new-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-nouveau);
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+.joinus-new-dot::after {
+  content: '';
+  position: relative;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--color-nouveau);
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.joinus-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.joinus-modal {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 512px;
+  width: 100%;
+  padding: 24px;
+}
+
+.joinus-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.joinus-modal-header svg {
+  color: var(--color-primary);
+  width: 20px;
+  height: 20px;
+}
+
+.joinus-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.joinus-modal-summary {
+  background: var(--color-primary-light);
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.joinus-modal-summary p {
+  font-size: 14px;
+  color: var(--color-primary-text);
+}
+
+.joinus-modal-summary p:first-child {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.joinus-modal-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.joinus-modal-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.joinus-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.joinus-modal-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.joinus-modal-btn-secondary {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-700);
+}
+
+.joinus-modal-btn-secondary:hover {
+  background: var(--color-gray-50);
+}
+
+.joinus-modal-btn-primary {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+}
+
+.joinus-modal-btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ============================================
+   ÉTATS: LOADING, EMPTY, ERROR
+   ============================================ */
+.joinus-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--color-gray-500);
+}
+
+.joinus-state-icon {
+  margin: 0 auto 16px;
+  color: var(--color-gray-300);
+  width: 48px;
+  height: 48px;
+}
+
+.joinus-state-title {
+  font-weight: 500;
+  color: var(--color-gray-700);
+  margin-bottom: 4px;
+}
+
+.joinus-state-text {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.joinus-state-error {
+  color: var(--color-refuse);
+}
+
+.joinus-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-gray-200);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.joinus-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.joinus-pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.joinus-pagination-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.joinus-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.joinus-pagination-info {
+  font-size: 14px;
+  color: var(--color-gray-500);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+  .joinus-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .joinus-container {
+    padding: 16px;
+  }
+  
+  .joinus-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .joinus-filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .joinus-search-wrapper {
+    grid-column: 1;
+  }
+  
+  .joinus-filters-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .joinus-sort-controls {
+    margin-right: 0;
+    justify-content: center;
+  }
+  
+  .joinus-stats {
+    flex-direction: column;
+  }
+  
+  .joinus-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .joinus-card-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .joinus-dropdown-menu {
+    width: 100%;
+    right: 0;
+    left: 0;
+  }
+}

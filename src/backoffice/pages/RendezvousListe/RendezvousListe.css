@@ -1,0 +1,1064 @@
+/* ============================================
+   VARIABLES & CONFIG GLOBALE
+   ============================================ */
+:root {
+  --color-primary: #f97316;
+  --color-primary-hover: #ea580c;
+  --color-primary-light: #fff7ed;
+  --color-success: #22c55e;
+  --color-success-bg: #dcfce7;
+  --color-success-text: #166534;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #92400e;
+  --color-danger: #ef4444;
+  --color-danger-bg: #fee2e2;
+  --color-danger-text: #991b1b;
+  --color-info: #3b82f6;
+  --color-info-bg: #dbeafe;
+  --color-info-text: #1e40af;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  --color-white: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --transition-fast: 0.2s ease;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.rdv-container {
+  font-family: var(--font-sans);
+  color: var(--color-gray-900);
+  line-height: 1.5;
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   EN-TÊTE
+   ============================================ */
+.rdv-header {
+  margin-bottom: 24px;
+}
+
+.rdv-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.rdv-header p {
+  color: var(--color-gray-600);
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* ============================================
+   STATS BAR
+   ============================================ */
+.rdv-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.rdv-stat-card {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 16px;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.rdv-stat-card.pending { border-left: 4px solid var(--color-warning); }
+.rdv-stat-card.today { border-left: 4px solid var(--color-primary); }
+.rdv-stat-card.confirmed { border-left: 4px solid var(--color-success); }
+
+.rdv-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.rdv-stat-label {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* ============================================
+   BARRE DE FILTRES
+   ============================================ */
+.rdv-filters {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.rdv-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.rdv-filters-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rdv-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.rdv-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rdv-filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rdv-filter-group select,
+.rdv-filter-group input[type="text"],
+.rdv-filter-group input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  background: var(--color-white);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+
+.rdv-filter-group select:focus,
+.rdv-filter-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Recherche avec icône */
+.rdv-search-wrapper {
+  position: relative;
+  grid-column: 1 / -1;
+}
+
+.rdv-search-wrapper input {
+  padding-left: 36px;
+}
+
+.rdv-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gray-400);
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* Checkbox filtre */
+.rdv-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  padding-top: 22px;
+}
+
+.rdv-checkbox-label input {
+  width: auto;
+  margin: 0;
+}
+
+/* Actions filtres */
+.rdv-filters-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-100);
+  flex-wrap: wrap;
+}
+
+/* Contrôles de tri */
+.rdv-sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  flex-wrap: wrap;
+}
+
+.rdv-sort-btn {
+  padding: 6px 10px;
+  background: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.rdv-sort-btn:hover,
+.rdv-sort-btn.active {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.rdv-sort-icon {
+  width: 10px;
+  height: 10px;
+  transition: transform var(--transition-fast);
+}
+
+.rdv-sort-icon.asc { transform: rotate(-90deg); }
+.rdv-sort-icon.desc { transform: rotate(90deg); }
+
+/* Boutons actions */
+.rdv-btn-toggle,
+.rdv-btn-clear,
+.rdv-btn-primary {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rdv-btn-toggle {
+  background: none;
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+}
+
+.rdv-btn-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.rdv-btn-clear {
+  background: var(--color-gray-100);
+  border: none;
+  color: var(--color-gray-700);
+}
+
+.rdv-btn-clear:hover {
+  background: var(--color-gray-200);
+}
+
+.rdv-btn-primary {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+.rdv-btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ============================================
+   GRILLE DE RENDEZ-VOUS
+   ============================================ */
+.rdv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ============================================
+   CARTE RENDEZ-VOUS
+   ============================================ */
+.rdv-card {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  overflow: hidden;
+  position: relative;
+}
+
+.rdv-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.rdv-card.pending { border-left: 4px solid var(--color-warning); }
+.rdv-card.today { border-left: 4px solid var(--color-primary); }
+.rdv-card.default { border-left: 4px solid var(--color-gray-200); }
+
+/* Header carte */
+.rdv-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-gray-100);
+  background: linear-gradient(to right, var(--color-gray-50), var(--color-white));
+}
+
+.rdv-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Badge statut */
+.rdv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.rdv-badge.pending {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  border-color: var(--color-warning);
+}
+.rdv-badge.confirmed {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success);
+}
+.rdv-badge.cancelled {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+  border-color: var(--color-gray-200);
+}
+.rdv-badge.rejected {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  border-color: var(--color-danger);
+}
+.rdv-badge.completed {
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
+  border-color: var(--color-info);
+}
+
+/* Badge priorité */
+.rdv-badge-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.rdv-badge-priority.faible {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+}
+.rdv-badge-priority.normale {
+  background: #ffedd5;
+  color: #c2410c;
+}
+.rdv-badge-priority.haute {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+.rdv-priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.rdv-priority-dot.faible { background: var(--color-gray-400); }
+.rdv-priority-dot.normale { background: var(--color-primary); }
+.rdv-priority-dot.haute { background: var(--color-danger); }
+
+/* Badge "Aujourd'hui" animé */
+.rdv-badge-today {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: var(--color-primary-light);
+  color: #c2410c;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Dropdown menu */
+.rdv-dropdown {
+  position: relative;
+}
+
+.rdv-dropdown-btn {
+  padding: 8px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdv-dropdown-btn:hover {
+  background: var(--color-gray-100);
+}
+
+.rdv-dropdown-btn svg {
+  color: var(--color-gray-500);
+  width: 18px;
+  height: 18px;
+}
+
+.rdv-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  width: 256px;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-gray-200);
+  padding: 4px 0;
+  z-index: 50;
+  min-width: max-content;
+}
+
+.rdv-dropdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.rdv-dropdown-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.rdv-dropdown-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rdv-dropdown-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--color-gray-700);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background var(--transition-fast);
+}
+
+.rdv-dropdown-item:hover {
+  background: var(--color-gray-50);
+}
+
+.rdv-dropdown-item:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.rdv-dropdown-item.active {
+  background: var(--color-primary-light);
+  color: #c2410c;
+  font-weight: 500;
+}
+
+.rdv-dropdown-item.danger {
+  color: var(--color-danger);
+}
+
+.rdv-dropdown-item.danger:hover {
+  background: var(--color-danger-bg);
+}
+
+.rdv-dropdown-item.success {
+  color: var(--color-success);
+}
+
+.rdv-dropdown-item.success:hover {
+  background: var(--color-success-bg);
+}
+
+.rdv-dropdown-divider {
+  border-top: 1px solid var(--color-gray-100);
+  margin: 4px 0;
+}
+
+.rdv-dropdown-checkmark {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+/* Contenu carte */
+.rdv-card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Section date/heure */
+.rdv-card-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.rdv-card-icon {
+  padding: 8px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rdv-card-icon.orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.rdv-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.rdv-card-date {
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.rdv-card-time {
+  font-size: 14px;
+  color: var(--color-gray-600);
+}
+
+/* Section visiteur */
+.rdv-card-visitor-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rdv-card-visitor-name {
+  font-weight: 500;
+  color: var(--color-gray-900);
+  margin-bottom: 4px;
+}
+
+.rdv-card-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.rdv-card-contact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-600);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.rdv-card-contact:hover {
+  color: var(--color-primary);
+}
+
+.rdv-card-contact svg {
+  width: 12px;
+  height: 12px;
+}
+
+.rdv-card-invites {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Message */
+.rdv-card-message {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.rdv-card-message-text {
+  font-size: 14px;
+  color: var(--color-gray-700);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.rdv-card-message-text svg {
+  width: 14px;
+  height: 14px;
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Note admin */
+.rdv-card-note {
+  background: var(--color-info-bg);
+  border: 1px solid var(--color-info);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.rdv-card-note-text {
+  font-size: 12px;
+  color: var(--color-info-text);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.rdv-card-note-text svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rdv-card-note-confirmed {
+  font-size: 12px;
+  color: var(--color-info-text);
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* Métadonnées */
+.rdv-card-meta {
+  padding-top: 12px;
+  border-top: 1px solid var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+.rdv-card-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--color-gray-100);
+  border-radius: 4px;
+}
+
+.rdv-card-source svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Badge "Nouveau" animé */
+.rdv-card-new-badge {
+  position: absolute;
+  top: 16px;
+  right: 56px;
+}
+
+.rdv-new-dot {
+  position: relative;
+  display: flex;
+  height: 12px;
+  width: 12px;
+}
+
+.rdv-new-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-warning);
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+.rdv-new-dot::after {
+  content: '';
+  position: relative;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--color-warning);
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.rdv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.rdv-modal {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 512px;
+  width: 100%;
+  padding: 24px;
+}
+
+.rdv-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.rdv-modal-header svg {
+  color: var(--color-primary);
+  width: 20px;
+  height: 20px;
+}
+
+.rdv-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.rdv-modal-summary {
+  background: var(--color-primary-light);
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.rdv-modal-summary p {
+  font-size: 14px;
+  color: #9a3412;
+}
+
+.rdv-modal-summary p:first-child {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.rdv-modal-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+  margin-bottom: 8px;
+}
+
+.rdv-modal-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.rdv-modal-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.rdv-modal-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--color-gray-700);
+}
+
+.rdv-modal-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
+.rdv-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.rdv-modal-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.rdv-modal-btn-secondary {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-700);
+}
+
+.rdv-modal-btn-secondary:hover {
+  background: var(--color-gray-50);
+}
+
+.rdv-modal-btn-primary {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+}
+
+.rdv-modal-btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* ============================================
+   ÉTATS: LOADING, EMPTY, ERROR
+   ============================================ */
+.rdv-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--color-gray-500);
+}
+
+.rdv-state-icon {
+  margin: 0 auto 16px;
+  color: var(--color-gray-300);
+  width: 48px;
+  height: 48px;
+}
+
+.rdv-state-title {
+  font-weight: 500;
+  color: var(--color-gray-700);
+  margin-bottom: 4px;
+}
+
+.rdv-state-text {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.rdv-state-error {
+  color: var(--color-danger);
+}
+
+.rdv-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-gray-200);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.rdv-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.rdv-pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rdv-pagination-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.rdv-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rdv-pagination-info {
+  font-size: 14px;
+  color: var(--color-gray-500);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+  .rdv-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .rdv-container {
+    padding: 16px;
+  }
+  
+  .rdv-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .rdv-filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .rdv-search-wrapper {
+    grid-column: 1;
+  }
+  
+  .rdv-filters-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .rdv-sort-controls {
+    margin-right: 0;
+    justify-content: center;
+  }
+  
+  .rdv-stats {
+    flex-direction: column;
+  }
+  
+  .rdv-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .rdv-dropdown-menu {
+    width: 100%;
+    right: 0;
+    left: 0;
+  }
+}

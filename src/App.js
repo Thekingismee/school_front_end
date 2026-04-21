@@ -84,12 +84,27 @@ import RendezVous from "./pages/RendezVous";
 import JoinUs from "./pages/JoinUs";
 import TarifsFrais from "./pages/TarifsFrais";
 import ActualiteDetail from "./components/Actualites/ActualiteDetail";
+import Homeadm from "./backoffice/pages/Homeadm";
+import InscriptionsList from "./backoffice/pages/InscriptionsList/InscriptionsList";
+import MessagesList from "./backoffice/pages/MessagesList/MessagesList";
+import RendezvousListe from "./backoffice/pages/RendezvousListe/RendezvousListe";
+import JoinUsList from "./backoffice/pages/JoinUsList/JoinUsList";
+import ActualitesList from "./backoffice/pages/ActualitesList";
 
 class App extends Component {
     render() {
         return (
             <Router history={history}>
+
                 <Layout>
+                 <Switch>
+                        <Route exact path="/admin" component={Homeadm} />
+                        <Route exact path="/inscriptions" component={InscriptionsList} />
+                        <Route exact path="/messages" component={MessagesList} />
+                        <Route exact path="/rendez-vous-liste" component={RendezvousListe} />
+                        <Route exact path="/joinUs" component={JoinUsList} />
+                        <Route exact path="/ActualitesList" component={ActualitesList} />
+                </Switch>
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/posts" component={Posts} />
