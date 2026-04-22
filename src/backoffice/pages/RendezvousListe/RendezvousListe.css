@@ -1,581 +1,515 @@
 /* ============================================
-   VARIABLES & CONFIG GLOBALE
+   Rdv.css — Professional Monochrome Design
    ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap');
+
 :root {
-  --color-primary: #f97316;
-  --color-primary-hover: #ea580c;
-  --color-primary-light: #fff7ed;
-  --color-success: #22c55e;
-  --color-success-bg: #dcfce7;
-  --color-success-text: #166534;
-  --color-warning: #f59e0b;
-  --color-warning-bg: #fef3c7;
-  --color-warning-text: #92400e;
-  --color-danger: #ef4444;
-  --color-danger-bg: #fee2e2;
-  --color-danger-text: #991b1b;
-  --color-info: #3b82f6;
-  --color-info-bg: #dbeafe;
-  --color-info-text: #1e40af;
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-900: #111827;
-  --color-white: #ffffff;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --radius-sm: 6px;
+  --ink-950: #0a0a0b;
+  --ink-900: #111113;
+  --ink-800: #1c1c1f;
+  --ink-700: #2d2d32;
+  --ink-600: #4a4a52;
+  --ink-500: #6b6b75;
+  --ink-400: #909099;
+  --ink-300: #c2c2cc;
+  --ink-200: #e2e2e8;
+  --ink-100: #f0f0f4;
+  --ink-50:  #f8f8fa;
+  --white:   #ffffff;
+
+  --status-confirmed-bg:  #e8f4ee;
+  --status-confirmed-fg:  #1c3c2a;
+  --status-confirmed-bdr: #c5e0ce;
+  --status-cancelled-bg:  #f5f5f7;
+  --status-cancelled-fg:  #5a5a65;
+  --status-refused-bg:    #f8ecea;
+  --status-refused-fg:    #6b1f1a;
+  --status-refused-bdr:   #e5c5c2;
+  --status-completed-bg:  #eef3fb;
+  --status-completed-fg:  #1e3a6e;
+  --status-completed-bdr: #d4e1f5;
+
+  --danger:    #c0392b;
+  --danger-bg: #fdf0ee;
+  --success-fg: #1c3c2a;
+
+  --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --transition-fast: 0.2s ease;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --shadow-xs: 0 1px 2px rgba(10,10,11,0.05);
+  --shadow-sm: 0 2px 6px rgba(10,10,11,0.07);
+  --shadow-md: 0 6px 20px rgba(10,10,11,0.09);
+  --shadow-lg: 0 16px 40px rgba(10,10,11,0.12);
+
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  --transition: 150ms ease;
 }
 
-/* ============================================
-   RESET & BASE
-   ============================================ */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ─── Container ─── */
 .rdv-container {
   font-family: var(--font-sans);
-  color: var(--color-gray-900);
+  color: var(--ink-900);
   line-height: 1.5;
-  padding: 24px;
+  padding: 32px 40px;
   max-width: 1440px;
   margin: 0 auto;
+  background: var(--ink-50);
+  min-height: 100vh;
 }
 
-/* ============================================
-   EN-TÊTE
-   ============================================ */
+/* ─── Header ─── */
 .rdv-header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink-200);
 }
 
 .rdv-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-gray-900);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink-950);
 }
 
 .rdv-header p {
-  color: var(--color-gray-600);
+  color: var(--ink-500);
   margin-top: 4px;
-  font-size: 14px;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
 }
 
-/* ============================================
-   STATS BAR
-   ============================================ */
+/* ─── Stats ─── */
 .rdv-stats {
-  display: flex;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
   margin-bottom: 24px;
-  flex-wrap: wrap;
 }
 
 .rdv-stat-card {
-  flex: 1;
-  min-width: 120px;
-  padding: 12px 16px;
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: 10px;
-  text-align: center;
+  padding: 16px 20px;
+  background: var(--white);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
 }
 
-.rdv-stat-card.pending { border-left: 4px solid var(--color-warning); }
-.rdv-stat-card.today { border-left: 4px solid var(--color-primary); }
-.rdv-stat-card.confirmed { border-left: 4px solid var(--color-success); }
+.rdv-stat-card.pending   { border-top: 2px solid var(--ink-600); }
+.rdv-stat-card.today     { border-top: 2px solid var(--ink-800); }
+.rdv-stat-card.confirmed { border-top: 2px solid var(--ink-300); }
 
 .rdv-stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-gray-900);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--ink-950);
+  font-family: var(--font-mono);
+  line-height: 1;
 }
 
 .rdv-stat-label {
-  font-size: 12px;
-  color: var(--color-gray-500);
+  font-size: 0.75rem;
+  color: var(--ink-500);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 4px;
+  letter-spacing: 0.06em;
+  font-weight: 500;
 }
 
-/* ============================================
-   BARRE DE FILTRES
-   ============================================ */
+/* ─── Filters ─── */
 .rdv-filters {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
+  background: var(--white);
+  border: 1px solid var(--ink-200);
   border-radius: var(--radius-lg);
   padding: 16px 20px;
   margin-bottom: 24px;
+  box-shadow: var(--shadow-xs);
 }
 
 .rdv-filters-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-gray-100);
+  border-bottom: 1px solid var(--ink-100);
 }
 
 .rdv-filters-header h3 {
-  font-size: 14px;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--color-gray-700);
+  color: var(--ink-700);
   display: flex;
   align-items: center;
   gap: 6px;
+  letter-spacing: -0.01em;
 }
 
 .rdv-filters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .rdv-filter-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .rdv-filter-group label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--color-gray-500);
+  color: var(--ink-400);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
 }
 
 .rdv-filter-group select,
 .rdv-filter-group input[type="text"],
 .rdv-filter-group input[type="date"] {
   padding: 8px 12px;
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--ink-200);
   border-radius: var(--radius-md);
-  font-size: 14px;
-  background: var(--color-white);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  font-size: 0.8125rem;
+  background: var(--ink-50);
+  color: var(--ink-900);
+  font-family: var(--font-sans);
+  transition: border-color var(--transition), box-shadow var(--transition);
   width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.rdv-filter-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236b6b75' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
 }
 
 .rdv-filter-group select:focus,
 .rdv-filter-group input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  border-color: var(--ink-800);
+  box-shadow: 0 0 0 3px rgba(10,10,11,0.08);
+  background: var(--white);
 }
 
-/* Recherche avec icône */
 .rdv-search-wrapper {
   position: relative;
   grid-column: 1 / -1;
 }
 
-.rdv-search-wrapper input {
-  padding-left: 36px;
-}
+.rdv-search-wrapper input { padding-left: 36px; }
 
 .rdv-search-icon {
   position: absolute;
-  left: 12px;
+  left: 11px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-gray-400);
+  color: var(--ink-400);
   pointer-events: none;
   width: 16px;
   height: 16px;
 }
 
-/* Checkbox filtre */
+/* Checkbox */
 .rdv-checkbox-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  color: var(--color-gray-700);
+  font-size: 0.8125rem;
+  color: var(--ink-600);
   cursor: pointer;
   padding-top: 22px;
+  font-family: var(--font-sans);
 }
 
-.rdv-checkbox-label input {
-  width: auto;
-  margin: 0;
-}
+.rdv-checkbox-label input { width: auto; margin: 0; accent-color: var(--ink-900); }
 
-/* Actions filtres */
+/* Filter actions */
 .rdv-filters-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--color-gray-100);
+  border-top: 1px solid var(--ink-100);
   flex-wrap: wrap;
 }
 
-/* Contrôles de tri */
+/* Sort controls */
 .rdv-sort-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-right: auto;
   flex-wrap: wrap;
 }
 
 .rdv-sort-btn {
-  padding: 6px 10px;
-  background: var(--color-gray-100);
-  border: 1px solid var(--color-gray-300);
+  padding: 5px 10px;
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
   border-radius: var(--radius-sm);
-  font-size: 12px;
-  color: var(--color-gray-700);
+  font-size: 0.75rem;
+  color: var(--ink-600);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
-  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  transition: all var(--transition);
 }
 
 .rdv-sort-btn:hover,
 .rdv-sort-btn.active {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: var(--color-primary-light);
+  border-color: var(--ink-800);
+  color: var(--ink-900);
+  background: var(--ink-100);
 }
 
-.rdv-sort-icon {
-  width: 10px;
-  height: 10px;
-  transition: transform var(--transition-fast);
-}
-
-.rdv-sort-icon.asc { transform: rotate(-90deg); }
+.rdv-sort-icon { width: 10px; height: 10px; transition: transform var(--transition); }
+.rdv-sort-icon.asc  { transform: rotate(-90deg); }
 .rdv-sort-icon.desc { transform: rotate(90deg); }
 
-/* Boutons actions */
+/* Action buttons */
 .rdv-btn-toggle,
 .rdv-btn-clear,
 .rdv-btn-primary {
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: var(--radius-sm);
-  font-size: 12px;
+  font-size: 0.75rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  transition: all var(--transition);
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
-.rdv-btn-toggle {
-  background: none;
-  border: 1px solid var(--color-gray-300);
-  color: var(--color-gray-600);
-}
+.rdv-btn-toggle { background: none; border: 1px solid var(--ink-200); color: var(--ink-500); }
+.rdv-btn-toggle:hover { border-color: var(--ink-800); color: var(--ink-900); }
 
-.rdv-btn-toggle:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
+.rdv-btn-clear { background: var(--ink-100); border: none; color: var(--ink-600); }
+.rdv-btn-clear:hover { background: var(--ink-200); color: var(--ink-900); }
 
-.rdv-btn-clear {
-  background: var(--color-gray-100);
-  border: none;
-  color: var(--color-gray-700);
-}
+.rdv-btn-primary { background: var(--ink-950); border: none; color: var(--white); font-weight: 500; }
+.rdv-btn-primary:hover { background: var(--ink-800); }
 
-.rdv-btn-clear:hover {
-  background: var(--color-gray-200);
-}
-
-.rdv-btn-primary {
-  background: var(--color-primary);
-  border: none;
-  color: var(--color-white);
-  font-weight: 500;
-}
-
-.rdv-btn-primary:hover {
-  background: var(--color-primary-hover);
-}
-
-/* ============================================
-   GRILLE DE RENDEZ-VOUS
-   ============================================ */
+/* ─── Grid ─── */
 .rdv-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 
-/* ============================================
-   CARTE RENDEZ-VOUS
-   ============================================ */
+/* ─── Card ─── */
 .rdv-card {
-  background: var(--color-white);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-gray-200);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
-  overflow: hidden;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--ink-200);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .rdv-card:hover {
   box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  border-color: var(--ink-300);
 }
 
-.rdv-card.pending { border-left: 4px solid var(--color-warning); }
-.rdv-card.today { border-left: 4px solid var(--color-primary); }
-.rdv-card.default { border-left: 4px solid var(--color-gray-200); }
+.rdv-card.pending { border-left: 3px solid var(--ink-600); }
+.rdv-card.today   { border-left: 3px solid var(--ink-950); }
+.rdv-card.default { border-left: 3px solid var(--ink-200); }
 
-/* Header carte */
+/* Card Header */
 .rdv-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid var(--color-gray-100);
-  background: linear-gradient(to right, var(--color-gray-50), var(--color-white));
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ink-100);
+  background: var(--ink-50);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .rdv-card-badges {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
-/* Badge statut */
+/* Badges */
 .rdv-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
 }
 
-.rdv-badge.pending {
-  background: var(--color-warning-bg);
-  color: var(--color-warning-text);
-  border-color: var(--color-warning);
-}
-.rdv-badge.confirmed {
-  background: var(--color-success-bg);
-  color: var(--color-success-text);
-  border-color: var(--color-success);
-}
-.rdv-badge.cancelled {
-  background: var(--color-gray-100);
-  color: var(--color-gray-600);
-  border-color: var(--color-gray-200);
-}
-.rdv-badge.rejected {
-  background: var(--color-danger-bg);
-  color: var(--color-danger-text);
-  border-color: var(--color-danger);
-}
-.rdv-badge.completed {
-  background: var(--color-info-bg);
-  color: var(--color-info-text);
-  border-color: var(--color-info);
-}
+.rdv-badge.pending   { background: var(--ink-100); color: var(--ink-700); border-color: var(--ink-200); }
+.rdv-badge.confirmed { background: var(--status-confirmed-bg); color: var(--status-confirmed-fg); border-color: var(--status-confirmed-bdr); }
+.rdv-badge.cancelled { background: var(--status-cancelled-bg); color: var(--status-cancelled-fg); border-color: var(--ink-200); }
+.rdv-badge.rejected  { background: var(--status-refused-bg);  color: var(--status-refused-fg);  border-color: var(--status-refused-bdr); }
+.rdv-badge.completed { background: var(--status-completed-bg); color: var(--status-completed-fg); border-color: var(--status-completed-bdr); }
 
-/* Badge priorité */
+/* Priority badge */
 .rdv-badge-priority {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6875rem;
   font-weight: 500;
 }
 
-.rdv-badge-priority.faible {
-  background: var(--color-gray-100);
-  color: var(--color-gray-600);
-}
-.rdv-badge-priority.normale {
-  background: #ffedd5;
-  color: #c2410c;
-}
-.rdv-badge-priority.haute {
-  background: var(--color-danger-bg);
-  color: var(--color-danger-text);
-}
+.rdv-badge-priority.faible  { background: var(--ink-50);  color: var(--ink-400); }
+.rdv-badge-priority.normale { background: var(--ink-100); color: var(--ink-600); }
+.rdv-badge-priority.haute   { background: var(--ink-800); color: var(--white); }
 
-.rdv-priority-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-.rdv-priority-dot.faible { background: var(--color-gray-400); }
-.rdv-priority-dot.normale { background: var(--color-primary); }
-.rdv-priority-dot.haute { background: var(--color-danger); }
+.rdv-priority-dot { width: 5px; height: 5px; border-radius: 50%; }
+.rdv-priority-dot.faible  { background: var(--ink-300); }
+.rdv-priority-dot.normale { background: var(--ink-500); }
+.rdv-priority-dot.haute   { background: var(--ink-950); }
 
-/* Badge "Aujourd'hui" animé */
+/* Today badge */
 .rdv-badge-today {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
-  background: var(--color-primary-light);
-  color: #c2410c;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
-  animation: pulse 2s infinite;
+  padding: 3px 8px;
+  background: var(--ink-950);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  animation: pulse 2.5s ease infinite;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  50%       { opacity: 0.75; }
 }
 
-/* Dropdown menu */
-.rdv-dropdown {
-  position: relative;
-}
+/* Dropdown */
+.rdv-dropdown { position: relative; }
 
 .rdv-dropdown-btn {
-  padding: 8px;
+  padding: 6px;
   background: none;
-  border: none;
-  border-radius: 50%;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--ink-500);
+  transition: all var(--transition);
 }
 
 .rdv-dropdown-btn:hover {
-  background: var(--color-gray-100);
+  background: var(--ink-100);
+  border-color: var(--ink-200);
+  color: var(--ink-800);
 }
 
-.rdv-dropdown-btn svg {
-  color: var(--color-gray-500);
-  width: 18px;
-  height: 18px;
-}
+.rdv-dropdown-btn svg { color: inherit; width: 18px; height: 18px; }
 
 .rdv-dropdown-menu {
   position: absolute;
   right: 0;
-  top: 100%;
-  margin-top: 4px;
-  width: 256px;
-  background: var(--color-white);
+  top: calc(100% + 6px);
+  width: 220px;
+  background: var(--white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  border: 1px solid var(--color-gray-200);
-  padding: 4px 0;
+  border: 1px solid var(--ink-200);
+  padding: 6px;
   z-index: 50;
-  min-width: max-content;
 }
 
-.rdv-dropdown-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-}
+.rdv-dropdown-overlay { position: fixed; inset: 0; z-index: 40; }
 
-.rdv-dropdown-section {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--color-gray-100);
-}
+.rdv-dropdown-section { padding: 6px 8px 4px; }
 
 .rdv-dropdown-section-title {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--color-gray-500);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--ink-400);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .rdv-dropdown-item {
   width: 100%;
   text-align: left;
-  padding: 8px 16px;
-  font-size: 14px;
-  color: var(--color-gray-700);
+  padding: 8px 10px;
+  font-size: 0.8125rem;
+  color: var(--ink-700);
   background: none;
   border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background var(--transition-fast);
+  font-family: var(--font-sans);
+  transition: background var(--transition);
 }
 
-.rdv-dropdown-item:hover {
-  background: var(--color-gray-50);
-}
-
-.rdv-dropdown-item:disabled {
-  cursor: default;
-  opacity: 0.6;
-}
+.rdv-dropdown-item:hover    { background: var(--ink-50); }
+.rdv-dropdown-item:disabled { cursor: default; opacity: 0.5; }
 
 .rdv-dropdown-item.active {
-  background: var(--color-primary-light);
-  color: #c2410c;
+  background: var(--ink-950);
+  color: var(--white);
   font-weight: 500;
 }
 
-.rdv-dropdown-item.danger {
-  color: var(--color-danger);
-}
+.rdv-dropdown-item.active:hover { background: var(--ink-800); }
 
-.rdv-dropdown-item.danger:hover {
-  background: var(--color-danger-bg);
-}
+.rdv-dropdown-item.danger       { color: var(--danger); }
+.rdv-dropdown-item.danger:hover { background: var(--danger-bg); }
 
-.rdv-dropdown-item.success {
-  color: var(--color-success);
-}
+.rdv-dropdown-item.success       { color: var(--success-fg); }
+.rdv-dropdown-item.success:hover { background: var(--status-confirmed-bg); }
 
-.rdv-dropdown-item.success:hover {
-  background: var(--color-success-bg);
-}
+.rdv-dropdown-divider { height: 1px; background: var(--ink-100); margin: 4px 0; }
 
-.rdv-dropdown-divider {
-  border-top: 1px solid var(--color-gray-100);
-  margin: 4px 0;
-}
+.rdv-dropdown-checkmark { margin-left: auto; font-size: 0.75rem; color: var(--ink-400); }
 
-.rdv-dropdown-checkmark {
-  margin-left: auto;
-  font-size: 12px;
-}
-
-/* Contenu carte */
+/* ─── Card Content ─── */
 .rdv-card-content {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
+  flex: 1;
 }
 
-/* Section date/heure */
+/* Date section */
 .rdv-card-section {
   display: flex;
   align-items: flex-start;
@@ -591,168 +525,151 @@
   flex-shrink: 0;
 }
 
-.rdv-card-icon.orange {
-  background: #ffedd5;
-  color: #ea580c;
-}
-
-.rdv-card-icon svg {
-  width: 18px;
-  height: 18px;
-}
+.rdv-card-icon.orange { background: var(--ink-100); color: var(--ink-700); }
+.rdv-card-icon svg    { width: 18px; height: 18px; }
 
 .rdv-card-date {
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--ink-900);
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
 }
 
 .rdv-card-time {
-  font-size: 14px;
-  color: var(--color-gray-600);
+  font-size: 0.8125rem;
+  color: var(--ink-500);
+  font-family: var(--font-mono);
+  margin-top: 2px;
 }
 
-/* Section visiteur */
+/* Visitor section */
 .rdv-card-visitor-title {
-  font-size: 14px;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-gray-900);
-  margin-bottom: 8px;
+  color: var(--ink-400);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .rdv-card-visitor-name {
+  font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--color-gray-900);
+  color: var(--ink-900);
   margin-bottom: 4px;
 }
 
 .rdv-card-contacts {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  font-size: 14px;
+  gap: 10px;
+  font-size: 0.8125rem;
 }
 
 .rdv-card-contact {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--color-gray-600);
+  color: var(--ink-500);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color var(--transition);
 }
 
-.rdv-card-contact:hover {
-  color: var(--color-primary);
-}
-
-.rdv-card-contact svg {
-  width: 12px;
-  height: 12px;
-}
+.rdv-card-contact:hover { color: var(--ink-950); }
+.rdv-card-contact svg   { width: 12px; height: 12px; }
 
 .rdv-card-invites {
-  font-size: 12px;
-  color: var(--color-gray-500);
+  font-size: 0.75rem;
+  color: var(--ink-400);
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--font-mono);
+  margin-top: 4px;
 }
 
 /* Message */
 .rdv-card-message {
-  background: var(--color-gray-50);
+  background: var(--ink-50);
+  border: 1px solid var(--ink-100);
   border-radius: var(--radius-md);
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 .rdv-card-message-text {
-  font-size: 14px;
-  color: var(--color-gray-700);
+  font-size: 0.8125rem;
+  color: var(--ink-500);
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-.rdv-card-message-text svg {
-  width: 14px;
-  height: 14px;
-  color: var(--color-gray-400);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.rdv-card-message-text svg { width: 13px; height: 13px; color: var(--ink-300); flex-shrink: 0; margin-top: 2px; }
 
 /* Note admin */
 .rdv-card-note {
-  background: var(--color-info-bg);
-  border: 1px solid var(--color-info);
+  background: var(--ink-950);
   border-radius: var(--radius-md);
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 .rdv-card-note-text {
-  font-size: 12px;
-  color: var(--color-info-text);
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.75);
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
-.rdv-card-note-text svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.rdv-card-note-text svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 2px; color: rgba(255,255,255,0.4); }
 
 .rdv-card-note-confirmed {
-  font-size: 12px;
-  color: var(--color-info-text);
+  font-size: 0.6875rem;
+  color: rgba(255,255,255,0.45);
   margin-top: 4px;
-  opacity: 0.9;
+  font-family: var(--font-mono);
 }
 
-/* Métadonnées */
+/* Meta footer */
 .rdv-card-meta {
   padding-top: 12px;
-  border-top: 1px solid var(--color-gray-100);
+  border-top: 1px solid var(--ink-100);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
-  color: var(--color-gray-500);
+  font-size: 0.6875rem;
+  color: var(--ink-400);
+  font-family: var(--font-mono);
 }
 
 .rdv-card-source {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
-  background: var(--color-gray-100);
-  border-radius: 4px;
+  padding: 2px 7px;
+  background: var(--ink-100);
+  border-radius: 3px;
 }
 
-.rdv-card-source svg {
-  width: 10px;
-  height: 10px;
-}
+.rdv-card-source svg { width: 10px; height: 10px; }
 
-/* Badge "Nouveau" animé */
+/* New dot */
 .rdv-card-new-badge {
   position: absolute;
-  top: 16px;
-  right: 56px;
+  top: 14px;
+  right: 46px;
 }
 
 .rdv-new-dot {
   position: relative;
   display: flex;
-  height: 12px;
-  width: 12px;
+  height: 8px;
+  width: 8px;
 }
 
 .rdv-new-dot::before {
@@ -760,35 +677,29 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: var(--color-warning);
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  opacity: 0.75;
+  background: var(--ink-500);
+  animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+  opacity: 0.6;
 }
 
 .rdv-new-dot::after {
   content: '';
   position: relative;
   display: inline-block;
-  height: 12px;
-  width: 12px;
+  height: 8px;
+  width: 8px;
   border-radius: 50%;
-  background: var(--color-warning);
+  background: var(--ink-900);
 }
 
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
+@keyframes ping { 75%, 100% { transform: scale(2.5); opacity: 0; } }
 
-/* ============================================
-   MODAL
-   ============================================ */
+/* ─── Modal ─── */
 .rdv-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(10,10,11,0.55);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -797,105 +708,99 @@
 }
 
 .rdv-modal {
-  background: var(--color-white);
+  background: var(--white);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  max-width: 512px;
+  max-width: 500px;
   width: 100%;
-  padding: 24px;
+  padding: 28px;
+  border: 1px solid var(--ink-200);
 }
 
 .rdv-modal-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink-100);
 }
 
-.rdv-modal-header svg {
-  color: var(--color-primary);
-  width: 20px;
-  height: 20px;
-}
+.rdv-modal-header svg { color: var(--ink-500); width: 18px; height: 18px; }
 
 .rdv-modal-title {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: var(--ink-950);
+  letter-spacing: -0.01em;
 }
 
 .rdv-modal-summary {
-  background: var(--color-primary-light);
-  border: 1px solid #fed7aa;
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
   border-radius: var(--radius-md);
   padding: 12px;
   margin-bottom: 16px;
 }
 
-.rdv-modal-summary p {
-  font-size: 14px;
-  color: #9a3412;
-}
-
-.rdv-modal-summary p:first-child {
-  font-weight: 500;
-  margin-bottom: 4px;
-}
+.rdv-modal-summary p { font-size: 0.8125rem; color: var(--ink-600); }
+.rdv-modal-summary p:first-child { font-weight: 500; margin-bottom: 4px; color: var(--ink-800); }
 
 .rdv-modal-label {
   display: block;
-  font-size: 14px;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--color-gray-700);
-  margin-bottom: 8px;
+  color: var(--ink-600);
+  margin-bottom: 6px;
 }
 
 .rdv-modal-textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--ink-200);
   border-radius: var(--radius-md);
-  font-size: 14px;
-  font-family: inherit;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  color: var(--ink-900);
+  background: var(--white);
   resize: vertical;
-  min-height: 80px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  min-height: 90px;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .rdv-modal-textarea:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  border-color: var(--ink-800);
+  box-shadow: 0 0 0 3px rgba(10,10,11,0.08);
 }
 
 .rdv-modal-checkbox {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 16px;
-  font-size: 14px;
-  color: var(--color-gray-700);
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  color: var(--ink-600);
+  font-family: var(--font-sans);
 }
 
-.rdv-modal-checkbox input {
-  width: auto;
-  margin: 0;
-}
+.rdv-modal-checkbox input { width: auto; margin: 0; accent-color: var(--ink-900); }
 
 .rdv-modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 24px;
 }
 
 .rdv-modal-btn {
   flex: 1;
-  padding: 8px 16px;
+  padding: 10px 16px;
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  transition: all var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -903,162 +808,106 @@
 }
 
 .rdv-modal-btn-secondary {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-300);
-  color: var(--color-gray-700);
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
+  color: var(--ink-600);
 }
 
-.rdv-modal-btn-secondary:hover {
-  background: var(--color-gray-50);
-}
+.rdv-modal-btn-secondary:hover { background: var(--ink-100); color: var(--ink-800); }
 
 .rdv-modal-btn-primary {
-  background: var(--color-primary);
+  background: var(--ink-950);
   border: none;
-  color: var(--color-white);
+  color: var(--white);
 }
 
-.rdv-modal-btn-primary:hover {
-  background: var(--color-primary-hover);
-}
+.rdv-modal-btn-primary:hover { background: var(--ink-800); }
 
-/* ============================================
-   ÉTATS: LOADING, EMPTY, ERROR
-   ============================================ */
+/* ─── States ─── */
 .rdv-state {
   text-align: center;
-  padding: 60px 20px;
-  color: var(--color-gray-500);
+  padding: 80px 20px;
+  color: var(--ink-400);
 }
 
-.rdv-state-icon {
-  margin: 0 auto 16px;
-  color: var(--color-gray-300);
-  width: 48px;
-  height: 48px;
-}
-
-.rdv-state-title {
-  font-weight: 500;
-  color: var(--color-gray-700);
-  margin-bottom: 4px;
-}
-
-.rdv-state-text {
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.rdv-state-error {
-  color: var(--color-danger);
-}
+.rdv-state-icon  { margin: 0 auto 16px; color: var(--ink-300); width: 48px; height: 48px; }
+.rdv-state-title { font-weight: 500; color: var(--ink-700); margin-bottom: 6px; font-size: 0.9375rem; }
+.rdv-state-text  { font-size: 0.8125rem; margin-bottom: 20px; }
+.rdv-state-error { color: var(--danger); }
 
 .rdv-loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid var(--color-gray-200);
-  border-top-color: var(--color-primary);
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--ink-200);
+  border-top-color: var(--ink-800);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
   margin: 0 auto 16px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ============================================
-   PAGINATION
-   ============================================ */
+/* ─── Pagination ─── */
 .rdv-pagination {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 32px;
-  padding: 16px;
+  margin-top: 28px;
+  padding: 16px 0;
+  border-top: 1px solid var(--ink-200);
 }
 
 .rdv-pagination-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--color-gray-300);
-  background: var(--color-white);
+  padding: 7px 14px;
+  border: 1px solid var(--ink-200);
+  background: var(--white);
   border-radius: var(--radius-md);
-  font-size: 14px;
-  color: var(--color-gray-700);
+  font-size: 0.8125rem;
+  color: var(--ink-700);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  transition: all var(--transition);
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .rdv-pagination-btn:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--ink-800);
+  color: var(--ink-950);
+  background: var(--ink-50);
 }
 
-.rdv-pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.rdv-pagination-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .rdv-pagination-info {
-  font-size: 14px;
-  color: var(--color-gray-500);
-  min-width: 140px;
+  font-size: 0.75rem;
+  color: var(--ink-400);
+  font-family: var(--font-mono);
+  min-width: 120px;
   text-align: center;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 1200px) {
-  .rdv-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* ─── Responsive ─── */
+@media (max-width: 1280px) {
+  .rdv-grid  { grid-template-columns: repeat(2, 1fr); }
+  .rdv-stats { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (max-width: 768px) {
-  .rdv-container {
-    padding: 16px;
-  }
-  
-  .rdv-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .rdv-filters-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .rdv-search-wrapper {
-    grid-column: 1;
-  }
-  
-  .rdv-filters-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .rdv-sort-controls {
-    margin-right: 0;
-    justify-content: center;
-  }
-  
-  .rdv-stats {
-    flex-direction: column;
-  }
-  
-  .rdv-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .rdv-dropdown-menu {
-    width: 100%;
-    right: 0;
-    left: 0;
-  }
+@media (max-width: 900px) {
+  .rdv-container { padding: 20px 24px; }
+  .rdv-filters-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .rdv-container { padding: 16px; }
+  .rdv-grid  { grid-template-columns: 1fr; }
+  .rdv-stats { grid-template-columns: 1fr; }
+  .rdv-filters-grid { grid-template-columns: 1fr; }
+  .rdv-search-wrapper { grid-column: 1; }
+  .rdv-filters-actions { flex-direction: column; align-items: stretch; }
+  .rdv-sort-controls { margin-right: 0; justify-content: center; }
+  .rdv-card-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .rdv-dropdown-menu { width: 100%; }
 }

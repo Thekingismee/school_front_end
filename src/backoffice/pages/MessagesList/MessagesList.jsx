@@ -672,17 +672,6 @@ const MessagesList = () => {
             </nav>
           )}
 
-
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium eius amet provident. Sapiente est beatae, eligendi tenetur unde minima accusamus laudantium consequuntur fugit dicta qui saepe enim quidem minus atque?
-          Fugiat natus quae, quaerat obcaecati itaque autem nesciunt eius soluta expedita omnis nisi amet vitae deleniti quod odit dolorem ducimus, doloremque inventore eligendi officia maxime illum quisquam? Quod, nam voluptates?
-          Ratione dolor similique facilis sequi necessitatibus, quia reiciendis sed, adipisci soluta ut unde praesentium. Quis deserunt vel quam laudantium ullam excepturi alias distinctio dolorum? Magni molestias quidem corrupti obcaecati qui?
-          Suscipit dolorum quibusdam est dicta quod quis quam reprehenderit ab molestiae perspiciatis, odio, pariatur perferendis minima eos error magnam provident sequi similique maiores molestias possimus quidem. Non mollitia saepe itaque!
-          Explicabo minus cum ratione, nemo error non debitis dignissimos officiis facilis sapiente ipsum impedit quia, officia rerum omnis temporibus illo, eos perspiciatis quasi corporis et odit aliquam eius earum? Debitis!
-          Dicta eum quam hic, aut mollitia repellendus vero eos dignissimos ipsum qui odio voluptates tenetur nesciunt neque non adipisci nulla at soluta ipsam nemo. Pariatur deserunt molestiae placeat maiores laudantium.
-          Veritatis maxime laboriosam ad itaque quasi suscipit sed odio exercitationem voluptatibus necessitatibus, esse, id sit minima velit iste omnis est. Nihil ab quibusdam esse iste inventore illo blanditiis placeat nesciunt.
-          Magnam sapiente sit officiis culpa repellendus accusantium placeat rerum aperiam officia impedit ab molestiae, nam beatae distinctio quia. Et iste quaerat, nihil voluptatem at alias magni facilis perspiciatis aliquid dicta.
-          Impedit perspiciatis omnis ex maiores ad quibusdam eligendi dignissimos rem, sit saepe sunt. Esse saepe dolorum iure excepturi, quibusdam perspiciatis porro laborum, vero quae, ullam officiis velit. Quae, ea vitae.
-          Itaque dolor consectetur quam voluptatum eius delectus mollitia provident cupiditate esse placeat accusantium perspiciatis sapiente dignissimos quae assumenda commodi voluptate dolores ullam, voluptatem dolorum maiores. Eum magni eligendi eaque consequuntur.
         </>
       )}
     </div>
