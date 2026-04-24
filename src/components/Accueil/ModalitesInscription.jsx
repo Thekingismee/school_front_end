@@ -68,49 +68,32 @@ function ModalitesInscription() {
                 </div>
             </header>
 
-            {/* Section Étapes d'inscription */}
-            <section className="steps-section">
+             {/* Section Contact Rapide */}
+            <section className="contact-section">
                 <div className="container">
-                    <h2 className="section-title">
-                        Procédure d'inscription en 4 étapes
-                    </h2>
-                    <div className="steps-grid">
-                        <div className="step-card">
-                            <div className="step-number">01</div>
-                            <h3>Prise de contact</h3>
+                    <div className="contact-banner">
+                        <div className="contact-banner-content">
+                            <h3>Une question sur votre dossier ?</h3>
                             <p>
-                                Remplissez le formulaire de pré-inscription en
-                                ligne ou contactez notre secrétariat pour fixer
-                                un rendez-vous.
+                                Notre équipe administrative est à votre
+                                disposition pour vous accompagner
                             </p>
                         </div>
-                        <div className="step-card">
-                            <div className="step-number">02</div>
-                            <h3>Visite et entretien</h3>
-                            <p>
-                                Découvrez nos locaux, rencontrez l'équipe
-                                pédagogique et échangez sur le projet éducatif.
-                            </p>
-                        </div>
-                        <div className="step-card">
-                            <div className="step-number">03</div>
-                            <h3>Dépôt du dossier</h3>
-                            <p>
-                                Fournissez les documents nécessaires à
-                                l'inscription (liste ci-dessous).
-                            </p>
-                        </div>
-                        <div className="step-card">
-                            <div className="step-number">04</div>
-                            <h3>Confirmation</h3>
-                            <p>
-                                Validation du dossier, signature du contrat et
-                                règlement des frais de scolarité.
-                            </p>
-                        </div>
+                        <button
+                            className="contact-banner-btn"
+                            onClick={() => setIsContactOpen(true)}
+                        >
+                            Nous contacter
+                        </button>
                     </div>
                 </div>
             </section>
+
+            {/* Contact Popup */}
+            <ContactPopup
+                isOpen={isContactOpen}
+                onClose={() => setIsContactOpen(false)}
+            />
 
             {/* Section Documents requis avec Cards Expandibles */}
             <section className="documents-section">
@@ -166,32 +149,7 @@ function ModalitesInscription() {
                 </div>
             </section>
 
-            {/* Section Contact Rapide */}
-            <section className="contact-section">
-                <div className="container">
-                    <div className="contact-banner">
-                        <div className="contact-banner-content">
-                            <h3>Une question sur votre dossier ?</h3>
-                            <p>
-                                Notre équipe administrative est à votre
-                                disposition pour vous accompagner
-                            </p>
-                        </div>
-                        <button
-                            className="contact-banner-btn"
-                            onClick={() => setIsContactOpen(true)}
-                        >
-                            Nous contacter
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            {/* Contact Popup */}
-            <ContactPopup
-                isOpen={isContactOpen}
-                onClose={() => setIsContactOpen(false)}
-            />
+          
 
             <style jsx>{`
                 /* ===== HERO SECTION ORIGINALE CONSERVÉE ===== */
@@ -571,3 +529,7 @@ function ModalitesInscription() {
 }
 
 export default ModalitesInscription;
+
+
+
+

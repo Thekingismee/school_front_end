@@ -1,279 +1,187 @@
 import React, { useState } from "react";
 import ContactPopup from "../components/Accueil/ContactPopup";
-import { FileText, ChevronDown, ChevronUp, Shield } from "lucide-react";
+import HomeInfo from "../components/Accueil/HomeInfo";
+import { HeartHandshake, Wallet, ShieldCheck, ArrowRight, CheckCircle, Calendar, CreditCard, Clock, Users, Sparkles, Heart, Star } from "lucide-react";
 
 function Tarifs() {
     const [isContactOpen, setIsContactOpen] = useState(false);
-    const [activeFaq, setActiveFaq] = useState(null);
+    const [isCarouselHovered, setIsCarouselHovered] = useState(false);
 
-    const toggleFaq = index => {
-        setActiveFaq(activeFaq === index ? null : index);
-    };
-
-    const faqItems = [
+    // Valeurs fondamentales — présentées avec humanité et authenticité
+    const coreValues = [
         {
-            question: "Les frais de scolarité sont-ils déductibles des impôts ?",
-            reponse:
-                "Oui, sous certaines conditions. Notre équipe vous fournit les attestations nécessaires pour votre déclaration fiscale. Nous vous conseillons de consulter votre expert-comptable pour plus de détails."
+            icon: HeartHandshake,
+            title: "Bienveillance avant tout",
+            description: "Chaque situation est unique. Nous écoutons et adaptons nos solutions à votre réalité.",
+            color: "rose"
         },
         {
-            question: "Existe-t-il des aides financières ?",
-            reponse:
-                "Absolument. Nous avons mis en place un fonds de solidarité interne qui étudie chaque situation avec bienveillance et confidentialité. N'hésitez pas à nous contacter pour en discuter librement."
+            icon: Wallet,
+            title: "Souplesse financière",
+            description: "Des formules de paiement pensées pour votre confort : annuel, trimestriel ou mensuel.",
+            color: "blue"
         },
         {
-            question: "Peut-on modifier la formule en cours d'année ?",
-            reponse:
-                "Oui, un passage d'une formule à l'autre est possible en cours d'année, sans frais supplémentaires. Il suffit d'en faire la demande auprès de notre service financier."
+            icon: ShieldCheck,
+            title: "Transparence totale",
+            description: "Aucune surprise. Chaque poste est expliqué clairement dès le premier échange.",
+            color: "emerald"
         },
         {
-            question: "Les fournitures sont-elles incluses ?",
-            reponse:
-                "Les manuels scolaires et fournitures de base sont inclus pour tous les niveaux. Seuls quelques équipements spécifiques (calculatrice scientifique, matériel de sport…) restent à la charge des familles."
+            icon: Users,
+            title: "Accompagnement personnalisé",
+            description: "Notre équipe est à votre écoute pour construire ensemble le meilleur projet.",
+            color: "amber"
         }
     ];
 
+    // Duplication pour défilement infini
+    const infiniteValues = [...coreValues, ...coreValues, ...coreValues];
+
     return (
         <div className="tarifs-page">
-            {/* Hero sobre */}
+            {/* ===== HERO SECTION ===== */}
             <header className="hero-section">
                 <div className="hero-overlay"></div>
                 <div className="hero-content">
                     <h1 className="hero-title">
-                        <span className="hero-title-accent">Tarifs</span>
+                        <span className="hero-title-accent">Nos Tarifs</span>
                     </h1>
+                    <p className="hero-subtitle">
+                        Une éducation d'excellence accessible, pensée pour chaque famille
+                    </p>
+                    <div className="hero-decoration">
+                        <span className="hero-line"></span>
+                    </div>
                 </div>
             </header>
 
-
-            {/* Valeurs courtes */}
-            <section className="valeurs">
-                <div className="wrap">
-                    <div className="valeurs-liste">
-                        <div className="valeur-item">
-                            <span className="valeur-puce">—</span>
-                            <div>
-                                <strong>Transparence totale</strong>
-                                <p>Chaque poste est expliqué, rien n'est caché.</p>
-                            </div>
-                        </div>
-                        <div className="valeur-item">
-                            <span className="valeur-puce">—</span>
-                            <div>
-                                <strong>Écoute et souplesse</strong>
-                                <p>Nous adaptons la formule à votre situation.</p>
-                            </div>
-                        </div>
-                        <div className="valeur-item">
-                            <span className="valeur-puce">—</span>
-                            <div>
-                                <strong>Solidarité réelle</strong>
-                                <p>Un fonds d'entraide pour les moments difficiles.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Modalités de paiement */}
-            <section className="modalites">
-                <div className="wrap">
-                    <div className="section-intro">
-                        <h2>Comment régler les frais de scolarité ?</h2>
-                        <p>Trois formules, pensées pour s'adapter à votre budget.</p>
-                    </div>
-
-                    <div className="modalites-grille">
-                        <div className="modalite">
-                            <div className="modalite-top">
-                                <h3>Annuel</h3>
-                                <span className="badge-economie">−3%</span>
-                            </div>
-                            <p className="modalite-desc">
-                                Un seul paiement à la rentrée. Simple et avantageux.
-                            </p>
-                            <ul className="modalite-details">
-                                <li>Règlement unique en septembre</li>
-                                <li>Remise de 3 % sur le total annuel</li>
-                            </ul>
-                            <button className="btn-choisir" onClick={() => setIsContactOpen(true)}>
-                                Choisir cette formule
-                            </button>
-                        </div>
-
-                        <div className="modalite modalite-phare">
-                            <div className="phare-label">La plus choisie</div>
-                            <div className="modalite-top">
-                                <h3>Trimestriel</h3>
-                            </div>
-                            <p className="modalite-desc">
-                                Trois versements répartis sur l'année. L'équilibre parfait.
-                            </p>
-                            <ul className="modalite-details">
-                                <li>40 % en septembre</li>
-                                <li>30 % en janvier</li>
-                                <li>30 % en avril</li>
-                            </ul>
-                            <button className="btn-choisir btn-phare" onClick={() => setIsContactOpen(true)}>
-                                Choisir cette formule
-                            </button>
-                        </div>
-
-                        <div className="modalite">
-                            <div className="modalite-top">
-                                <h3>Mensuel</h3>
-                            </div>
-                            <p className="modalite-desc">
-                                Dix mensualités de septembre à juin. Le maximum de flexibilité.
-                            </p>
-                            <ul className="modalite-details">
-                                <li>10 prélèvements réguliers</li>
-                                <li>Sans frais supplémentaires</li>
-                            </ul>
-                            <button className="btn-choisir" onClick={() => setIsContactOpen(true)}>
-                                Choisir cette formule
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Réductions */}
-            <section className="reductions">
-                <div className="wrap">
-                    <div className="section-intro">
-                        <h2>Réductions pour les familles</h2>
-                        <p>Plus vos enfants sont inscrits chez nous, plus vous bénéficiez d'avantages.</p>
-                    </div>
-
-                    <div className="reductions-grille">
-                        <div className="reduction-ligne">
-                            <span className="reduction-label">2ème enfant inscrit</span>
-                            <span className="reduction-taux">5 %</span>
-                            <span className="reduction-detail">sur les frais de scolarité</span>
-                        </div>
-                        <div className="reduction-ligne">
-                            <span className="reduction-label">3ème enfant inscrit</span>
-                            <span className="reduction-taux">8 %</span>
-                            <span className="reduction-detail">sur les frais de scolarité</span>
-                        </div>
-                        <div className="reduction-ligne">
-                            <span className="reduction-label">4ème enfant et plus</span>
-                            <span className="reduction-taux">12 %</span>
-                            <span className="reduction-detail">sur les frais de scolarité</span>
-                        </div>
-                        <div className="reduction-ligne reduction-separateur">
-                            <span className="reduction-label">Inscription avant le 31 mars</span>
-                            <span className="reduction-taux">5 %</span>
-                            <span className="reduction-detail">inscription anticipée</span>
-                        </div>
-                        <div className="reduction-ligne">
-                            <span className="reduction-label">Paiement comptant</span>
-                            <span className="reduction-taux">3 %</span>
-                            <span className="reduction-detail">remise supplémentaire</span>
-                        </div>
-                    </div>
-
-                    <p className="reductions-note">
-                        <Shield size={15} />
-                        Les réductions sont cumulables dans la limite de 15 % du total annuel.
+  {/* ===== VALEURS FONDAMENTALES — Cartes horizontales minces en mouvement infini ===== */}
+            <section className="values-section">
+                <div className="section-header">
+                    <h2>Notre engagement <span className="highlight">pour vous</span></h2>
+                    <p className="section-subtitle">
+                        Au-delà des chiffres, des valeurs qui nous guident au quotidien
                     </p>
                 </div>
-            </section>
 
-            {/* Règlement financier */}
-            <section className="reglement">
-                <div className="wrap">
-                    <div className="reglement-bloc">
-                        <div className="reglement-texte">
-                            <FileText size={20} className="reglement-icone" />
-                            <div>
-                                <h3>Règlement financier complet</h3>
-                                <p>
-                                    Conditions générales, garanties, procédures en cas de difficultés —
-                                    tout est consigné dans notre document officiel.
-                                </p>
-                            </div>
-                        </div>
-                        <button className="btn-telechargement" onClick={() => setIsContactOpen(true)}>
-                            Télécharger le document
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            {/* FAQ */}
-            <section className="faq">
-                <div className="wrap wrap-etroit">
-                    <div className="section-intro">
-                        <h2>Questions fréquentes</h2>
-                    </div>
-
-                    <div className="faq-liste">
-                        {faqItems.map((item, index) => (
-                            <div
-                                key={index}
-                                className={`faq-item ${activeFaq === index ? "ouvert" : ""}`}
-                            >
-                                <button
-                                    className="faq-question"
-                                    onClick={() => toggleFaq(index)}
+                <div 
+                    className="values-carousel-wrapper"
+                    onMouseEnter={() => setIsCarouselHovered(true)}
+                    onMouseLeave={() => setIsCarouselHovered(false)}
+                >
+                    <div 
+                        className="values-carousel-track"
+                        style={{ animationPlayState: isCarouselHovered ? 'paused' : 'running' }}
+                    >
+                        {infiniteValues.map((value, index) => {
+                            const Icon = value.icon;
+                            return (
+                                <article
+                                    key={`${value.title}-${index}`}
+                                    className="value-card-horizontal"
+                                    style={{ "--accent-color": getAccentColor(value.color) }}
                                 >
-                                    <span>{item.question}</span>
-                                    {activeFaq === index
-                                        ? <ChevronUp size={18} />
-                                        : <ChevronDown size={18} />
-                                    }
-                                </button>
-                                {activeFaq === index && (
-                                    <div className="faq-reponse">
-                                        <p>{item.reponse}</p>
+                                    <div className="card-icon-wrapper">
+                                        <Icon className="card-icon" size={24} strokeWidth={1.8} />
+                                        <div className="icon-glow" />
                                     </div>
-                                )}
-                            </div>
-                        ))}
+                                    <div className="card-content">
+                                        <h3 className="card-title">{value.title}</h3>
+                                        <p className="card-description">{value.description}</p>
+                                    </div>
+                                    <div className="card-accent-line" />
+                                </article>
+                            );
+                        })}
+                    </div>
+                    <div className="carousel-fade-left" aria-hidden="true" />
+                    <div className="carousel-fade-right" aria-hidden="true" />
+                </div>
+            </section>
+
+           
+            {/* ===== BOUTON CONTACT — Après les formules ===== */}
+            <section className="contact-cta-section">
+                <div className="contact-cta-wrapper">
+                    <div className="contact-cta-overlay" aria-hidden="true" />
+                    <div className="contact-cta-content">
+                        <div className="contact-cta-text">
+                            <h3>Une question sur nos tarifs ?</h3>
+                            <p>Notre équipe vous répond sous 24h pour établir un devis personnalisé</p>
+                        </div>
+                        <button className="contact-cta-btn" onClick={() => setIsContactOpen(true)}>
+                            <span className="btn-text">Demander un devis</span>
+                            <ArrowRight className="btn-icon" size={18} />
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            {/* ===== FORMULES DE PAIEMENT — Simples et rassurantes ===== */}
+            <section className="payment-section">
+                <div className="section-header">
+                    <h2>Des modalités de paiement <span className="highlight">flexibles</span></h2>
+                    <p className="section-subtitle">
+                        Choisissez le rythme qui vous convient, sans pression
+                    </p>
+                </div>
+
+                <div className="payment-grid">
+                    <div className="payment-card">
+                        <div className="payment-icon"><Calendar size={32} /></div>
+                        <h3 className="payment-title">Paiement annuel</h3>
+                        <span className="payment-benefit">−3% de remise</span>
+                        <p className="payment-desc">Un seul règlement à la rentrée. Simple et économique.</p>
+                        <button className="btn-choose" onClick={() => setIsContactOpen(true)}>
+                            En savoir plus <ArrowRight size={16} />
+                        </button>
                     </div>
 
-                    <div className="faq-bas">
-                        <p>Une question sans réponse ici ?</p>
-                        <button className="btn-contact" onClick={() => setIsContactOpen(true)}>
-                            Écrire à notre équipe financière
+                    <div className="payment-card highlighted">
+                        <div className="payment-icon"><CreditCard size={32} /></div>
+                        <span className="badge-populaire">⭐ La plus choisie</span>
+                        <h3 className="payment-title">Paiement trimestriel</h3>
+                        <span className="payment-benefit">3 versements par an</span>
+                        <p className="payment-desc">L'option équilibrée, préférée par nos familles.</p>
+                        <button className="btn-choose" onClick={() => setIsContactOpen(true)}>
+                            En savoir plus <ArrowRight size={16} />
+                        </button>
+                    </div>
+
+                    <div className="payment-card">
+                        <div className="payment-icon"><Clock size={32} /></div>
+                        <h3 className="payment-title">Paiement mensuel</h3>
+                        <span className="payment-benefit">10 prélèvements</span>
+                        <p className="payment-desc">De septembre à juin, pour lisser votre budget en douceur.</p>
+                        <button className="btn-choose" onClick={() => setIsContactOpen(true)}>
+                            En savoir plus <ArrowRight size={16} />
                         </button>
                     </div>
                 </div>
             </section>
 
-            {/* CTA final sobre */}
-            <section className="cta-final">
-                <div className="wrap">
-                    <div className="cta-contenu">
-                        <h2>Prêt à inscrire votre enfant ?</h2>
-                        <p>Notre équipe vous accompagne à chaque étape, administrativement et financièrement.</p>
-                        <div className="cta-boutons">
-                            <button className="btn-rdv" onClick={() => setIsContactOpen(true)}>
-                                Demander un rendez-vous
-                            </button>
-                            <button className="btn-brochure" onClick={() => setIsContactOpen(true)}>
-                                Télécharger la brochure
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+         
+            {/* ===== COMPOSANT HOMEINFO ===== */}
+            <HomeInfo />
 
-            <ContactPopup
-                isOpen={isContactOpen}
-                onClose={() => setIsContactOpen(false)}
-            />
+            {/* ===== POPUP CONTACT ===== */}
+            <ContactPopup isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
 
             <style jsx>{`
-                /* ─── BASE ─── */
+                /* ===== BASE ===== */
+                * { box-sizing: border-box; }
 
+                .tarifs-page {
+                    font-family: "Inter", system-ui, sans-serif;
+                    color: #1e293b;
+                    background: #ffffff;
+                }
 
-
-                  .hero-section {
+                /* ===== HERO SECTION ===== */
+                .hero-section {
                     position: relative;
-                    min-height: 85vh;
+                    min-height: 60vh;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -281,18 +189,14 @@ function Tarifs() {
                     background-image: url("/tarr.jpg");
                     background-size: cover;
                     background-position: center;
-                    background-repeat: no-repeat;
                     background-attachment: fixed;
                     overflow: hidden;
                 }
 
                 .hero-overlay {
                     position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(255, 255, 255, 0.85);
+                    inset: 0;
+                    background: rgba(255, 255, 255, 0.88);
                     z-index: 1;
                 }
 
@@ -301,25 +205,15 @@ function Tarifs() {
                     z-index: 2;
                     max-width: 900px;
                     padding: 20px;
-                    animation: fadeInUp 0.9s ease-out;
-                }
-
-                .hero-title {
-                    margin: 0;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
                 }
 
                 .hero-title-accent {
-                    font-size: 5rem;
+                    font-size: clamp(2.5rem, 5vw, 4rem);
                     font-weight: 800;
-                    letter-spacing: 4px;
+                    letter-spacing: 2px;
                     color: #ee721f;
-                    font-family: "Playfair Display", "Times New Roman", serif;
+                    font-family: "Playfair Display", serif;
                     text-transform: uppercase;
-                    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-                    animation: slideInRight 0.8s ease-out;
                     position: relative;
                     display: inline-block;
                 }
@@ -327,601 +221,596 @@ function Tarifs() {
                 .hero-title-accent::before {
                     content: "";
                     position: absolute;
-                    bottom: -15px;
+                    bottom: -12px;
                     left: 50%;
                     transform: translateX(-50%);
-                    width: 100px;
+                    width: 80px;
                     height: 3px;
-                    background: linear-gradient(
-                        90deg,
-                        transparent,
-                        #ee721f,
-                        #ee721f,
-                        transparent
-                    );
+                    background: linear-gradient(90deg, transparent, #ee721f, transparent);
                     border-radius: 3px;
                 }
 
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(40px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                .hero-subtitle {
+                    font-size: clamp(1rem, 2vw, 1.2rem);
+                    font-weight: 400;
+                    margin-top: 35px;
+                    color: #475569;
+                    font-family: "Inter", sans-serif;
+                    max-width: 600px;
+                    margin-left: auto;
+                    margin-right: auto;
                 }
 
-                @keyframes slideInRight {
-                    from {
-                        opacity: 0;
-                        transform: translateX(60px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
+                .hero-decoration {
+                    margin-top: 25px;
                 }
 
-                
-                .tarifs-page {
-                    font-family: "Inter", "Helvetica Neue", sans-serif;
-                    color: #1a1a1a;
-                }
-
-                .wrap {
-                    max-width: 1100px;
-                    margin: 0 auto;
-                    padding: 0 24px;
-                }
-
-                .wrap-etroit {
-                    max-width: 760px;
-                    margin: 0 auto;
-                    padding: 0 24px;
-                }
-
-                /* ─── HERO ─── */
-                .hero {
-                    background: #f9f6f1;
-                    border-bottom: 1px solid #e8e2d9;
-                    padding: 90px 24px 80px;
-                    text-align: center;
-                }
-
-                .hero-eyebrow {
-                    font-size: 0.78rem;
-                    letter-spacing: 0.12em;
-                    text-transform: uppercase;
-                    color: #9e8b78;
-                    margin: 0 0 18px;
-                }
-
-                .hero h1 {
-                    font-size: 3.2rem;
-                    font-weight: 700;
-                    color: #1a1a1a;
-                    margin: 0 0 20px;
-                    letter-spacing: -0.02em;
-                    line-height: 1.1;
-                }
-
-                .hero-sub {
-                    font-size: 1.1rem;
-                    color: #666;
-                    max-width: 520px;
-                    margin: 0 auto;
-                    line-height: 1.65;
-                }
-
-                /* ─── VALEURS ─── */
-                .valeurs {
-                    padding: 60px 0;
-                    background: #fff;
-                    border-bottom: 1px solid #efefef;
-                }
-
-                .valeurs-liste {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 40px;
-                }
-
-                .valeur-item {
-                    display: flex;
-                    gap: 14px;
-                    align-items: flex-start;
-                }
-
-                .valeur-puce {
-                    color: #e07020;
-                    font-size: 1.2rem;
-                    font-weight: 300;
-                    margin-top: 2px;
-                    flex-shrink: 0;
-                }
-
-                .valeur-item strong {
-                    display: block;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    color: #1a1a1a;
-                    margin-bottom: 5px;
-                }
-
-                .valeur-item p {
-                    font-size: 0.88rem;
-                    color: #777;
-                    line-height: 1.55;
-                    margin: 0;
-                }
-
-                /* ─── SECTION INTRO ─── */
-                .section-intro {
-                    margin-bottom: 44px;
-                }
-
-                .section-intro h2 {
-                    font-size: 1.75rem;
-                    font-weight: 700;
-                    color: #1a1a1a;
-                    margin: 0 0 10px;
-                    letter-spacing: -0.01em;
-                }
-
-                .section-intro p {
-                    font-size: 0.95rem;
-                    color: #777;
-                    margin: 0;
-                }
-
-                /* ─── MODALITÉS ─── */
-                .modalites {
-                    padding: 72px 0;
-                    background: #fff;
-                }
-
-                .modalites-grille {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 24px;
-                }
-
-                .modalite {
-                    border: 1.5px solid #e8e4df;
-                    border-radius: 14px;
-                    padding: 32px 28px;
+                .hero-line {
+                    display: inline-block;
+                    width: 50px;
+                    height: 2px;
+                    background: #ee721f;
+                    border-radius: 2px;
                     position: relative;
-                    background: #fdfcfb;
-                    transition: border-color 0.2s;
                 }
 
-                .modalite:hover {
-                    border-color: #c8c0b8;
+                .hero-line::before,
+                .hero-line::after {
+                    content: "";
+                    position: absolute;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #ee721f;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+                .hero-line::before { left: -18px; }
+                .hero-line::after { right: -18px; }
+
+                /* ===== SECTIONS COMMUNES ===== */
+                .section-header {
+                    text-align: center;
+                    max-width: 700px;
+                    margin: 0 auto 2.5rem;
+                    padding: 0 1.5rem;
                 }
 
-                .modalite-phare {
-                    border-color: #e07020;
-                    background: #fff;
+                .section-header h2 {
+                    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+                    font-weight: 600;
+                    color: #0f172a;
+                    margin-bottom: 1rem;
+                    font-family: "Playfair Display", serif;
                 }
 
-                .phare-label {
+                .section-header .highlight {
+                    color: #ee721f;
+                    font-style: italic;
+                }
+
+                .section-subtitle {
+                    font-size: 1rem;
+                    color: #64748b;
+                    line-height: 1.6;
+                    font-family: "Inter", sans-serif;
+                }
+
+                /* ===== TRANSPARENCY SECTION ===== */
+                .transparency-section {
+                    padding: 4rem 1.5rem 2rem;
+                    background: #ffffff;
+                }
+
+                .included-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                    gap: 1.5rem;
+                    max-width: 1000px;
+                    margin: 0 auto 2rem;
+                }
+
+                .included-card {
+                    text-align: center;
+                    padding: 1.5rem;
+                    background: #f8fafc;
+                    border-radius: 16px;
+                    transition: all 0.3s ease;
+                }
+
+                .included-card:hover {
+                    transform: translateY(-4px);
+                    background: #ffffff;
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+                }
+
+                .included-icon {
+                    color: #ee721f;
+                    margin-bottom: 1rem;
+                }
+
+                .included-card h3 {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5rem;
+                    color: #0f172a;
+                }
+
+                .included-card p {
+                    font-size: 0.9rem;
+                    color: #64748b;
+                    line-height: 1.5;
+                }
+
+                .transparency-note {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 1rem;
+                    background: #fef9f5;
+                    border-radius: 12px;
+                    max-width: 500px;
+                    margin: 0 auto;
+                    color: #ee721f;
+                    font-size: 0.85rem;
+                }
+
+                /* ===== PAYMENT SECTION ===== */
+                .payment-section {
+                    padding: 2rem 1.5rem 4rem;
+                    background: #f8fafc;
+                }
+
+                .payment-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 2rem;
+                    max-width: 1000px;
+                    margin: 0 auto;
+                }
+
+                .payment-card {
+                    background: white;
+                    border-radius: 20px;
+                    padding: 2rem;
+                    text-align: center;
+                    position: relative;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    border: 1px solid #e8e8e8;
+                }
+
+                .payment-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                    border-color: #ee721f30;
+                }
+
+                .payment-card.highlighted {
+                    border-color: #ee721f;
+                    background: linear-gradient(135deg, #ffffff 0%, #fef9f5 100%);
+                }
+
+                .payment-icon {
+                    margin-bottom: 1rem;
+                    color: #ee721f;
+                }
+
+                .badge-populaire {
                     position: absolute;
                     top: -12px;
-                    left: 24px;
-                    background: #e07020;
-                    color: #fff;
-                    font-size: 0.72rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: linear-gradient(135deg, #ee721f, #f97316);
+                    color: white;
+                    font-size: 0.7rem;
                     font-weight: 600;
-                    letter-spacing: 0.06em;
-                    text-transform: uppercase;
-                    padding: 4px 12px;
+                    padding: 4px 14px;
                     border-radius: 20px;
-                }
-
-                .modalite-top {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    margin-bottom: 10px;
-                }
-
-                .modalite-top h3 {
-                    font-size: 1.2rem;
-                    font-weight: 700;
-                    color: #1a1a1a;
-                    margin: 0;
-                }
-
-                .badge-economie {
-                    background: #fef3e8;
-                    color: #c85c10;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    padding: 3px 8px;
-                    border-radius: 6px;
-                }
-
-                .modalite-desc {
-                    font-size: 0.88rem;
-                    color: #888;
-                    line-height: 1.55;
-                    margin: 0 0 18px;
-                }
-
-                .modalite-details {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0 0 28px;
-                    border-top: 1px solid #eee;
-                    padding-top: 16px;
-                }
-
-                .modalite-details li {
-                    font-size: 0.85rem;
-                    color: #555;
-                    padding: 5px 0;
-                    padding-left: 14px;
-                    position: relative;
-                }
-
-                .modalite-details li::before {
-                    content: "·";
-                    position: absolute;
-                    left: 0;
-                    color: #e07020;
-                    font-size: 1.2rem;
-                    line-height: 1;
-                    top: 3px;
-                }
-
-                .btn-choisir {
-                    width: 100%;
-                    padding: 11px 0;
-                    border: 1.5px solid #1a1a1a;
-                    background: transparent;
-                    color: #1a1a1a;
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .btn-choisir:hover {
-                    background: #1a1a1a;
-                    color: #fff;
-                }
-
-                .btn-phare {
-                    border-color: #e07020;
-                    color: #e07020;
-                }
-
-                .btn-phare:hover {
-                    background: #e07020;
-                    color: #fff;
-                }
-
-                /* ─── RÉDUCTIONS ─── */
-                .reductions {
-                    padding: 72px 0;
-                    background: #f9f6f1;
-                    border-top: 1px solid #efefef;
-                    border-bottom: 1px solid #efefef;
-                }
-
-                .reductions-grille {
-                    border: 1.5px solid #e4ddd6;
-                    border-radius: 12px;
-                    overflow: hidden;
-                    background: #fff;
-                    margin-bottom: 18px;
-                }
-
-                .reduction-ligne {
-                    display: grid;
-                    grid-template-columns: 1fr auto auto;
-                    align-items: center;
-                    gap: 20px;
-                    padding: 18px 28px;
-                    border-bottom: 1px solid #f0ece7;
-                }
-
-                .reduction-ligne:last-child {
-                    border-bottom: none;
-                }
-
-                .reduction-separateur {
-                    border-top: 2px solid #f0ece7;
-                }
-
-                .reduction-label {
-                    font-size: 0.92rem;
-                    color: #333;
-                    font-weight: 500;
-                }
-
-                .reduction-taux {
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    color: #e07020;
-                    min-width: 52px;
-                    text-align: right;
-                }
-
-                .reduction-detail {
-                    font-size: 0.78rem;
-                    color: #aaa;
-                    min-width: 160px;
-                    text-align: right;
-                }
-
-                .reductions-note {
-                    display: flex;
-                    align-items: center;
-                    gap: 7px;
-                    font-size: 0.8rem;
-                    color: #999;
-                }
-
-                .reductions-note svg {
-                    flex-shrink: 0;
-                    color: #bbb;
-                }
-
-                /* ─── RÈGLEMENT ─── */
-                .reglement {
-                    padding: 60px 0;
-                    background: #fff;
-                }
-
-                .reglement-bloc {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 24px;
-                    padding: 28px 32px;
-                    border: 1.5px solid #e8e4df;
-                    border-radius: 12px;
-                    background: #fdfcfb;
-                }
-
-                .reglement-texte {
-                    display: flex;
-                    align-items: flex-start;
-                    gap: 14px;
-                }
-
-                .reglement-icone {
-                    color: #e07020;
-                    margin-top: 2px;
-                    flex-shrink: 0;
-                }
-
-                .reglement-texte h3 {
-                    font-size: 1rem;
-                    font-weight: 700;
-                    color: #1a1a1a;
-                    margin: 0 0 5px;
-                }
-
-                .reglement-texte p {
-                    font-size: 0.85rem;
-                    color: #888;
-                    margin: 0;
-                    line-height: 1.55;
-                }
-
-                .btn-telechargement {
-                    flex-shrink: 0;
-                    padding: 11px 24px;
-                    border: 1.5px solid #e07020;
-                    background: transparent;
-                    color: #e07020;
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: all 0.2s;
                     white-space: nowrap;
                 }
 
-                .btn-telechargement:hover {
-                    background: #e07020;
-                    color: #fff;
-                }
-
-                /* ─── FAQ ─── */
-                .faq {
-                    padding: 72px 0;
-                    background: #fff;
-                    border-top: 1px solid #efefef;
-                }
-
-                .faq-liste {
-                    margin-bottom: 40px;
-                }
-
-                .faq-item {
-                    border-bottom: 1px solid #eee;
-                }
-
-                .faq-question {
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 16px;
-                    padding: 20px 0;
-                    background: transparent;
-                    border: none;
-                    cursor: pointer;
-                    text-align: left;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    color: #1a1a1a;
-                    transition: color 0.2s;
-                }
-
-                .faq-question:hover {
-                    color: #e07020;
-                }
-
-                .faq-question svg {
-                    flex-shrink: 0;
-                    color: #bbb;
-                }
-
-                .faq-reponse {
-                    padding-bottom: 20px;
-                }
-
-                .faq-reponse p {
-                    font-size: 0.9rem;
-                    color: #666;
-                    line-height: 1.65;
-                    margin: 0;
-                }
-
-                .faq-bas {
-                    padding: 28px;
-                    background: #f9f6f1;
-                    border-radius: 10px;
-                    text-align: center;
-                }
-
-                .faq-bas p {
-                    font-size: 0.9rem;
-                    color: #888;
-                    margin: 0 0 12px;
-                }
-
-                .btn-contact {
-                    background: transparent;
-                    border: 1.5px solid #1a1a1a;
-                    color: #1a1a1a;
-                    padding: 10px 24px;
-                    border-radius: 8px;
-                    font-size: 0.85rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .btn-contact:hover {
-                    background: #1a1a1a;
-                    color: #fff;
-                }
-
-                /* ─── CTA FINAL ─── */
-                .cta-final {
-                    padding: 80px 0;
-                    background: #1a1a1a;
-                }
-
-                .cta-contenu {
-                    max-width: 600px;
-                }
-
-                .cta-contenu h2 {
-                    font-size: 2rem;
+                .payment-title {
+                    font-size: 1.3rem;
                     font-weight: 700;
-                    color: #fff;
-                    margin: 0 0 12px;
-                    letter-spacing: -0.01em;
+                    color: #0f172a;
+                    margin: 0.5rem 0;
                 }
 
-                .cta-contenu p {
-                    font-size: 0.95rem;
-                    color: #aaa;
-                    margin: 0 0 32px;
+                .payment-benefit {
+                    display: inline-block;
+                    background: rgba(238, 114, 31, 0.1);
+                    color: #ee721f;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    padding: 4px 12px;
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+                }
+
+                .payment-desc {
+                    font-size: 0.9rem;
+                    color: #64748b;
                     line-height: 1.6;
+                    margin-bottom: 1.5rem;
                 }
 
-                .cta-boutons {
+                .btn-choose {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 10px 24px;
+                    background: transparent;
+                    color: #0f172a;
+                    border: 1.5px solid #cbd5e1;
+                    border-radius: 30px;
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-choose:hover {
+                    background: #0f172a;
+                    color: white;
+                    border-color: #0f172a;
+                }
+
+                .payment-card.highlighted .btn-choose {
+                    border-color: #ee721f;
+                    color: #ee721f;
+                }
+
+                .payment-card.highlighted .btn-choose:hover {
+                    background: #ee721f;
+                    color: white;
+                }
+
+                /* ===== CONTACT CTA ===== */
+                .contact-cta-section {
+                    padding: 2rem 1.5rem;
+                    background: #ffffff;
+                }
+
+                .contact-cta-wrapper {
+                    position: relative;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+                }
+
+                .contact-cta-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, #ee721f 0%, #004494 100%);
+                    z-index: 1;
+                }
+
+                .contact-cta-content {
+                    position: relative;
+                    z-index: 2;
                     display: flex;
-                    gap: 14px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 1.5rem 2rem;
+                    gap: 1.5rem;
                     flex-wrap: wrap;
                 }
 
-                .btn-rdv {
-                    padding: 13px 28px;
-                    background: #e07020;
-                    color: #fff;
+                .contact-cta-text h3 {
+                    color: white;
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    margin: 0 0 0.3rem 0;
+                }
+
+                .contact-cta-text p {
+                    color: rgba(255, 255, 255, 0.9);
+                    margin: 0;
+                    font-size: 0.85rem;
+                }
+
+                .contact-cta-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 12px 28px;
+                    background: rgba(255, 255, 255, 0.15);
+                    color: white;
+                    border: 1.5px solid rgba(255, 255, 255, 0.4);
+                    border-radius: 50px;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(8px);
+                }
+
+                .contact-cta-btn:hover {
+                    background: rgba(255, 255, 255, 0.25);
+                    transform: translateY(-2px);
+                }
+
+                .btn-icon {
+                    transition: transform 0.3s ease;
+                }
+
+                .contact-cta-btn:hover .btn-icon {
+                    transform: translateX(4px);
+                }
+
+                /* ===== VALUES SECTION — Carousel horizontal mince ===== */
+                .values-section {
+                    padding: 3rem 0;
+                    background: #f8fafc;
+                    overflow: hidden;
+                }
+
+                .values-carousel-wrapper {
+                    position: relative;
+                    width: 100%;
+                    overflow: hidden;
+                    padding: 1rem 0;
+                }
+
+                .values-carousel-track {
+                    display: flex;
+                    gap: 1.2rem;
+                    padding: 0.5rem 1rem;
+                    animation: scrollInfinite 40s linear infinite;
+                    width: max-content;
+                }
+
+                .values-carousel-track:hover {
+                    animation-play-state: paused;
+                }
+
+                @keyframes scrollInfinite {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-33.333%); }
+                }
+
+                .carousel-fade-left,
+                .carousel-fade-right {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    width: 60px;
+                    z-index: 10;
+                    pointer-events: none;
+                }
+
+                .carousel-fade-left {
+                    left: 0;
+                    background: linear-gradient(to right, #f8fafc 0%, transparent 100%);
+                }
+
+                .carousel-fade-right {
+                    right: 0;
+                    background: linear-gradient(to left, #f8fafc 0%, transparent 100%);
+                }
+
+                /* Carte horizontale mince */
+                .value-card-horizontal {
+                    flex: 0 0 360px;
+                    height: 80px;
+                    background: white;
+                    border-radius: 14px;
+                    padding: 0 1.2rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    position: relative;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+                    border: 1px solid rgba(226, 232, 240, 0.7);
+                    transition: all 0.35s ease;
+                    overflow: hidden;
+                }
+
+                .value-card-horizontal:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+                }
+
+                .card-icon-wrapper {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 12px;
+                    background: var(--accent-color, rgba(238, 114, 31, 0.12));
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+
+                .card-icon {
+                    color: #0f172a;
+                }
+
+                .icon-glow {
+                    position: absolute;
+                    inset: -15px;
+                    border-radius: 50%;
+                    background: var(--accent-color, rgba(238, 114, 31, 0.2));
+                    opacity: 0;
+                    filter: blur(12px);
+                    transition: opacity 0.3s ease;
+                    pointer-events: none;
+                }
+
+                .value-card-horizontal:hover .icon-glow {
+                    opacity: 1;
+                }
+
+                .card-content {
+                    flex: 1;
+                    min-width: 0;
+                }
+
+                .card-title {
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    color: #0f172a;
+                    margin: 0 0 0.2rem 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .card-description {
+                    font-size: 0.78rem;
+                    color: #64748b;
+                    margin: 0;
+                    line-height: 1.4;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .card-accent-line {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 2.5px;
+                    background: var(--accent-color, #ee721f);
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    transition: transform 0.35s ease;
+                }
+
+                .value-card-horizontal:hover .card-accent-line {
+                    transform: scaleX(1);
+                }
+
+                /* ===== TRUST SECTION — Cadre bleu inspiré du logo ===== */
+                .trust-section {
+                    padding: 4rem 1.5rem;
+                    background: linear-gradient(135deg, #004494 0%, #002d5f 100%);
+                    position: relative;
+                }
+
+                .trust-container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    text-align: center;
+                    color: white;
+                }
+
+                .trust-icon {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 1.5rem;
+                    color: #ee721f;
+                }
+
+                .trust-container h2 {
+                    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+                    font-weight: 600;
+                    margin-bottom: 1.5rem;
+                    font-family: "Playfair Display", serif;
+                }
+
+                .trust-container h2 .highlight {
+                    color: #ee721f;
+                    font-style: italic;
+                }
+
+                .trust-container p {
+                    font-size: 1rem;
+                    line-height: 1.7;
+                    margin-bottom: 1.5rem;
+                    opacity: 0.95;
+                }
+
+                .trust-quote {
+                    font-style: italic;
+                    padding: 1rem 2rem;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 20px;
+                    margin: 1.5rem 0;
+                }
+
+                .trust-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 12px 28px;
+                    background: #ee721f;
+                    color: white;
                     border: none;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
+                    border-radius: 50px;
                     font-weight: 600;
+                    font-size: 0.95rem;
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: all 0.3s ease;
+                    margin-top: 1rem;
                 }
 
-                .btn-rdv:hover {
-                    background: #c85c10;
+                .trust-btn:hover {
+                    background: #f97316;
+                    transform: translateY(-2px);
+                    box-shadow: 0 12px 30px rgba(238, 114, 31, 0.3);
                 }
 
-                .btn-brochure {
-                    padding: 13px 28px;
-                    background: transparent;
-                    color: #fff;
-                    border: 1.5px solid rgba(255, 255, 255, 0.3);
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .btn-brochure:hover {
-                    border-color: rgba(255, 255, 255, 0.7);
-                }
-
-                /* ─── RESPONSIVE ─── */
+                /* ===== RESPONSIVE ===== */
                 @media (max-width: 768px) {
-                    .hero h1 {
-                        font-size: 2.2rem;
-                    }
-
-                    .valeurs-liste {
-                        grid-template-columns: 1fr;
-                        gap: 24px;
-                    }
-
-                    .modalites-grille {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .reduction-ligne {
-                        grid-template-columns: 1fr auto;
-                        grid-template-rows: auto auto;
-                    }
-
-                    .reduction-detail {
-                        grid-column: 1;
-                        text-align: left;
-                        color: #bbb;
-                    }
-
-                    .reglement-bloc {
+                    .hero-section { min-height: 50vh; }
+                    .hero-title-accent { font-size: 2rem; }
+                    
+                    .payment-grid { gap: 1.5rem; }
+                    .payment-card { padding: 1.5rem; }
+                    
+                    .value-card-horizontal { flex: 0 0 300px; height: 75px; }
+                    .card-title { font-size: 0.85rem; }
+                    .card-description { font-size: 0.72rem; }
+                    
+                    .contact-cta-content {
                         flex-direction: column;
-                        align-items: flex-start;
-                    }
-
-                    .cta-boutons {
-                        flex-direction: column;
-                    }
-
-                    .btn-rdv,
-                    .btn-brochure {
-                        width: 100%;
                         text-align: center;
+                        padding: 1.2rem;
+                    }
+                    .contact-cta-btn { width: 100%; justify-content: center; }
+                    
+                    .carousel-fade-left, .carousel-fade-right { width: 30px; }
+                    
+                    .trust-container h2 { font-size: 1.5rem; }
+                    .trust-quote { padding: 1rem; }
+                }
+
+                @media (max-width: 480px) {
+                    .included-grid { grid-template-columns: 1fr; }
+                    .value-card-horizontal { flex: 0 0 270px; height: 70px; padding: 0 1rem; }
+                    .card-icon-wrapper { width: 38px; height: 38px; }
+                    .card-title { font-size: 0.8rem; }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .value-card-horizontal,
+                    .payment-card,
+                    .trust-btn,
+                    .values-carousel-track {
+                        animation: none !important;
+                        transition: none !important;
                     }
                 }
             `}</style>
         </div>
     );
 }
+
+const getAccentColor = (colorName) => {
+    const palette = {
+        rose: "rgba(244, 63, 94, 0.12)",
+        blue: "rgba(59, 130, 246, 0.12)",
+        emerald: "rgba(16, 185, 129, 0.12)",
+        amber: "rgba(245, 158, 11, 0.12)"
+    };
+    return palette[colorName] || "rgba(238, 114, 31, 0.12)";
+};
 
 export default Tarifs;

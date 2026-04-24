@@ -12,13 +12,13 @@ function HomeInfo() {
         {/* Background texture */}
         <div className="bgTexture" />
 
-        <div className="container">
+        <div className="container1">
           {/* Left: Text content */}
-          <div className="textCol">
-            <span className="eyebrow">On est là pour vous</span>
-            <h2 className="heading">
+          <div className="textCol1">
+            <span className="eyebrow1">On est là pour vous</span>
+            <h2 className="heading1">
               Des questions ?<br />
-              <em className="headingAccent">Parlons-en.</em>
+              <em className="heading1Accent">Parlons-en.</em>
             </h2>
             <p className="body">
               Notre équipe vous accompagne à chaque étape — que ce soit pour
@@ -119,7 +119,7 @@ function HomeInfo() {
           pointer-events: none;
         }
 
-        .container {
+        .container1 {
           max-width: 1140px;
           margin: 0 auto;
           display: grid;
@@ -130,13 +130,13 @@ function HomeInfo() {
           z-index: 2;
         }
 
-        .textCol {
+        .textCol1 {
           display: flex;
           flex-direction: column;
           gap: 0;
         }
 
-        .eyebrow {
+        .eyebrow1 {
           display: inline-block;
           font-size: 0.78rem;
           font-family: 'Arial', sans-serif;
@@ -147,7 +147,7 @@ function HomeInfo() {
           margin-bottom: 16px;
         }
 
-        .heading {
+        .heading1 {
           font-size: 2.6rem;
           font-weight: 400;
           color: #0f172a;
@@ -155,7 +155,7 @@ function HomeInfo() {
           margin: 0 0 20px 0;
         }
 
-        .headingAccent {
+        .heading1Accent {
           color: #1e3a8a;
           font-style: italic;
         }
@@ -325,22 +325,22 @@ function HomeInfo() {
             padding: 50px 16px 60px;
           }
 
-          .container {
+          .container1 {
             grid-template-columns: 1fr;
             gap: 40px;
             text-align: center;
           }
 
-          .textCol {
+          .textCol1 {
             align-items: center;
           }
 
-          .eyebrow {
+          .eyebrow1 {
             font-size: 0.7rem;
             margin-bottom: 12px;
           }
 
-          .heading {
+          .heading1 {
             font-size: 1.8rem;
             margin-bottom: 16px;
           }
@@ -429,7 +429,7 @@ function HomeInfo() {
 
         /* ===== EXTRA SMALL MOBILE (< 480px) ===== */
         @media (max-width: 480px) {
-          .heading {
+          .heading1 {
             font-size: 1.6rem;
           }
 

@@ -435,26 +435,22 @@ function Why() {
 
     return (
         <div>
-            {/* Hero Section modernisée avec overlay blanc transparent */}
-            <header className="hero-section">
-                <div className="hero-overlay"></div>
-                <div className="hero-content">
-                    <h1 className="hero-title">
-                        {/* <span className="hero-title-main">Vie</span> */}
-                        <span className="hero-title-accent">
-                            {" "}
-                            Pourquoi L'Atome
-                        </span>
-                    </h1>
-                    {/* <p className="hero-subtitle">
-                        Un cadre de vie enrichissant pour l'épanouissement de
-                        vos enfants
-                    </p> */}
-                    {/* <div className="hero-decoration">
-                        <span className="hero-line"></span>
-                    </div> */}
-                </div>
-            </header>
+          {/* Hero Section modernisée avec overlay blanc transparent */}
+<header className="hero-section">
+    <div className="hero-overlay"></div>
+    <div className="hero-content">
+        <h1 className="hero-title">
+            <span className="hero-title-main">Pourquoi</span>
+            <span className="hero-title-accent">L'Atome</span>
+        </h1>
+        <p className="hero-subtitle">
+            Une école à taille humaine, une vision à haute ambition
+        </p>
+        <div className="hero-decoration">
+            <span className="hero-line"></span>
+        </div>
+    </div>
+</header>
 
             {/* Section about-section supprimée */}
 

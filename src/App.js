@@ -90,6 +90,9 @@ import MessagesList from "./backoffice/pages/MessagesList/MessagesList";
 import RendezvousListe from "./backoffice/pages/RendezvousListe/RendezvousListe";
 import JoinUsList from "./backoffice/pages/JoinUsList/JoinUsList";
 import ActualitesList from "./backoffice/pages/ActualitesList";
+import About from "./pages/About";
+import Admission from "./pages/Admission";
+import EspParent from "./pages/EspParent";
 
 class App extends Component {
     render() {
@@ -115,6 +118,9 @@ class App extends Component {
                         <Route path="/VieScolaire" component={VieScolaire} />
                         <Route path="/inscription" component={Inscription} />
                         <Route path="/LeGroupe" component={LeGroupe} />
+                        <Route path="/admission" component={Admission} />
+                        <Route path="/espace-parents" component={EspParent} />
+
                         <Route
                             path="/NotreEtablissement"
                             component={NotreEtablissement}
@@ -124,6 +130,7 @@ class App extends Component {
                         <Route path="/lycee" component={Lycee} />
                         <Route path="/primaire" component={Primaire} />
                         <Route path="/why" component={Why} />
+                        <Route path="/about" component={About} />
                         <Route
                             path="/ModalitesInscription"
                             component={ModalitesInscription}

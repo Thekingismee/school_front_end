@@ -120,7 +120,7 @@ const Navbar = () => {
                         onMouseEnter={() => handleMouseEnter("admin")}
                         onMouseLeave={handleMouseLeave}
                     >
-                        <a href="/administration" className="desktop-link">
+                        <a href="/admission" className="desktop-link">
                             Admissions <ChevronDown size={16} />
                         </a>
                         <button
@@ -144,9 +144,9 @@ const Navbar = () => {
                         </ul>
                     </li>
 
-                    <li>
+                    {/* <li>
                         <a href="/posts" onClick={handleMobileLinkClick}>Postes</a>
-                    </li>
+                    </li> */}
 
                     {/* Espace Parents */}
                     <li
