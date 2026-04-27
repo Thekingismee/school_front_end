@@ -32,58 +32,32 @@ const ContactPopup = ({ isOpen, onClose }) => {
     setApiError(null);
 
     try {
-      // Envoyer les données vers les deux endpoints en parallèle
-      const [response1, response2] = await Promise.all([
-        fetch('http://localhost:8000/api/contact-messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Source': 'popup',
-          },
-          body: JSON.stringify(formData),
-        }),
-        fetch('http://localhost:8000/api/contact-messages-plus', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Source': 'popup',
-          },
-          body: JSON.stringify(formData),
-        }),
-      ]);
+      const response = await fetch('http://localhost:8000/api/contact-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Source': 'popup', // Optionnel : tracker la source
+        },
+        body: JSON.stringify(formData),
+      });
 
-      const data1 = await response1.json();
-      const data2 = await response2.json();
+      const data = await response.json();
 
-      // Vérifier le premier endpoint
-      if (!response1.ok) {
-        if (response1.status === 422 && data1.errors) {
+      if (!response.ok) {
+        // Gestion des erreurs de validation Laravel (422)
+        if (response.status === 422 && data.errors) {
           const formattedErrors = {};
-          Object.entries(data1.errors).forEach(([key, messages]) => {
+          Object.entries(data.errors).forEach(([key, messages]) => {
             formattedErrors[key] = messages[0];
           });
           setErrors(formattedErrors);
           throw new Error('Veuillez corriger les erreurs du formulaire');
         }
-        throw new Error(data1.message || 'Erreur lors de l\'envoi (endpoint 1)');
+        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
       }
 
-      // Vérifier le deuxième endpoint
-      if (!response2.ok) {
-        if (response2.status === 422 && data2.errors) {
-          const formattedErrors = {};
-          Object.entries(data2.errors).forEach(([key, messages]) => {
-            formattedErrors[key] = messages[0];
-          });
-          setErrors(formattedErrors);
-          throw new Error('Veuillez corriger les erreurs du formulaire');
-        }
-        throw new Error(data2.message || 'Erreur lors de l\'envoi (endpoint 2)');
-      }
-
-      // ✅ Succès - Les deux endpoints ont répondu correctement
+      // ✅ Succès
       setIsSent(true);
       setFormData({ nom: '', email: '', telephone: '', sujet: '', message: '' });
 

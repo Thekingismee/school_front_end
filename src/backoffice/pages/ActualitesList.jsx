@@ -16,7 +16,7 @@ const ActualitesList = () => {
     categorie: 'Vie Scolaire',
     titre: '',
     description: '',
-    statut: 'publie',
+    statut: 'brouillon',
   });
 
   const [previewImage, setPreviewImage] = useState(null);
@@ -94,7 +94,10 @@ const ActualitesList = () => {
       setSubmitting(true);
 
       const data = new FormData();
-      data.append('image', formData.image);
+      // Ajouter l'image seulement si elle existe
+      if (formData.image) {
+        data.append('image', formData.image);
+      }
       data.append('date_publication', formData.date_publication);
       data.append('categorie', formData.categorie);
       data.append('titre', formData.titre);
@@ -110,9 +113,17 @@ const ActualitesList = () => {
         body: data,
       });
 
-      if (!response.ok) throw new Error('Erreur lors de la création');
+      const responseData = await response.json();
 
-      await response.json();
+      if (!response.ok) {
+        // Gestion des erreurs de validation (422)
+        if (response.status === 422 && responseData.errors) {
+          console.error('Erreurs de validation:', responseData.errors);
+          alert('Erreurs de validation:\n' + Object.entries(responseData.errors).map(([key, msgs]) => `${key}: ${msgs[0]}`).join('\n'));
+          return;
+        }
+        throw new Error(responseData.message || 'Erreur lors de la création');
+      }
 
       // Reset et fermeture
       setFormData({
@@ -486,7 +497,6 @@ const ActualitesList = () => {
                 <label style={styles.label}>Statut</label>
                 <select
                   name="statut"
-                  disabled
                   value={formData.statut}
                   onChange={handleChange}
                   style={styles.select}
