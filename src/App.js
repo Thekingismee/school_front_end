@@ -125,10 +125,8 @@ class App extends Component {
 
                     {/* liens a securise */}
                  <Switch>
-                        <Route
-                            exact
-                            path="/login"
-                            render={props =>
+                        <Route exact path="/login" 
+                        render={props =>
                                 isAuthenticated ? (
                                     <Redirect to="/admin" />
                                 ) : (
@@ -147,37 +145,25 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/posts" component={Posts} />
-                        <Route
-                            path="/ParcoursScolaire"
-                            component={ParcoursScolaire}
-                        />
+                        <Route path="/ParcoursScolaire" component={ParcoursScolaire}/>
                         <Route path="/VieScolaire" component={VieScolaire} />
                         <Route path="/inscription" component={Inscription} />
                         <Route path="/LeGroupe" component={LeGroupe} />
                         <Route path="/admission" component={Admission} />
                         <Route path="/espace-parents" component={EspParent} />
 
-                        <Route
-                            path="/NotreEtablissement"
-                            component={NotreEtablissement}
-                        />
+                        <Route path="/NotreEtablissement" component={NotreEtablissement}/>
                         <Route path="/Maternelle" component={Maternelle} />
                         <Route path="/college" component={College} />
                         <Route path="/lycee" component={Lycee} />
                         <Route path="/primaire" component={Primaire} />
                         <Route path="/why" component={Why} />
                         <Route path="/about" component={About} />
-                        <Route
-                            path="/ModalitesInscription"
-                            component={ModalitesInscription}
-                        />
+                        <Route path="/ModalitesInscription" component={ModalitesInscription}/>
                         <Route path="/rendez-vous" component={RendezVous} />
                         <Route path="/join-us" component={JoinUs} />
                         <Route path="/actualites/:slug" component={ActualiteDetail} />
-                        <Route
-                            path="/tarifs-et-frais"
-                            component={TarifsFrais}
-                        />
+                        <Route path="/tarifs-et-frais" component={TarifsFrais}/>
                     </Switch>
                 </Layout>
             </Router>

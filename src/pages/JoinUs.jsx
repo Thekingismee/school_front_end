@@ -279,7 +279,7 @@ const JoinUs = () => {
                             </div>
 
                             {/* 🏫 Établissement */}
-                            <div className="form-section">
+                            {/* <div className="form-section">
                                 <h3 className="form-section-title"><Building2 size={20} /> Établissement souhaité</h3>
                                 <div className="form-field">
                                     <div className="input-wrapper">
@@ -289,7 +289,7 @@ const JoinUs = () => {
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             {/* 📌 Poste */}
                             <div className="form-section">
