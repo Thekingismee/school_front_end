@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  MoreVertical, Eye, Edit, Trash2, CheckCircle, XCircle, Clock, 
-  Phone, Mail, MapPin, GraduationCap, Calendar, User, AlertTriangle, 
-  Search, ChevronLeft, ChevronRight 
+import {
+  MoreVertical, Eye, Edit, Trash2, CheckCircle, XCircle, Clock,
+  Phone, Mail, MapPin, GraduationCap, Calendar, User, AlertTriangle,
+  Search, ChevronLeft, ChevronRight,
+  ArrowLeft
 } from 'lucide-react';
 import './InscriptionsList.css';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 // 🎨 Helpers d'affichage
 const statutConfig = {
@@ -36,43 +37,14 @@ const DropdownMenu = ({ inscription, onUpdate, onDelete }) => {
   const [note, setNote] = useState(inscription.note_admin || '');
 
   const handleStatusChange = async (newStatut) => {
-    try {
-      const response = await fetch(`${API_URL}/admin/inscriptions/${inscription.id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({ statut: newStatut, note_admin: note }),
-      });
-      
-      if (response.ok) {
-        onUpdate(inscription.id, { statut: newStatut });
-        setIsOpen(false);
-      }
-    } catch (error) {
-      console.error('Erreur mise à jour statut:', error);
-    }
+    onUpdate(inscription.id, newStatut, note);
+    setIsOpen(false);
   };
 
   const handleDelete = async () => {
     if (!window.confirm('Supprimer cette inscription ?')) return;
-    try {
-      const response = await fetch(`${API_URL}/admin/inscriptions/${inscription.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      if (response.ok) {
-        onDelete(inscription.id);
-        setIsOpen(false);
-      }
-    } catch (error) {
-      console.error('Erreur suppression:', error);
-    }
+    onDelete(inscription.id);
+    setIsOpen(false);
   };
 
   return (
@@ -86,7 +58,7 @@ const DropdownMenu = ({ inscription, onUpdate, onDelete }) => {
         >
           <MoreVertical size={18} />
         </button>
-        
+
         {isOpen && (
           <>
             <div className="inscriptions-list__dropdown-overlay" onClick={() => setIsOpen(false)} />
@@ -107,32 +79,31 @@ const DropdownMenu = ({ inscription, onUpdate, onDelete }) => {
                         handleStatusChange(key);
                       }
                     }}
-                    className={`inscription-card__dropdown-item ${
-                      inscription.statut === key ? 'inscription-card__dropdown-item--active' : ''
-                    }`}
+                    className={`inscription-card__dropdown-item ${inscription.statut === key ? 'inscription-card__dropdown-item--active' : ''
+                      }`}
                   >
                     <Icon size={14} />
                     {config.label}
                   </button>
                 );
               })}
-              
+
               <div className="inscription-card__dropdown-divider" />
-              
+
               {/* <button className="inscription-card__dropdown-item">
                 <Eye size={14} />
                 Voir détails
               </button> */}
-              <button 
+              <button
                 onClick={() => setShowNoteModal(true)}
                 className="inscription-card__dropdown-item"
               >
                 <Edit size={14} />
                 Ajouter une note
               </button>
-              
+
               <div className="inscription-card__dropdown-divider" />
-              
+
               <button onClick={handleDelete} className="inscription-card__dropdown-item inscription-card__dropdown-item--danger">
                 <Trash2 size={14} />
                 Supprimer
@@ -275,61 +246,46 @@ const InscriptionCard = ({ inscription, onUpdate, onDelete }) => {
 };
 
 // 📋 Liste principale
-const InscriptionsList = () => {
-  const [inscriptions, setInscriptions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({});
-  
+
+const InscriptionsList = ({
+  inscriptions = [],
+  pagination = {},
+  availableFilters = {},
+  isLoading = false,
+  error = null,
+  fetchInscriptions,
+  updateInscriptionStatus,
+  deleteInscription
+}) => {
   const [filters, setFilters] = useState({ statut: '', priorite: '', etablissement: '', search: '' });
-  const [availableFilters, setAvailableFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(12);
 
-  const fetchInscriptions = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const params = new URLSearchParams({
+  useEffect(() => {
+    if (fetchInscriptions) {
+      fetchInscriptions({
         page: currentPage,
         per_page: perPage,
-        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v)),
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
-
-      const response = await fetch(`${API_URL}/admin/inscriptions?${params}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Erreur de chargement');
-      
-      const result = await response.json();
-      setInscriptions(result.data);
-      setPagination(result.pagination);
-      setAvailableFilters(result.filters || {});
-    } catch (err) {
-      setError(err.message);
-      console.error('Erreur fetch inscriptions:', err);
-    } finally {
-      setLoading(false);
     }
-  }, [currentPage, perPage, filters]);
-
-  useEffect(() => { fetchInscriptions(); }, [fetchInscriptions]);
+  }, [fetchInscriptions, currentPage, perPage, filters]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
     setCurrentPage(1);
   };
 
-  const handleUpdate = (id, updates) => {
-    setInscriptions(prev => prev.map(item => item.id === id ? { ...item, ...updates } : item));
+  const handleUpdate = (id, statut, note_admin) => {
+    if (updateInscriptionStatus) {
+      updateInscriptionStatus(id, statut, note_admin);
+    }
   };
 
-  const handleDelete = (id) => {
-    setInscriptions(prev => prev.filter(item => item.id !== id));
+  const handleDelete = id => {
+    if (deleteInscription) {
+      deleteInscription(id);
+    }
   };
 
   const clearFilters = () => {
@@ -341,7 +297,10 @@ const InscriptionsList = () => {
     <div className="inscriptions-list">
       {/* En-tête */}
       <header className="inscriptions-list__header">
-        <h1 className="inscriptions-list__title">Gestion des inscriptions</h1>
+        <h1 className="inscriptions-list__title">
+          <a href="/admin" className="rdv-back-link">
+            <ArrowLeft size={14} />
+          </a>Gestion des inscriptions</h1>
         <p className="inscriptions-list__subtitle">
           {pagination.total} inscription{pagination.total > 1 ? 's' : ''} • Page {pagination.current_page || 1}
         </p>
@@ -410,7 +369,7 @@ const InscriptionsList = () => {
       </div>
 
       {/* États */}
-      {loading ? (
+      {isLoading ? (
         <div className="inscriptions-list__state">
           <div className="inscriptions-list__loader" />
           <p>Chargement des inscriptions...</p>

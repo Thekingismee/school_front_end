@@ -1020,3 +1020,13 @@
   .joinus-card-info-grid { grid-template-columns: 1fr; }
   .joinus-dropdown-menu { width: 100%; }
 }
+
+.rdv-back-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--ink-600);
+  text-decoration: none;
+  transition: color var(--transition);
+}

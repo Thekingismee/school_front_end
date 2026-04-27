@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const ActualitesList = () => {
   // États
@@ -8,7 +8,7 @@ const ActualitesList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
+
   // Formulaire
   const [formData, setFormData] = useState({
     image: null,
@@ -16,9 +16,9 @@ const ActualitesList = () => {
     categorie: 'Vie Scolaire',
     titre: '',
     description: '',
-    statut: 'brouillon',
+    statut: 'publie',
   });
-  
+
   const [previewImage, setPreviewImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -45,12 +45,12 @@ const ActualitesList = () => {
       const response = await fetch(`${API_URL}/admin/actualites`, {
         headers: {
           'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
+        credentials: 'include', // Use session cookies instead of token
       });
-      
+
       if (!response.ok) throw new Error('Erreur de chargement');
-      
+
       const data = await response.json();
       setActualites(data.data || []);
     } catch (err) {
@@ -71,7 +71,7 @@ const ActualitesList = () => {
     const file = e.target.files[0];
     if (file) {
       setFormData(prev => ({ ...prev, image: file }));
-      
+
       // Preview
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -84,7 +84,7 @@ const ActualitesList = () => {
   // Soumission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.titre || !formData.description) {
       alert('Veuillez remplir au moins le titre et la description');
       return;
@@ -92,7 +92,7 @@ const ActualitesList = () => {
 
     try {
       setSubmitting(true);
-      
+
       const data = new FormData();
       data.append('image', formData.image);
       data.append('date_publication', formData.date_publication);
@@ -105,15 +105,15 @@ const ActualitesList = () => {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
+        credentials: 'include', // Use session cookies
         body: data,
       });
 
       if (!response.ok) throw new Error('Erreur lors de la création');
 
       await response.json();
-      
+
       // Reset et fermeture
       setFormData({
         image: null,
@@ -125,10 +125,10 @@ const ActualitesList = () => {
       });
       setPreviewImage(null);
       setShowModal(false);
-      
+
       // Recharger la liste
       fetchActualites();
-      
+
     } catch (err) {
       alert('Erreur : ' + err.message);
     } finally {
@@ -373,13 +373,13 @@ const ActualitesList = () => {
           {actualites.map((actu) => (
             <div key={actu.id} style={styles.card}>
               {actu.has_image ? (
-                <img 
-                  src={actu.image?.url} 
+                <img
+                  src={actu.image?.url}
                   alt={actu.titre}
                   style={styles.cardImage}
                 />
               ) : (
-                <div style={{...styles.cardImage, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af'}}>
+                <div style={{ ...styles.cardImage, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>
                   Pas d'image
                 </div>
               )}
@@ -486,6 +486,7 @@ const ActualitesList = () => {
                 <label style={styles.label}>Statut</label>
                 <select
                   name="statut"
+                  disabled
                   value={formData.statut}
                   onChange={handleChange}
                   style={styles.select}

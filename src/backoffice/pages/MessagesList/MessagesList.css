@@ -352,6 +352,16 @@
   border-color: var(--ink-200);
 }
 
+.rdv-back-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--ink-600);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
 .message-card__badge-priorite {
   display: inline-flex;
   align-items: center;

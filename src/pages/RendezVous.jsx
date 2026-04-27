@@ -11,8 +11,8 @@ const HOURS = [
 ];
 
 const MONTH_NAMES_FR = [
-  "Janvier","Février","Mars","Avril","Mai","Juin",
-  "Juillet","Août","Septembre","Octobre","Novembre","Décembre"
+  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
 ];
 
 // Helpers
@@ -26,7 +26,7 @@ function formatDateForAPI(date) {
   return date.toISOString().split('T')[0]; // YYYY-MM-DD
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 export default function RendezVous() {
   const [showModal, setShowModal] = useState(false);
@@ -37,7 +37,7 @@ export default function RendezVous() {
   const [form, setForm] = useState({
     nom: "", email: "", invites: "", telephone: "", message: ""
   });
-  
+
   // États API
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -62,15 +62,15 @@ export default function RendezVous() {
 
   const fetchAvailableHours = async () => {
     if (!selectedDay) return;
-    
+
     try {
       const dateStr = formatDateForAPI(new Date(selectedDay.year, selectedDay.month, selectedDay.day));
-      
+
       // Optionnel : appeler l'API pour vérifier les créneaux pris
       // const response = await fetch(`${API_URL}/appointments/available?date=${dateStr}&lieu=Lissasfa`);
       // const data = await response.json();
       // setAvailableHours(data.available || HOURS);
-      
+
       // Pour l'instant, on filtre côté client les heures passées si c'est aujourd'hui
       const selectedDate = new Date(selectedDay.year, selectedDay.month, selectedDay.day);
       if (selectedDate.getTime() === today.getTime()) {
@@ -90,7 +90,7 @@ export default function RendezVous() {
   const handleDayClick = (day) => {
     const clicked = new Date(year, month, day);
     if (clicked < today) return;
-    
+
     setSelectedDay({ day, month, year });
     setSelectedHour(null);
     setErrors({});
@@ -110,12 +110,12 @@ export default function RendezVous() {
   };
 
   const handleBack = () => {
-    if (step === "hours") { 
-      setStep("calendar"); 
-      setSelectedHour(null); 
+    if (step === "hours") {
+      setStep("calendar");
+      setSelectedHour(null);
     }
-    if (step === "form") { 
-      setStep("hours"); 
+    if (step === "form") {
+      setStep("hours");
     }
     setApiError(null);
   };
@@ -168,7 +168,7 @@ export default function RendezVous() {
             formatted[key] = msgs[0];
           });
           setErrors(formatted);
-          
+
           // Scroll vers le haut pour voir les erreurs
           document.querySelector('.rdv-right')?.scrollTo({ top: 0, behavior: 'smooth' });
           throw new Error('Veuillez corriger les erreurs');
@@ -184,7 +184,7 @@ export default function RendezVous() {
       // ✅ Succès
       setSubmitted(true);
       setForm({ nom: "", email: "", invites: "", telephone: "", message: "" });
-      
+
     } catch (error) {
       console.error('Erreur réservation:', error);
       if (!['Veuillez corriger les erreurs', 'Créneau indisponible'].includes(error.message)) {
@@ -215,7 +215,7 @@ export default function RendezVous() {
     setSelectedHour(null);
     setStep("calendar");
   };
-  
+
   const nextMonth = () => {
     // Limiter à +6 mois pour éviter les réservations trop lointaines
     const maxDate = new Date();
@@ -347,7 +347,7 @@ export default function RendezVous() {
               <div className="rdv-left-title">RDV à L'Atome Lissasfa</div>
               <div className="rdv-left-tag">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                 </svg>
                 15 min
               </div>
@@ -362,7 +362,7 @@ export default function RendezVous() {
               )}
               <div className="rdv-left-addr">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
                 Casablanca 20220
               </div>
@@ -388,18 +388,18 @@ export default function RendezVous() {
                       <div className="rdv-cal-header">
                         <button className="rdv-cal-nav" onClick={prevMonth} aria-label="Mois précédent">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="15 18 9 12 15 6"/>
+                            <polyline points="15 18 9 12 15 6" />
                           </svg>
                         </button>
                         <div className="rdv-cal-title">{MONTH_NAMES_FR[month]} {year}</div>
-                        <button 
-                          className="rdv-cal-nav" 
+                        <button
+                          className="rdv-cal-nav"
                           onClick={nextMonth}
                           disabled={new Date(year, month + 1, 1) > new Date(new Date().setMonth(new Date().getMonth() + 6))}
                           aria-label="Mois suivant"
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="9 18 15 12 9 6"/>
+                            <polyline points="9 18 15 12 9 6" />
                           </svg>
                         </button>
                       </div>
@@ -437,7 +437,7 @@ export default function RendezVous() {
                       <div className="rdv-hours-subtitle">
                         {selectedDay?.day} {MONTH_NAMES_FR[selectedDay?.month]} {selectedDay?.year} — Durée : 15 min
                       </div>
-                      
+
                       {availableHours.length === 0 ? (
                         <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', padding: '20px' }}>
                           Aucun créneau disponible pour cette date.
@@ -469,7 +469,7 @@ export default function RendezVous() {
                       {apiError && (
                         <div className="rdv-error-global">
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                            <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                           </svg>
                           <span>{apiError}</span>
                         </div>
@@ -550,7 +550,7 @@ export default function RendezVous() {
                     {step !== "calendar" ? (
                       <button className="rdv-back-btn" onClick={handleBack}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="15 18 9 12 15 6"/>
+                          <polyline points="15 18 9 12 15 6" />
                         </svg>
                         Retour
                       </button>

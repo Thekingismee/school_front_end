@@ -14,9 +14,25 @@ import Services from "../components/Accueil/Services";
 
 function Home() {
 
+
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:8000/logout', {
+        method: 'POST', // ou 'GET' selon ton API
+        credentials: 'include', // pour envoyer les cookies/session si nécessaire
+      });
+      // Optionnel : rediriger ou mettre à jour l'état après déconnexion
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
   return (
     <div>
 
+{/* <button onClick={handleLogout}>
+      Déconnexion
+    </button> */}
         <HeroCarousel />
         <HomeInfo/>
         <CyclesSection />

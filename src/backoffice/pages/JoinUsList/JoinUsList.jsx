@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
+import {
   MoreVertical, CheckCircle, XCircle, Clock, User, Phone, Mail, MapPin,
   Edit, Trash2, Download, Eye, Briefcase, Calendar, FileText, Upload,
   AlertCircle, Filter, Search, ChevronLeft, ChevronRight, Tag, Building2,
-  MessageSquare, Users, GraduationCap, ExternalLink
+  MessageSquare, Users, GraduationCap, ExternalLink,
+  ArrowLeft
 } from 'lucide-react';
 import './JoinUsList.css';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 // 🎨 Configurations d'affichage
 const statutConfig = {
@@ -141,12 +142,12 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
         >
           <MoreVertical size={18} />
         </button>
-        
+
         {isOpen && (
           <>
             <div className="joinus-dropdown-overlay" onClick={() => setIsOpen(false)} />
             <div className="joinus-dropdown-menu">
-              
+
               {/* Statut */}
               <div className="joinus-dropdown-section">
                 <span className="joinus-dropdown-section-title">Statut</span>
@@ -167,9 +168,9 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
                   </button>
                 );
               })}
-              
+
               <div className="joinus-dropdown-divider" />
-              
+
               {/* Priorité */}
               <div className="joinus-dropdown-section">
                 <span className="joinus-dropdown-section-title">Priorité</span>
@@ -184,9 +185,9 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
                   {config.label}
                 </button>
               ))}
-              
+
               <div className="joinus-dropdown-divider" />
-              
+
               {/* Actions */}
               <button
                 onClick={() => { setNote(candidature.note_recruteur || ''); setShowNoteModal(true); }}
@@ -202,9 +203,9 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
                 <Eye size={14} />
                 Voir le dossier complet
               </button>
-              
+
               <div className="joinus-dropdown-divider" />
-              
+
               <button
                 onClick={handleDelete}
                 className="joinus-dropdown-item danger"
@@ -225,12 +226,12 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
               <Edit size={20} />
               <h3 className="joinus-modal-title">Note interne RH</h3>
             </div>
-            
+
             <div className="joinus-modal-summary">
               <p>👤 {candidature.candidat.nom_complet}</p>
               <p>🎯 {candidature.poste.label} • {disponibiliteConfig[candidature.disponibilite.code]?.label}</p>
             </div>
-            
+
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
@@ -238,7 +239,7 @@ const CandidatureDropdown = ({ candidature, onUpdate, onDelete }) => {
               className="joinus-modal-textarea"
               rows={4}
             />
-            
+
             <div className="joinus-modal-actions">
               <button
                 onClick={() => setShowNoteModal(false)}
@@ -271,7 +272,7 @@ const CandidatureCard = ({ candidature, onUpdate, onDelete }) => {
 
   return (
     <div className={`joinus-card ${cardBorderClass}`}>
-      
+
       {/* Header avec dropdown */}
       <div className="joinus-card-header">
         <div className="joinus-card-badges">
@@ -289,7 +290,7 @@ const CandidatureCard = ({ candidature, onUpdate, onDelete }) => {
 
       {/* Contenu */}
       <div className="joinus-card-content">
-        
+
         {/* 👤 Candidat */}
         <div>
           <h4 className="joinus-card-visitor-title">
@@ -382,7 +383,7 @@ const CandidatureCard = ({ candidature, onUpdate, onDelete }) => {
                 </div>
               </a>
             )}
-            
+
             {/* Lettre de motivation - Optionnelle */}
             {candidature.fichiers?.lettre?.url && (
               <a
@@ -401,7 +402,7 @@ const CandidatureCard = ({ candidature, onUpdate, onDelete }) => {
                 </div>
               </a>
             )}
-            
+
             {/* Diplômes - Multiples */}
             {candidature.fichiers?.diplomes?.length > 0 && candidature.fichiers.diplomes.map((doc, idx) => (
               <a
@@ -465,13 +466,17 @@ const CandidatureCard = ({ candidature, onUpdate, onDelete }) => {
 };
 
 // 📋 Main Component
-const JoinUsList = () => {
-  const [candidatures, setCandidatures] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({});
-  
-  // Filtres
+const JoinUsList = ({
+  candidatures = [],
+  pagination = {},
+  availableFilters = {},
+  isLoading = false,
+  error = null,
+  fetchCandidatures,
+  updateCandidatureStatus,
+  deleteCandidature
+}) => {
+  // Keep local state for filters, currentPage, showAdvancedFilters, etc.
   const [filters, setFilters] = useState({
     statut: '',
     priorite: '',
@@ -482,69 +487,29 @@ const JoinUsList = () => {
     date_debut: '',
     date_fin: '',
   });
-  const [availableFilters, setAvailableFilters] = useState({});
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-
-  // Pagination & Tri
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(12);
   const [sortBy, setSortBy] = useState('created_at');
   const [sortDir, setSortDir] = useState('desc');
 
-  const fetchCandidatures = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const params = new URLSearchParams({
-        page: currentPage,
-        per_page: perPage,
-        sort_by: sortBy,
-        sort_dir: sortDir,
-        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v && v !== false)),
-      });
-
-      const response = await fetch(`${API_URL}/admin/candidatures?${params}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Erreur de chargement des candidatures');
-      
-      const result = await response.json();
-      setCandidatures(result.data);
-      setPagination(result.pagination);
-      setAvailableFilters(result.filters || {});
-      
-    } catch (err) {
-      setError(err.message);
-      console.error('Erreur fetch candidatures:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, perPage, sortBy, sortDir, filters]);
-
-  useEffect(() => {
-    fetchCandidatures();
-  }, [fetchCandidatures]);
-
-  // Handlers
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
     setCurrentPage(1);
+    fetchCandidatures({ page: 1, per_page: perPage, sortBy, sortDir, ...newFilters });
   };
 
+  useEffect(() => {
+    fetchCandidatures({ page: currentPage, perPage, sortBy, sortDir, ...filters });
+  }, [fetchCandidatures, currentPage, perPage, sortBy, sortDir, filters]);
+
   const handleUpdate = (id, updates) => {
-    setCandidatures(prev => prev.map(c => 
-      c.id === id ? { ...c, ...updates, is_nouveau: updates.statut === 'nouveau' } : c
-    ));
+    updateCandidatureStatus(id, updates);
   };
 
   const handleDelete = (id) => {
-    setCandidatures(prev => prev.filter(c => c.id !== id));
-    setPagination(prev => ({ ...prev, total: prev.total - 1 }));
+    deleteCandidature(id);
   };
 
   const handleSort = (field) => {
@@ -568,7 +533,10 @@ const JoinUsList = () => {
     <div className="joinus-container">
       {/* En-tête */}
       <div className="joinus-header">
-        <h1>Gestion des candidatures</h1>
+        <h1>
+          <a href="/admin" className="rdv-back-link">
+            <ArrowLeft size={14} />
+          </a>Gestion des candidatures</h1>
         <p>
           {pagination.total} candidature{pagination.total > 1 ? 's' : ''} • {pagination.nouveau_count} nouvelle{pagination.nouveau_count > 1 ? 's' : ''}
         </p>
@@ -598,14 +566,14 @@ const JoinUsList = () => {
       <div className="joinus-filters">
         <div className="joinus-filters-header">
           <h3><Filter size={14} /> Filtres</h3>
-          <button 
+          <button
             className="joinus-btn-toggle"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           >
             {showAdvancedFilters ? 'Masquer' : 'Afficher'} avancés
           </button>
         </div>
-        
+
         <div className="joinus-filters-grid">
           {/* Recherche */}
           <div className="joinus-filter-group joinus-search-wrapper">
@@ -681,26 +649,26 @@ const JoinUsList = () => {
         <div className="joinus-filters-actions">
           <div className="joinus-sort-controls">
             <span className="text-xs text-gray-500">Trier par :</span>
-            <button 
+            <button
               className={`joinus-sort-btn ${sortBy === 'created_at' ? 'active' : ''}`}
               onClick={() => handleSort('created_at')}
             >
               Date <ChevronLeft size={10} className={`joinus-sort-icon ${sortDir === 'asc' ? 'asc' : 'desc'}`} />
             </button>
-            <button 
+            <button
               className={`joinus-sort-btn ${sortBy === 'priorite' ? 'active' : ''}`}
               onClick={() => handleSort('priorite')}
             >
               Priorité
             </button>
-            <button 
+            <button
               className={`joinus-sort-btn ${sortBy === 'nom' ? 'active' : ''}`}
               onClick={() => handleSort('nom')}
             >
               Nom
             </button>
           </div>
-          
+
           {hasActiveFilters && (
             <button onClick={clearFilters} className="joinus-btn-clear">
               Réinitialiser
@@ -710,7 +678,7 @@ const JoinUsList = () => {
       </div>
 
       {/* États */}
-      {loading ? (
+      {isLoading ? (
         <div className="joinus-state">
           <div className="joinus-loading-spinner" />
           <p>Chargement des candidatures...</p>
@@ -719,7 +687,7 @@ const JoinUsList = () => {
         <div className="joinus-state">
           <AlertCircle className="joinus-state-icon" />
           <p className="joinus-state-title joinus-state-error">{error}</p>
-          <button onClick={fetchCandidatures} className="joinus-btn-primary">Réessayer</button>
+          <button onClick={() => fetchCandidatures({ page: currentPage, perPage, sortBy, sortDir, ...filters })} className="joinus-btn-primary">Réessayer</button>
         </div>
       ) : candidatures.length === 0 ? (
         <div className="joinus-state">

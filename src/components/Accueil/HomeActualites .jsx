@@ -405,7 +405,7 @@
 
 import React, { useState, useEffect } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const HomeActualites = () => {
     const [actualites, setActualites] = useState([]);
@@ -417,7 +417,7 @@ const HomeActualites = () => {
             try {
                 setLoading(true);
                 setError(null);
-                
+
                 const response = await fetch(`${API_URL}/actualites/recent`, {
                     headers: {
                         'Accept': 'application/json',
@@ -429,13 +429,13 @@ const HomeActualites = () => {
                 }
 
                 const result = await response.json();
-                
+
                 if (result.success) {
                     // Formatage supplémentaire si nécessaire
                     const formatted = result.data.map(actu => ({
                         ...actu,
                         // Assurer que fallbackImage a une valeur par défaut
-                        fallbackImage: actu.fallbackImage || 
+                        fallbackImage: actu.fallbackImage ||
                             'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
                         // Tronquer la description pour l'affichage grille
                         excerpt: tronquerTexte(actu.description, 140),
@@ -444,7 +444,7 @@ const HomeActualites = () => {
                 } else {
                     throw new Error(result.message || 'Aucune donnée reçue');
                 }
-                
+
             } catch (err) {
                 console.error('Erreur fetch actualités:', err);
                 setError(err.message);
@@ -521,9 +521,9 @@ const HomeActualites = () => {
                 ) : error ? (
                     <div className="home-actu-error">
                         <svg className="home-actu-error-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="8" x2="12" y2="12"/>
-                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
                         </svg>
                         <p>Impossible de charger les actualités</p>
                         <button onClick={() => window.location.reload()} className="home-actu-retry-btn">
@@ -546,7 +546,7 @@ const HomeActualites = () => {
                                 <div className="home-actu-image-wrapper">
                                     <div className="home-actu-image-box">
                                         <img
-                                            src={actu.image?.startsWith('http') ? actu.image : (actu.image ? `http://127.0.0.1:8000/storage/${actu.image}` : '')}
+                                            src={actu.image?.startsWith('http') ? actu.image : (actu.image ? `http://localhost:8000/storage/${actu.image}` : '')}
                                             alt={actu.titre}
                                             className="home-actu-img"
                                             onError={(e) => {
@@ -586,7 +586,7 @@ const HomeActualites = () => {
                                     </p>
 
                                     <a
-                                        href={`/actualites/${actu.slug || actu.id}`}
+                                        href={`/actualites/${actu.slug ||actu.id}`}
                                         className="home-actu-lire-suite"
                                     >
                                         <span className="home-actu-lire-text">Lire la suite</span>

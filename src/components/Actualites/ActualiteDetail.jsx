@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ArrowLeft, Calendar, Tag, Share2 } from "lucide-react";
-import { useHistory } from "react-router-dom"; // ou utilise react-router-dom si tu n'es pas sur Next.js
+import { useHistory, useParams } from "react-router-dom"; // utilise useParams pour lire le paramètre de route
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 // Données mockées (à remplacer par un fetch API ou un contexte global)
 const actualitesData = [
@@ -122,31 +124,62 @@ const actualitesData = [
 ];
 
 const ActualiteDetail = () => {
-    const router = useHistory();
-    const { id } = router.query;
+    const history = useHistory();
+    const { slug } = useParams();
     const [actualite, setActualite] = useState(null);
     const [loading, setLoading] = useState(true);
     const [imageError, setImageError] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Chargement de l'article
+    const imageUrl = actualite?.image?.url || actualite?.image?.path || '/default-article.jpg';
+    const displayDate = actualite?.date_publication_fr || actualite?.date_publication || actualite?.created_at || '';
+    const articleStatus = actualite?.statut === 'publie' ? 'Publié' : actualite?.statut === 'brouillon' ? 'Brouillon' : null;
+
+    // Chargement de l'article depuis l'API backend
     useEffect(() => {
-        if (id) {
+        if (!slug) return;
+
+        const fetchActualite = async () => {
             setLoading(true);
-            // Simulation de fetch (à remplacer par un vrai appel API)
-            setTimeout(() => {
-                const found = actualitesData.find(a => a.id === parseInt(id));
-                setActualite(found || null);
+            setError(null);
+
+            try {
+                const response = await fetch(`${API_URL}/admin/actualites/${slug}`, {
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                    credentials: 'include',
+                });
+
+                if (response.status === 404) {
+                    setActualite(null);
+                    setError('Actualité non trouvée');
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Erreur de chargement (${response.status})`);
+                }
+
+                const json = await response.json();
+                setActualite(json.data || null);
+            } catch (fetchError) {
+                setError(fetchError.message || 'Erreur lors du chargement de l’actualité');
+                setActualite(null);
+            } finally {
                 setLoading(false);
-            }, 300);
-        }
-    }, [id]);
+            }
+        };
+
+        fetchActualite();
+    }, [slug]);
 
     // Gestion du retour
     const handleBack = () => {
-        if (window.history.length > 1) {
-            router.back();
+        if (history.length > 1) {
+            history.goBack();
         } else {
-            router.push('/#actualites'); // Retour à la section actualités de la page d'accueil
+            history.push('/#actualites'); // Retour à la section actualités de la page d'accueil
         }
     };
 
@@ -179,13 +212,13 @@ const ActualiteDetail = () => {
         );
     }
 
-    // Article non trouvé
+    // Article non trouvé ou erreur de chargement
     if (!actualite) {
         return (
             <div className="detail-not-found">
                 <div className="detail-not-found-icon">❌</div>
-                <h2>Actualité non trouvée</h2>
-                <p>L'article que vous recherchez n'existe pas ou a été supprimé.</p>
+                <h2>{error ? 'Erreur de chargement' : 'Actualité non trouvée'}</h2>
+                <p>{error || 'L\'article que vous recherchez n\'existe pas ou a été supprimé.'}</p>
                 <button className="detail-back-btn" onClick={handleBack}>
                     <ArrowLeft size={18} />
                     Retour aux actualités
@@ -211,7 +244,7 @@ const ActualiteDetail = () => {
             <div className="detail-image-wrapper">
                 <div className="detail-image-box">
                     <img
-                        src={imageError ? actualite.fallbackImage : actualite.image}
+                        src={imageError ? '/default-article.jpg' : imageUrl}
                         alt={actualite.titre}
                         className="detail-img"
                         onError={() => setImageError(true)}
@@ -232,10 +265,10 @@ const ActualiteDetail = () => {
                     <div className="detail-meta">
                         <div className="detail-date">
                             <Calendar size={16} />
-                            <time dateTime={actualite.date}>{actualite.date}</time>
+                            <time dateTime={actualite.date_publication || actualite.created_at || ''}>{displayDate}</time>
                         </div>
-                        {actualite.lecture && (
-                            <span className="detail-lecture">{actualite.lecture}</span>
+                        {articleStatus && (
+                            <span className="detail-lecture">{articleStatus}</span>
                         )}
                     </div>
 
@@ -246,10 +279,16 @@ const ActualiteDetail = () => {
                     <p className="detail-chapo">{actualite.description}</p>
 
                     {/* Contenu riche */}
-                    <div 
-                        className="detail-body"
-                        dangerouslySetInnerHTML={{ __html: actualite.contenu }}
-                    />
+                    {actualite.contenu ? (
+                        <div 
+                            className="detail-body"
+                            dangerouslySetInnerHTML={{ __html: actualite.contenu }}
+                        />
+                    ) : (
+                        <div className="detail-body">
+                            <p>{actualite.description}</p>
+                        </div>
+                    )}
 
                     {/* Signature */}
                     {actualite.auteur && (
@@ -274,13 +313,13 @@ const ActualiteDetail = () => {
                         </button>
                         <button className="detail-action-btn secondary" onClick={handleBack}>
                             <ArrowLeft size={18} />
-                            Voir toutes les actualités
+                            Voir les derniers actualités
                         </button>
                     </div>
                 </div>
 
                 {/* Sidebar (optionnelle) */}
-                <aside className="detail-sidebar">
+                {/* <aside className="detail-sidebar">
                     <div className="detail-sidebar-card">
                         <h4>📰 Autres actualités</h4>
                         <ul className="detail-related-list">
@@ -298,7 +337,7 @@ const ActualiteDetail = () => {
                             }
                         </ul>
                     </div>
-                </aside>
+                </aside> */}
             </div>
 
             {/* Styles */}

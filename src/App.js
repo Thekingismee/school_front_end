@@ -62,7 +62,8 @@
 
 // src/App.js - VERSION CORRIGÉE (SANS COMMENTAIRES DANS LES ROUTES)
 import React, { Component } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import { history } from "./redux/enhancers/middlewares/router";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -85,28 +86,63 @@ import JoinUs from "./pages/JoinUs";
 import TarifsFrais from "./pages/TarifsFrais";
 import ActualiteDetail from "./components/Actualites/ActualiteDetail";
 import Homeadm from "./backoffice/pages/Homeadm";
-import InscriptionsList from "./backoffice/pages/InscriptionsList/InscriptionsList";
-import MessagesList from "./backoffice/pages/MessagesList/MessagesList";
-import RendezvousListe from "./backoffice/pages/RendezvousListe/RendezvousListe";
-import JoinUsList from "./backoffice/pages/JoinUsList/JoinUsList";
+import InscriptionsList from "./containers/InscriptionsListContainer";
+import MessagesList from "./containers/MessagesListContainer";
+import RendezvousListe from "./containers/RendezvousListeContainer";
+import JoinUsList from "./containers/JoinUsListContainer";
 import ActualitesList from "./backoffice/pages/ActualitesList";
 import About from "./pages/About";
 import Admission from "./pages/Admission";
 import EspParent from "./pages/EspParent";
+import UserManagement from "./backoffice/pages/UserManagement";
+import LoginForm from "./backoffice/pages/LoginForm";
+import { fetchCurrentUser } from "./redux/actions/api";
+
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+    <Route
+        {...rest}
+        render={props =>
+            isAuthenticated ? (
+                <Component {...props} />
+            ) : (
+                <Redirect to="/login" />
+            )
+        }
+    />
+);
 
 class App extends Component {
+    componentDidMount() {
+        // Removed fetchCurrentUser call to rely on localStorage flag
+    }
+
     render() {
+        const { isAuthenticated } = this.props;
         return (
             <Router history={history}>
 
                 <Layout>
+
+                    {/* liens a securise */}
                  <Switch>
-                        <Route exact path="/admin" component={Homeadm} />
-                        <Route exact path="/inscriptions" component={InscriptionsList} />
-                        <Route exact path="/messages" component={MessagesList} />
-                        <Route exact path="/rendez-vous-liste" component={RendezvousListe} />
-                        <Route exact path="/joinUs" component={JoinUsList} />
-                        <Route exact path="/ActualitesList" component={ActualitesList} />
+                        <Route
+                            exact
+                            path="/login"
+                            render={props =>
+                                isAuthenticated ? (
+                                    <Redirect to="/admin" />
+                                ) : (
+                                    <LoginForm {...props} />
+                                )
+                            }
+                        />
+                        <PrivateRoute exact path="/admin" component={Homeadm} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/inscriptions" component={InscriptionsList} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/messages" component={MessagesList} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/rendez-vous-liste" component={RendezvousListe} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/joinUs" component={JoinUsList} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/ActualitesList" component={ActualitesList} isAuthenticated={isAuthenticated} />
+                        <PrivateRoute exact path="/Users" component={UserManagement} isAuthenticated={isAuthenticated} />
                 </Switch>
                     <Switch>
                         <Route exact path="/" component={Home} />
@@ -137,7 +173,7 @@ class App extends Component {
                         />
                         <Route path="/rendez-vous" component={RendezVous} />
                         <Route path="/join-us" component={JoinUs} />
-                        <Route path="/actualites/:id" component={ActualiteDetail} />
+                        <Route path="/actualites/:slug" component={ActualiteDetail} />
                         <Route
                             path="/tarifs-et-frais"
                             component={TarifsFrais}
@@ -149,4 +185,12 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    isAuthenticated: state.data.api.isAuthenticated
+});
+
+const mapDispatchToProps = dispatch => ({
+    // Removed fetchCurrentUser
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

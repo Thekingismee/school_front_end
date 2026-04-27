@@ -4,7 +4,7 @@ import {
     Briefcase, Building2, Calendar, FileText, Upload, AlertCircle
 } from "lucide-react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const JoinUs = () => {
     const [formData, setFormData] = useState({
@@ -101,7 +101,7 @@ const JoinUs = () => {
         try {
             // 📦 Construction du FormData pour l'upload de fichiers
             const payload = new FormData();
-            
+
             // Champs texte
             payload.append('nom', formData.nom.trim());
             payload.append('prenom', formData.prenom.trim());
@@ -111,24 +111,24 @@ const JoinUs = () => {
             payload.append('etablissement', formData.etablissement);
             payload.append('poste_souhaite', formData.poste);
             if (formData.poste === 'autre') payload.append('poste_autre', formData.posteAutre.trim());
-            
+
             // Checkboxes contrat → format Laravel attendu
             payload.append('contrat_cdi', formData.contrat.cdi ? '1' : '0');
             payload.append('contrat_cdd', formData.contrat.cdd ? '1' : '0');
             payload.append('contrat_temps_plein', formData.contrat.tempsPlein ? '1' : '0');
             payload.append('contrat_temps_partiel', formData.contrat.tempsPartiel ? '1' : '0');
-            
+
             // Fichiers
             if (formData.cv) payload.append('cv', formData.cv);
             if (formData.lettre) payload.append('lettre', formData.lettre);
             if (formData.diplomes) {
                 Array.from(formData.diplomes).forEach(file => payload.append('diplomes[]', file));
             }
-            
+
             // Disponibilité
             payload.append('disponibilite', formData.disponibilite);
             if (formData.disponibilite === 'autre') payload.append('disponibilite_autre', formData.disponibiliteAutre.trim());
-            
+
             // Message
             if (formData.message.trim()) payload.append('message', formData.message.trim());
 
@@ -335,7 +335,7 @@ const JoinUs = () => {
                             {/* 📁 Pièces jointes */}
                             <div className="form-section">
                                 <h3 className="form-section-title"><Upload size={20} /> Pièces jointes</h3>
-                                
+
                                 <div className={`form-field ${errors.cv ? "error" : ""}`}>
                                     <label htmlFor="cv">CV (PDF, DOC – max 5 Mo) <span className="required">*</span></label>
                                     <div className="file-upload-wrapper">

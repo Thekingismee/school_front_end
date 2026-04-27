@@ -1,14 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   UserPlus, 
   MessageSquare, 
   CalendarCheck, 
   FileText, 
   Newspaper,
-  ArrowRight
+  ArrowRight,
+  LogOut  // 👈 Nouveau : icône de déconnexion
 } from 'lucide-react';
+import { useHistory } from 'react-router-dom';  // 👈 Nouveau : pour la redirection
+import { connect } from 'react-redux';
+import { logoutUser } from '../../redux/actions/api';
 
-const Homeadm = () => {
+const Homeadm = ({ logoutUser, isAuthenticated }) => {
+  const history = useHistory();  // 👈 Hook pour la navigation
+  const [isLoggingOut, setIsLoggingOut] = useState(false);  // 👈 État de chargement
+
+  // 👇 Fonction de déconnexion
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    
+    // Confirmation optionnelle
+    if (!window.confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+      return;
+    }
+
+    setIsLoggingOut(true);
+
+    try {
+      await logoutUser();
+      history.push('/login');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+      history.push('/login');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   const menuItems = [
     {
       href: "/inscriptions",
@@ -49,6 +78,14 @@ const Homeadm = () => {
       icon: Newspaper,
       accent: "from-rose-500 to-pink-600",
       hoverGlow: "rgba(244, 63, 94, 0.25)"
+    },
+    {
+      href: "/Users",
+      label: "Utilisateurs",
+      description: "Gérer les comptes utilisateurs",
+      icon: UserPlus,
+      accent: "from-emerald-500 to-teal-600",
+      hoverGlow: "rgba(16, 185, 129, 0.25)"
     }
   ];
 
@@ -71,9 +108,25 @@ const Homeadm = () => {
               <p className="welcome-subtitle">Gérez votre établissement en toute simplicité</p>
             </div>
           </div>
-          <div className="user-badge">
-            <span className="user-avatar">A</span>
-            <span className="user-name">Admin</span>
+          
+          {/* 👇 Badge utilisateur + Bouton de déconnexion */}
+          <div className="user-section">
+            <div className="user-badge">
+              <span className="user-avatar">A</span>
+              <span className="user-name">Admin</span>
+            </div>
+            
+            {/* 👇 Bouton de déconnexion */}
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="logout-btn"
+              title="Se déconnecter"
+              aria-label="Se déconnecter"
+            >
+              <LogOut size={18} className={`logout-icon ${isLoggingOut ? 'spinning' : ''}`} />
+              <span className="logout-text">{isLoggingOut ? '...' : 'Déconnexion'}</span>
+            </button>
           </div>
         </header>
 
@@ -145,6 +198,8 @@ const Homeadm = () => {
           box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
           margin-bottom: 2rem;
           border: 1px solid rgba(255, 255, 255, 0.6);
+          flex-wrap: wrap;
+          gap: 1rem;
         }
 
         .header-content {
@@ -178,6 +233,13 @@ const Homeadm = () => {
           margin-top: 2px;
         }
 
+        /* 👇 Section utilisateur + logout */
+        .user-section {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
         .user-badge {
           display: flex;
           align-items: center;
@@ -200,6 +262,60 @@ const Homeadm = () => {
           justify-content: center;
           font-weight: 600;
           font-size: 0.85rem;
+        }
+
+        /* 👇 Bouton de déconnexion */
+        .logout-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 0.85rem;
+          background: linear-gradient(135deg, #ef4444, #dc2626);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover:not(:disabled) {
+          background: linear-gradient(135deg, #dc2626, #b91c1c);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .logout-btn:active:not(:disabled) {
+          transform: translateY(0);
+        }
+
+        .logout-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .logout-icon {
+          transition: transform 0.2s ease;
+        }
+
+        .logout-btn:hover:not(:disabled) .logout-icon {
+          transform: translateX(-2px);
+        }
+
+        .logout-icon.spinning {
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .logout-text {
+          white-space: nowrap;
         }
 
         /* ===== NAV GRID ===== */
@@ -295,6 +411,7 @@ const Homeadm = () => {
         .gradient-2 { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
         .gradient-3 { background: linear-gradient(135deg, #f97316, #ea580c); }
         .gradient-4 { background: linear-gradient(135deg, #f43f5e, #ec4899); }
+        .gradient-5 { background: linear-gradient(135deg, #10b981b3, #105fb9b3); }
 
         .card-text {
           flex: 1;
@@ -394,8 +511,12 @@ const Homeadm = () => {
             font-size: 0.85rem;
           }
 
+          .user-section {
+            width: 100%;
+            justify-content: space-between;
+          }
+
           .user-badge {
-            align-self: flex-end;
             padding: 0.4rem 0.85rem;
             font-size: 0.85rem;
           }
@@ -404,6 +525,11 @@ const Homeadm = () => {
             width: 28px;
             height: 28px;
             font-size: 0.75rem;
+          }
+
+          .logout-btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
           }
 
           .nav-grid {
@@ -439,6 +565,17 @@ const Homeadm = () => {
             font-size: 1.15rem;
           }
 
+          .user-section {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+          }
+
+          .logout-btn {
+            width: 100%;
+            justify-content: center;
+          }
+
           .nav-card {
             padding: 1.1rem;
             border-radius: 16px;
@@ -459,7 +596,8 @@ const Homeadm = () => {
         }
 
         /* ===== ACCESSIBILITY ===== */
-        .nav-card:focus-visible {
+        .nav-card:focus-visible,
+        .logout-btn:focus-visible {
           outline: 2px solid #3b82f6;
           outline-offset: 2px;
         }
@@ -468,7 +606,9 @@ const Homeadm = () => {
           .nav-card,
           .card-icon,
           .card-arrow,
-          .icon-glow {
+          .icon-glow,
+          .logout-btn,
+          .logout-icon {
             transition: none !important;
             animation: none !important;
           }
@@ -478,4 +618,4 @@ const Homeadm = () => {
   );
 };
 
-export default Homeadm;
+export default connect(null, { logoutUser })(Homeadm);

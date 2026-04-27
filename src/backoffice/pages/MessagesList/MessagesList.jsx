@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  MoreVertical, Eye, Edit, Trash2, CheckCircle, XCircle, Clock, 
-  Phone, Mail, Send, Reply, Archive, AlertCircle, Filter, Search, 
-  ChevronLeft, ChevronRight, Tag, Calendar, User, MessageSquare 
+import React, { useState, useEffect } from 'react';
+import {
+  MoreVertical, Eye, Edit, Trash2, CheckCircle, XCircle, Clock,
+  Phone, Mail, Send, Reply, Archive, AlertCircle, Filter, Search,
+  ChevronLeft, ChevronRight, Tag, Calendar, User, MessageSquare,
+  ArrowLeft
 } from 'lucide-react';
 import './MessagesList.css';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 // 🎨 Configurations d'affichage
 const statutConfig = {
@@ -95,16 +96,16 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
           'Accept': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ 
-          reponse_admin: response, 
+        body: JSON.stringify({
+          reponse_admin: response,
           envoyer_email: sendEmail,
           statut: 'repondu'
         }),
       });
       if (res.ok) {
         const data = await res.json();
-        onUpdate(message.id, { 
-          reponse_admin: response, 
+        onUpdate(message.id, {
+          reponse_admin: response,
           date_reponse: data.data.date_reponse,
           statut: 'repondu'
         });
@@ -150,12 +151,12 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
         >
           <MoreVertical size={18} />
         </button>
-        
+
         {isOpen && (
           <>
             <div className="messages-list__dropdown-overlay" onClick={() => setIsOpen(false)} />
             <div className="message-card__dropdown-menu">
-              
+
               {/* Statut */}
               <div className="message-card__dropdown-section">
                 <span className="message-card__dropdown-label">Statut</span>
@@ -166,18 +167,17 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
                   <button
                     key={key}
                     onClick={() => handleStatusChange(key)}
-                    className={`message-card__dropdown-item ${
-                      message.statut === key ? 'message-card__dropdown-item--active' : ''
-                    }`}
+                    className={`message-card__dropdown-item ${message.statut === key ? 'message-card__dropdown-item--active' : ''
+                      }`}
                   >
                     <Icon size={14} />
                     {config.label}
                   </button>
                 );
               })}
-              
+
               <div className="message-card__dropdown-divider" />
-              
+
               {/* Priorité */}
               <div className="message-card__dropdown-section">
                 <span className="message-card__dropdown-label">Priorité</span>
@@ -186,16 +186,15 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
                 <button
                   key={key}
                   onClick={() => handlePriorityChange(key)}
-                  className={`message-card__dropdown-item ${
-                    message.priorite === key ? 'message-card__dropdown-item--priority-active' : ''
-                  }`}
+                  className={`message-card__dropdown-item ${message.priorite === key ? 'message-card__dropdown-item--priority-active' : ''
+                    }`}
                 >
                   {config.label}
                 </button>
               ))}
-              
+
               <div className="message-card__dropdown-divider" />
-              
+
               {/* Actions */}
               <button
                 onClick={() => { setResponse(message.reponse_admin || ''); setShowResponseModal(true); }}
@@ -204,13 +203,9 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
                 <Reply size={14} />
                 Répondre
               </button>
-              {/* <button className="message-card__dropdown-item">
-                <Eye size={14} />
-                Voir le message
-              </button>
-               */}
+
               <div className="message-card__dropdown-divider" />
-              
+
               <button onClick={handleDelete} className="message-card__dropdown-item message-card__dropdown-item--danger">
                 <Trash2 size={14} />
                 Supprimer
@@ -228,12 +223,12 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
               <Reply size={20} className="message-card__icon" />
               <h3 className="messages-list__modal-title">Répondre au message</h3>
             </div>
-            
+
             <div className="messages-list__modal-original">
               <p className="messages-list__modal-original-label">Message original</p>
               <p className="messages-list__modal-original-text">{message.message}</p>
             </div>
-            
+
             <textarea
               value={response}
               onChange={(e) => setResponse(e.target.value)}
@@ -241,7 +236,7 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
               className="messages-list__modal-textarea"
               rows={5}
             />
-            
+
             <label className="messages-list__modal-checkbox">
               <input
                 type="checkbox"
@@ -250,7 +245,7 @@ const MessageDropdown = ({ message, onUpdate, onDelete }) => {
               />
               Envoyer une copie par email à {message.contact.email}
             </label>
-            
+
             <div className="messages-list__modal-actions">
               <button
                 onClick={() => setShowResponseModal(false)}
@@ -284,7 +279,7 @@ const MessageCard = ({ message, onUpdate, onDelete }) => {
 
   return (
     <article className={`message-card ${message.is_nouveau ? 'message-card--nouveau' : ''}`}>
-      
+
       {/* Header avec dropdown */}
       <header className="message-card__header">
         <div className="message-card__badges">
@@ -305,7 +300,7 @@ const MessageCard = ({ message, onUpdate, onDelete }) => {
 
       {/* Contenu */}
       <div className="message-card__content">
-        
+
         {/* 👤 Contact */}
         <section>
           <h4 className="message-card__section-title">
@@ -381,55 +376,34 @@ const MessageCard = ({ message, onUpdate, onDelete }) => {
 };
 
 // 📋 Main Component
-const MessagesList = () => {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({});
-  
+const MessagesList = ({
+  messages = [],
+  pagination = {},
+  availableFilters = {},
+  isLoading = false,
+  error = null,
+  fetchMessages,
+  updateMessageStatus,
+  deleteMessage
+}) => {
+  // Local state for UI controls only (filters, pagination)
   const [filters, setFilters] = useState({
     statut: '', priorite: '', sujet: '', source: '', search: '', date_debut: '', date_fin: ''
   });
-  const [availableFilters, setAvailableFilters] = useState({});
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(12);
 
-  const fetchMessages = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const params = new URLSearchParams({
+  // Fetch data when filters or page changes - calls the prop callback
+  useEffect(() => {
+    if (fetchMessages) {
+      fetchMessages({
         page: currentPage,
         per_page: perPage,
-        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v)),
+        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
-
-      const response = await fetch(`${API_URL}/admin/messages?${params}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Erreur de chargement des messages');
-      
-      const result = await response.json();
-      setMessages(result.data);
-      setPagination(result.pagination);
-      setAvailableFilters(result.filters || {});
-      
-    } catch (err) {
-      setError(err.message);
-      console.error('Erreur fetch messages:', err);
-    } finally {
-      setLoading(false);
     }
-  }, [currentPage, perPage, filters]);
-
-  useEffect(() => { fetchMessages(); }, [fetchMessages]);
+  }, [fetchMessages, currentPage, perPage, filters]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -437,14 +411,15 @@ const MessagesList = () => {
   };
 
   const handleUpdate = (id, updates) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === id ? { ...msg, ...updates, is_nouveau: updates.statut === 'nouveau' } : msg
-    ));
+    if (updateMessageStatus) {
+      updateMessageStatus(id, updates);
+    }
   };
 
   const handleDelete = (id) => {
-    setMessages(prev => prev.filter(msg => msg.id !== id));
-    setPagination(prev => ({ ...prev, total: prev.total - 1 }));
+    if (deleteMessage) {
+      deleteMessage(id);
+    }
   };
 
   const clearFilters = () => {
@@ -459,7 +434,10 @@ const MessagesList = () => {
     <div className="messages-list">
       {/* En-tête */}
       <header className="messages-list__header">
-        <h1 className="messages-list__title">Messages de contact</h1>
+        <h1 className="messages-list__title">
+          <a href="/admin" className="rdv-back-link">
+            <ArrowLeft size={14} />
+          </a>Messages de contact</h1>
         <p className="messages-list__subtitle">
           {pagination.total} message{pagination.total > 1 ? 's' : ''} • {pagination.nouveau_count || 0} nouveau{(pagination.nouveau_count || 0) > 1 ? 'x' : ''}
         </p>
@@ -491,14 +469,14 @@ const MessagesList = () => {
           <h3 className="messages-list__filters-title">
             <Filter size={14} /> Filtres
           </h3>
-          <button 
+          <button
             className="messages-list__filters-toggle"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           >
             {showAdvancedFilters ? 'Masquer' : 'Afficher'} avancés
           </button>
         </div>
-        
+
         <div className="messages-list__filters-grid">
           {/* Recherche */}
           <div className="messages-list__filter-group messages-list__search-wrapper">
@@ -515,8 +493,8 @@ const MessagesList = () => {
           {/* Statut */}
           <div className="messages-list__filter-group">
             <label className="messages-list__filter-label">Statut</label>
-            <select 
-              value={filters.statut} 
+            <select
+              value={filters.statut}
               onChange={(e) => handleFilterChange('statut', e.target.value)}
               className="messages-list__filter-select"
             >
@@ -530,8 +508,8 @@ const MessagesList = () => {
           {/* Priorité */}
           <div className="messages-list__filter-group">
             <label className="messages-list__filter-label">Priorité</label>
-            <select 
-              value={filters.priorite} 
+            <select
+              value={filters.priorite}
               onChange={(e) => handleFilterChange('priorite', e.target.value)}
               className="messages-list__filter-select"
             >
@@ -545,8 +523,8 @@ const MessagesList = () => {
           {/* Sujet */}
           <div className="messages-list__filter-group">
             <label className="messages-list__filter-label">Sujet</label>
-            <select 
-              value={filters.sujet} 
+            <select
+              value={filters.sujet}
               onChange={(e) => handleFilterChange('sujet', e.target.value)}
               className="messages-list__filter-select"
             >
@@ -560,8 +538,8 @@ const MessagesList = () => {
           {/* Source */}
           <div className="messages-list__filter-group">
             <label className="messages-list__filter-label">Source</label>
-            <select 
-              value={filters.source} 
+            <select
+              value={filters.source}
               onChange={(e) => handleFilterChange('source', e.target.value)}
               className="messages-list__filter-select"
             >
@@ -577,18 +555,18 @@ const MessagesList = () => {
             <>
               <div className="messages-list__filter-group">
                 <label className="messages-list__filter-label">Du</label>
-                <input 
-                  type="date" 
-                  value={filters.date_debut} 
+                <input
+                  type="date"
+                  value={filters.date_debut}
                   onChange={(e) => handleFilterChange('date_debut', e.target.value)}
                   className="messages-list__filter-input"
                 />
               </div>
               <div className="messages-list__filter-group">
                 <label className="messages-list__filter-label">Au</label>
-                <input 
-                  type="date" 
-                  value={filters.date_fin} 
+                <input
+                  type="date"
+                  value={filters.date_fin}
                   onChange={(e) => handleFilterChange('date_fin', e.target.value)}
                   className="messages-list__filter-input"
                 />
@@ -611,7 +589,7 @@ const MessagesList = () => {
       </div>
 
       {/* États */}
-      {loading ? (
+      {isLoading ? (
         <div className="messages-list__state">
           <div className="messages-list__loader" />
           <p>Chargement des messages...</p>
@@ -620,7 +598,12 @@ const MessagesList = () => {
         <div className="messages-list__state">
           <AlertCircle size={48} className="messages-list__state-icon" />
           <p className="messages-list__state-title messages-list__error">{error}</p>
-          <button onClick={fetchMessages} className="messages-list__state-btn">Réessayer</button>
+          <button
+            onClick={() => fetchMessages?.({ page: currentPage, per_page: perPage, ...filters })}
+            className="messages-list__state-btn"
+          >
+            Réessayer
+          </button>
         </div>
       ) : messages.length === 0 ? (
         <div className="messages-list__state">
@@ -671,7 +654,6 @@ const MessagesList = () => {
               </button>
             </nav>
           )}
-
         </>
       )}
     </div>

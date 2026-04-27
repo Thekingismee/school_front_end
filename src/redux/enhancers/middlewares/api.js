@@ -29,45 +29,73 @@ const apiMiddleware = ({ dispatch }) => next => action => {
         onFailure,
         label,
         headers,
-        privateAPI
+        privateAPI,
+        withCredentials = false,
+        csrf = false
     } = action.payload;
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
-
     const cnxAccessToken = localStorage.getItem("token");
 
-    // axios default configs
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
-    axios.defaults.headers.common["Content-Type"] = "application/json";
-    //axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
-    if (cnxAccessToken && privateAPI) {
-        axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${cnxAccessToken}`;
-    } else {
-        delete axios.defaults.headers.common["Authorization"];
+    // Ensure baseURL is set for any other generic axios use if needed, but avoid mutating global state unnecessarily per request
+    if (!axios.defaults.baseURL) {
+        axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
     }
 
     if (label) {
         dispatch(apiStart(label));
     }
 
-    axios
-        .request({
+    const executeRequest = async () => {
+        let requestHeaders = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            ...headers
+        };
+
+        if (cnxAccessToken && privateAPI) {
+            requestHeaders["Authorization"] = `Bearer ${cnxAccessToken}`;
+        }
+
+        if (csrf) {
+            const apiBaseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+            await axios.get(`${apiBaseUrl}/sanctum/csrf-cookie`, {
+                withCredentials: true,
+                headers: { "Accept": "application/json" }
+            });
+
+            // Get CSRF token from cookies and set it for axios
+            // Note: This requires the frontend and backend to share the same top-level domain
+            const csrfToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('XSRF-TOKEN='))
+                ?.split('=')[1];
+
+            if (csrfToken) {
+                requestHeaders['X-XSRF-TOKEN'] = decodeURIComponent(csrfToken);
+            }
+        }
+
+        return axios.request({
             url,
             method,
-            headers,
+            headers: requestHeaders,
+            withCredentials,
             [dataOrParams]: data
-        })
+        });
+    };
+
+    executeRequest()
         .then(({ data }) => {
             dispatch(onSuccess(data));
         })
         .catch(error => {
             dispatch(apiError(error));
-            onFailure(error);
+            const failureAction = onFailure(error);
+            if (failureAction && failureAction.type) {
+                dispatch(failureAction);
+            }
 
-        
-                if (error.response && error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 dispatch(accessDenied(window.location.pathname));
             }
         })

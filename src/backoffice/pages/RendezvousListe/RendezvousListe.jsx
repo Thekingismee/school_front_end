@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
+import {
   MoreVertical, CheckCircle, XCircle, Clock, Calendar, MapPin, User, Phone, Mail,
   Edit, Trash2, Send, AlertCircle, Filter, Search, ChevronLeft, ChevronRight,
   Users, MessageSquare, Tag, ArrowLeft, ArrowRight
 } from 'lucide-react';
 import './RendezvousListe.css';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 // 🎨 Configurations d'affichage
 const statutConfig = {
@@ -43,17 +43,17 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
           'Accept': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ 
-          statut: newStatut, 
-          envoyer_confirmation: newStatut === 'confirmed' && sendConfirmation 
+        body: JSON.stringify({
+          statut: newStatut,
+          envoyer_confirmation: newStatut === 'confirmed' && sendConfirmation
         }),
       });
       if (res.ok) {
         const data = await res.json();
-        onUpdate(rdv.id, { 
-          statut: newStatut, 
+        onUpdate(rdv.id, {
+          statut: newStatut,
           confirme_le: data.data.confirme_le,
-          confirme_par: data.data.confirme_par 
+          confirme_par: data.data.confirme_par
         });
         setIsOpen(false);
       }
@@ -134,12 +134,12 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
         >
           <MoreVertical />
         </button>
-        
+
         {isOpen && (
           <>
             <div className="rdv-dropdown-overlay" onClick={() => setIsOpen(false)} />
             <div className="rdv-dropdown-menu">
-              
+
               {/* Statut */}
               <div className="rdv-dropdown-section">
                 <span className="rdv-dropdown-section-title">Statut</span>
@@ -166,9 +166,9 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                   </button>
                 );
               })}
-              
+
               <div className="rdv-dropdown-divider" />
-              
+
               {/* Priorité */}
               <div className="rdv-dropdown-section">
                 <span className="rdv-dropdown-section-title">Priorité</span>
@@ -183,9 +183,9 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                   {config.label}
                 </button>
               ))}
-              
+
               <div className="rdv-dropdown-divider" />
-              
+
               {/* Actions */}
               <button
                 onClick={() => { setNote(rdv.note_admin || ''); setShowNoteModal(true); }}
@@ -194,7 +194,7 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                 <Edit size={14} />
                 Ajouter une note
               </button>
-              
+
               {rdv.can_confirm && (
                 <button
                   onClick={() => handleStatusChange('confirmed')}
@@ -204,7 +204,7 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                   Confirmer le RDV
                 </button>
               )}
-              
+
               {rdv.can_cancel && (
                 <button
                   onClick={() => handleStatusChange('cancelled')}
@@ -214,9 +214,9 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                   Annuler
                 </button>
               )}
-              
+
               <div className="rdv-dropdown-divider" />
-              
+
               <button
                 onClick={handleDelete}
                 className="rdv-dropdown-item danger"
@@ -239,13 +239,13 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                 {rdv.statut === 'pending' ? 'Confirmer le rendez-vous' : 'Note interne'}
               </h3>
             </div>
-            
+
             {/* Résumé RDV */}
             <div className="rdv-modal-summary">
               <p>📅 {rdv.rdv.date_complete} à {rdv.rdv.heure}</p>
               <p>👤 {rdv.visiteur.nom} • {lieuLabels[rdv.rdv.lieu] || rdv.rdv.lieu}</p>
             </div>
-            
+
             <label className="rdv-modal-label">
               Note interne (visible uniquement par l'équipe)
             </label>
@@ -256,7 +256,7 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
               className="rdv-modal-textarea"
               rows={3}
             />
-            
+
             {rdv.statut === 'pending' && (
               <label className="rdv-modal-checkbox">
                 <input
@@ -267,7 +267,7 @@ const RendezvousDropdown = ({ rdv, onUpdate, onDelete }) => {
                 Envoyer un email de confirmation à {rdv.visiteur.email}
               </label>
             )}
-            
+
             <div className="rdv-modal-actions">
               <button
                 onClick={() => setShowNoteModal(false)}
@@ -295,12 +295,12 @@ const RendezvousCard = ({ rdv, onUpdate, onDelete }) => {
   const priorite = prioriteConfig[rdv.priorite] || prioriteConfig.normale;
   const StatusIcon = statut.icon;
 
-  const cardBorderClass = rdv.is_pending ? 'pending' : 
-                         rdv.is_today ? 'today' : 'default';
+  const cardBorderClass = rdv.is_pending ? 'pending' :
+    rdv.is_today ? 'today' : 'default';
 
   return (
     <div className={`rdv-card ${cardBorderClass}`}>
-      
+
       {/* Header avec dropdown */}
       <div className="rdv-card-header">
         <div className="rdv-card-badges">
@@ -321,7 +321,7 @@ const RendezvousCard = ({ rdv, onUpdate, onDelete }) => {
 
       {/* Contenu */}
       <div className="rdv-card-content">
-        
+
         {/* 📅 Date & Heure */}
         <div className="rdv-card-section">
           <div className="rdv-card-icon orange">
@@ -410,13 +410,17 @@ const RendezvousCard = ({ rdv, onUpdate, onDelete }) => {
 };
 
 // 📋 Main Component
-const RendezvousListe = () => {
-  const [rdvs, setRdvs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({});
-  
-  // Filtres
+const RendezvousListe = ({
+  rendezvous = [],
+  pagination = {},
+  availableFilters = {},
+  isLoading = false,
+  error = null,
+  fetchRendezvous,
+  updateRendezvousStatus,
+  deleteRendezvous
+}) => {
+  // Keep local state for filters, currentPage, showAdvancedFilters, etc.
   const [filters, setFilters] = useState({
     statut: '',
     priorite: '',
@@ -426,77 +430,29 @@ const RendezvousListe = () => {
     date_fin: '',
     aujourdhui: false,
   });
-  const [availableFilters, setAvailableFilters] = useState({});
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-
-  // Pagination & Tri
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(12);
   const [sortBy, setSortBy] = useState('date_rdv');
   const [sortDir, setSortDir] = useState('asc');
 
-  const fetchRendezvous = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const params = new URLSearchParams({
-        page: currentPage,
-        per_page: perPage,
-        sort_by: sortBy,
-        sort_dir: sortDir,
-        ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v && v !== false)),
-      });
-      if (filters.aujourdhui) params.append('aujourdhui', '1');
-
-      const response = await fetch(`${API_URL}/admin/rendezvous?${params}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Erreur de chargement des rendez-vous');
-      
-      const result = await response.json();
-      setRdvs(result.data);
-      setPagination(result.pagination);
-      setAvailableFilters(result.filters || {});
-      
-    } catch (err) {
-      setError(err.message);
-      console.error('Erreur fetch rendez-vous:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, perPage, sortBy, sortDir, filters]);
-
-  useEffect(() => {
-    fetchRendezvous();
-  }, [fetchRendezvous]);
-
-  // Handlers
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
     setCurrentPage(1);
+    // Le fetch sera déclenché automatiquement par useEffect
   };
 
+  useEffect(() => {
+    fetchRendezvous({ page: currentPage, perPage, sortBy, sortDir, ...filters });
+  }, [fetchRendezvous, currentPage, perPage, sortBy, sortDir, filters]);
+
   const handleUpdate = (id, updates) => {
-    setRdvs(prev => prev.map(rdv => 
-      rdv.id === id ? { 
-        ...rdv, 
-        ...updates, 
-        is_pending: updates.statut === 'pending',
-        is_confirmed: updates.statut === 'confirmed',
-        can_confirm: updates.statut === 'pending',
-        can_cancel: ['pending', 'confirmed'].includes(updates.statut),
-      } : rdv
-    ));
+    updateRendezvousStatus(id, updates);
   };
 
   const handleDelete = (id) => {
-    setRdvs(prev => prev.filter(rdv => rdv.id !== id));
-    setPagination(prev => ({ ...prev, total: prev.total - 1 }));
+    deleteRendezvous(id);
   };
 
   const handleSort = (field) => {
@@ -520,7 +476,11 @@ const RendezvousListe = () => {
     <div className="rdv-container">
       {/* En-tête */}
       <div className="rdv-header">
-        <h1>Gestion des rendez-vous</h1>
+        <h1>
+          <a href="/admin" className="rdv-back-link">
+            <ArrowLeft size={14} />
+          </a>
+          Gestion des rendez-vous</h1>
         <p>
           {pagination.total} rendez-vous • {pagination.pending_count} en attente • {pagination.today_count} aujourd'hui
         </p>
@@ -538,7 +498,7 @@ const RendezvousListe = () => {
         </div>
         <div className="rdv-stat-card confirmed">
           <div className="rdv-stat-value">
-            {rdvs.filter(r => r.is_confirmed).length}
+            {rendezvous.filter(r => r.is_confirmed).length}
           </div>
           <div className="rdv-stat-label">Confirmés</div>
         </div>
@@ -548,14 +508,14 @@ const RendezvousListe = () => {
       <div className="rdv-filters">
         <div className="rdv-filters-header">
           <h3><Filter size={14} /> Filtres</h3>
-          <button 
+          <button
             className="rdv-btn-toggle"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           >
             {showAdvancedFilters ? 'Masquer' : 'Afficher'} avancés
           </button>
         </div>
-        
+
         <div className="rdv-filters-grid">
           {/* Recherche */}
           <div className="rdv-filter-group rdv-search-wrapper">
@@ -632,26 +592,26 @@ const RendezvousListe = () => {
         <div className="rdv-filters-actions">
           <div className="rdv-sort-controls">
             <span className="text-xs text-gray-500">Trier par :</span>
-            <button 
+            <button
               className={`rdv-sort-btn ${sortBy === 'date_rdv' ? 'active' : ''}`}
               onClick={() => handleSort('date_rdv')}
             >
               Date <ChevronLeft size={10} className={`rdv-sort-icon ${sortDir === 'asc' ? 'asc' : 'desc'}`} />
             </button>
-            <button 
+            <button
               className={`rdv-sort-btn ${sortBy === 'priorite' ? 'active' : ''}`}
               onClick={() => handleSort('priorite')}
             >
               Priorité
             </button>
-            <button 
+            <button
               className={`rdv-sort-btn ${sortBy === 'nom' ? 'active' : ''}`}
               onClick={() => handleSort('nom')}
             >
               Nom
             </button>
           </div>
-          
+
           {hasActiveFilters && (
             <button onClick={clearFilters} className="rdv-btn-clear">
               Réinitialiser
@@ -661,7 +621,7 @@ const RendezvousListe = () => {
       </div>
 
       {/* États */}
-      {loading ? (
+      {isLoading ? (
         <div className="rdv-state">
           <div className="rdv-loading-spinner" />
           <p>Chargement des rendez-vous...</p>
@@ -670,9 +630,9 @@ const RendezvousListe = () => {
         <div className="rdv-state">
           <AlertCircle className="rdv-state-icon" />
           <p className="rdv-state-title rdv-state-error">{error}</p>
-          <button onClick={fetchRendezvous} className="rdv-btn-primary">Réessayer</button>
+          <button onClick={() => fetchRendezvous({ page: currentPage, perPage, sortBy, sortDir, ...filters })} className="rdv-btn-primary">Réessayer</button>
         </div>
-      ) : rdvs.length === 0 ? (
+      ) : rendezvous.length === 0 ? (
         <div className="rdv-state">
           <Calendar className="rdv-state-icon" />
           <p className="rdv-state-title">Aucun rendez-vous trouvé</p>
@@ -685,7 +645,7 @@ const RendezvousListe = () => {
         <>
           {/* Grille de cartes */}
           <div className="rdv-grid">
-            {rdvs.map(rdv => (
+            {rendezvous.map(rdv => (
               <RendezvousCard
                 key={rdv.id}
                 rdv={rdv}

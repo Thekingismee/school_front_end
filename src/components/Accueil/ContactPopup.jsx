@@ -17,7 +17,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear errors when user types
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
@@ -30,37 +30,63 @@ const ContactPopup = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     setErrors({});
     setApiError(null);
-    
+
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/contact-messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Source': 'popup', // Optionnel : tracker la source
-        },
-        body: JSON.stringify(formData),
-      });
+      // Envoyer les données vers les deux endpoints en parallèle
+      const [response1, response2] = await Promise.all([
+        fetch('http://localhost:8000/api/contact-messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Source': 'popup',
+          },
+          body: JSON.stringify(formData),
+        }),
+        fetch('http://localhost:8000/api/contact-messages-plus', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Source': 'popup',
+          },
+          body: JSON.stringify(formData),
+        }),
+      ]);
 
-      const data = await response.json();
+      const data1 = await response1.json();
+      const data2 = await response2.json();
 
-      if (!response.ok) {
-        // Gestion des erreurs de validation Laravel (422)
-        if (response.status === 422 && data.errors) {
+      // Vérifier le premier endpoint
+      if (!response1.ok) {
+        if (response1.status === 422 && data1.errors) {
           const formattedErrors = {};
-          Object.entries(data.errors).forEach(([key, messages]) => {
+          Object.entries(data1.errors).forEach(([key, messages]) => {
             formattedErrors[key] = messages[0];
           });
           setErrors(formattedErrors);
           throw new Error('Veuillez corriger les erreurs du formulaire');
         }
-        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
+        throw new Error(data1.message || 'Erreur lors de l\'envoi (endpoint 1)');
       }
 
-      // ✅ Succès
+      // Vérifier le deuxième endpoint
+      if (!response2.ok) {
+        if (response2.status === 422 && data2.errors) {
+          const formattedErrors = {};
+          Object.entries(data2.errors).forEach(([key, messages]) => {
+            formattedErrors[key] = messages[0];
+          });
+          setErrors(formattedErrors);
+          throw new Error('Veuillez corriger les erreurs du formulaire');
+        }
+        throw new Error(data2.message || 'Erreur lors de l\'envoi (endpoint 2)');
+      }
+
+      // ✅ Succès - Les deux endpoints ont répondu correctement
       setIsSent(true);
       setFormData({ nom: '', email: '', telephone: '', sujet: '', message: '' });
-      
+
       setTimeout(() => {
         setIsSent(false);
         onClose();
@@ -134,7 +160,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                 />
                 {errors.nom && <span className="field-error">{errors.nom}</span>}
               </div>
-              
+
               <div className="contactpopup-field">
                 <label htmlFor="email">Email *</label>
                 <input
@@ -165,7 +191,7 @@ const ContactPopup = ({ isOpen, onClose }) => {
                 />
                 {errors.telephone && <span className="field-error">{errors.telephone}</span>}
               </div>
-              
+
               <div className="contactpopup-field">
                 <label htmlFor="sujet">Sujet *</label>
                 <select
@@ -201,8 +227,8 @@ const ContactPopup = ({ isOpen, onClose }) => {
               {errors.message && <span className="field-error">{errors.message}</span>}
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="contactpopup-submit"
               disabled={isSubmitting}
             >
