@@ -169,7 +169,7 @@ const Navbar = () => {
                         </button>
 
                         <ul className={`dropdown-menu ${activeDropdown === "parents" ? "desktop-visible" : ""} ${mobileOpenSubmenus["parents"] ? "mobile-visible" : ""}`}>
-                            <li><a href="/koolschool" onClick={handleMobileLinkClick}>KoolSchool</a></li>
+                            <li><a href="/atomeApp" onClick={handleMobileLinkClick}>Application GS l'Atome</a></li>
                             <li><a href="/faq" onClick={handleMobileLinkClick}>FAQ</a></li>
                         </ul>
                     </li>

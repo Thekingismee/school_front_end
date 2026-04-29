@@ -36,9 +36,9 @@ const Inscription = () => {
     setIsSubmitting(true);
     setErrors({});
     setApiError(null);
-    
-    try {
-      const response = await fetch('http://localhost:8000/api/inscriptions', {
+
+    const postData = async (url) => {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,26 +46,22 @@ const Inscription = () => {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
-        // Gestion des erreurs de validation Laravel (422)
-        if (response.status === 422 && data.errors) {
-          // Transformer les erreurs Laravel en format compatible
-          const formattedErrors = {};
-          Object.entries(data.errors).forEach(([key, messages]) => {
-            // Convertir snake_case vers camelCase si nécessaire
-            const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
-            formattedErrors[camelKey] = messages[0]; // Prendre le premier message d'erreur
-          });
-          setErrors(formattedErrors);
-          throw new Error('Veuillez corriger les erreurs du formulaire');
-        }
-        throw new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
+        const error = new Error(data.message || 'Une erreur est survenue lors de l\'envoi');
+        error.status = response.status;
+        error.data = data;
+        throw error;
       }
+      return data;
+    };
 
-      // Succès
+    try {
+      await Promise.all([
+        postData('http://localhost:8000/api/inscriptions'),
+        postData('http://localhost:8000/api/inscriptions-plus')
+      ]);
+
       setIsSuccess(true);
       setFormData({
         parentNom: '',
@@ -77,14 +73,21 @@ const Inscription = () => {
         dateNaissance: '',
         message: ''
       });
-      
+
       setTimeout(() => {
         setIsSuccess(false);
       }, 5000);
-
     } catch (error) {
       console.error('Erreur d\'envoi:', error);
-      if (error.message !== 'Veuillez corriger les erreurs du formulaire') {
+      if (error.status === 422 && error.data && error.data.errors) {
+        const formattedErrors = {};
+        Object.entries(error.data.errors).forEach(([key, messages]) => {
+          const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+          formattedErrors[camelKey] = messages[0];
+        });
+        setErrors(formattedErrors);
+        setApiError('Veuillez corriger les erreurs du formulaire');
+      } else {
         setApiError(error.message || 'Erreur de connexion au serveur');
       }
     } finally {

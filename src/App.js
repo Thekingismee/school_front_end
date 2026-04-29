@@ -97,6 +97,8 @@ import EspParent from "./pages/EspParent";
 import UserManagement from "./backoffice/pages/UserManagement";
 import LoginForm from "./backoffice/pages/LoginForm";
 import { fetchCurrentUser } from "./redux/actions/api";
+import AtomeApp from "./pages/AtomeApp";
+import Faq from "./pages/Faq";
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
     <Route
@@ -164,6 +166,8 @@ class App extends Component {
                         <Route path="/join-us" component={JoinUs} />
                         <Route path="/actualites/:slug" component={ActualiteDetail} />
                         <Route path="/tarifs-et-frais" component={TarifsFrais}/>
+                        <Route path="/atomeApp" component={AtomeApp}/>
+                        <Route path="/faq" component={Faq}/>
                     </Switch>
                 </Layout>
             </Router>
