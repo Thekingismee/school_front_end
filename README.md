@@ -1,3 +1,3 @@
 # Fron Grand Public
 
-Front CMR GRAND PUBLIC - React js
+Front l'Atome GRAND PUBLIC - React js

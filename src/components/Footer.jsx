@@ -1,6 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+const [loading, setLoading] = useState(false);
+const [message, setMessage] = useState('');
+
+const handleSubscribe = async () => {
+  if (!email) {
+    setMessage("Veuillez entrer un email");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    setMessage('');
+
+    const response = await axios.post('http://localhost:8000/api/subscribers', {
+      email: email
+    });
+
+    setMessage("✔️ Inscription réussie !");
+    setEmail('');
+
+  } catch (error) {
+    if (error.response?.data?.message) {
+      setMessage(error.response.data.message);
+    } else {
+      setMessage("❌ Erreur serveur");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <>
       <div className='footer1'></div>
@@ -42,12 +74,21 @@ const Footer = () => {
             <h3 className="footer-title">Restez informés</h3>
             <p className="footer-newsletter-text">Abonnez-vous à notre newsletter</p>
             <div className="footer-form">
-              <input
-                type="email"
-                placeholder="Votre adresse email"
-                className="footer-input"
-              />
-              <button className="footer-submit-btn">S'abonner</button>
+             <input
+  type="email"
+  placeholder="Votre adresse email"
+  className="footer-input"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+/>
+
+<button
+  className="footer-submit-btn"
+  onClick={handleSubscribe}
+  disabled={loading}
+>
+  {loading ? "Envoi..." : "S'abonner"}
+</button>
             </div>
           </div>
 

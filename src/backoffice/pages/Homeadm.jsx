@@ -6,7 +6,8 @@ import {
   FileText, 
   Newspaper,
   ArrowRight,
-  LogOut  // 👈 Nouveau : icône de déconnexion
+  LogOut,  // 👈 Nouveau : icône de déconnexion
+  NewspaperIcon
 } from 'lucide-react';
 import { useHistory } from 'react-router-dom';  // 👈 Nouveau : pour la redirection
 import { connect } from 'react-redux';
@@ -86,6 +87,14 @@ const Homeadm = ({ logoutUser, isAuthenticated }) => {
       icon: UserPlus,
       accent: "from-emerald-500 to-teal-600",
       hoverGlow: "rgba(16, 185, 129, 0.25)"
+    },
+    {
+      href: "/newsletter",
+      label: "Newsletter",
+      description: "Gérer l'envoi de la newsletter",
+      icon: NewspaperIcon,
+      accent: "from-rose-500 to-pink-600",
+      hoverGlow: "rgba(56, 114, 252, 0.29)"
     }
   ];
 
@@ -412,6 +421,7 @@ const Homeadm = ({ logoutUser, isAuthenticated }) => {
         .gradient-3 { background: linear-gradient(135deg, #f97316, #ea580c); }
         .gradient-4 { background: linear-gradient(135deg, #f43f5e, #ec4899); }
         .gradient-5 { background: linear-gradient(135deg, #10b981b3, #105fb9b3); }
+        .gradient-6 { background: linear-gradient(135deg, #10a8b9b3, #45b910b3); }
 
         .card-text {
           flex: 1;
