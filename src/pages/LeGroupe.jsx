@@ -41,12 +41,13 @@ function LeGroupe() {
                     {/* Partie Droite : Contenu */}
                     <div className="about-content">
                         <h1>
-                            Un projet éducatif ambitieux, une communauté engagée
+                            Un projet éducatif ambitieux
+                            {/* , une communauté engagée */}
                         </h1>
 
                         {/* Premier paragraphe avec lignes alignées */}
                         <div className="paragraph-wrapper">
-                            <p className="para-line">
+                            {/* <p className="para-line">
                                 Situé à <strong>Lissasfa à Casablanca</strong>,
                                 le <strong>Groupe Scolaire l'Atome</strong> est
                                 un établissement éducatif engagé dans la
@@ -59,7 +60,7 @@ function LeGroupe() {
                                 <strong>maternelle jusqu'au secondaire</strong>{" "}
                                 dans un environnement structuré, sécurisé et
                                 propice à l'apprentissage.
-                            </p>
+                            </p> */}
                         </div>
 
                         {/* Deuxième paragraphe avec lignes alignées */}
@@ -67,7 +68,7 @@ function LeGroupe() {
                             <p className="para-line">
                                 Le{" "}
                                 <strong>
-                                    Groupe Scolaire l'Atome à Lissasfa
+                                    Groupe Scolaire l'Atome
                                 </strong>{" "}
                                 met l'accent sur un enseignement rigoureux,
                                 l'apprentissage des langues et le développement
@@ -113,35 +114,37 @@ function LeGroupe() {
                                 <strong>Groupe Scolaire L'Atome</strong> repose
                                 sur l'implication de femmes et d'hommes de
                                 terrain :
-                            </p>
-
-                            <p className="line-2">
-                                <strong>
                                     fondateurs, directions d'établissements,
                                     coordinateurs pédagogiques,
-                                </strong>
-                            </p>
 
-                            <p className="line-3">
-                                <strong>
                                     enseignants, éducateurs, personnels de vie
                                     scolaire et administratifs.
-                                </strong>
-                            </p>
 
-                            <p className="line-4">
-                                Tous œuvrent ensemble, avec{" "}
-                                <strong>rigueur et bienveillance</strong>, pour
+                                    Tous œuvrent ensemble, avec{" "}
+                                rigueur et bienveillance, pour
                                 accompagner chaque élève dans sa singularité et
                                 son potentiel.
                             </p>
+
+                            {/* <p className="line-2">
+                                <strong>
+                                </strong>
+                            </p> */}
+                            {/* <p className="line-3">
+                                <strong>
+                                </strong>
+                            </p> */}
+
+                            {/* <p className="line-4">
+                                
+                            </p> */}
                         </div>
 
-                        <div className="about-cta2">
+                        {/* <div className="about-cta2">
                             <button className="equipe-btn">
                                 L'équipe dirigeante
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Partie Droite : Image */}
@@ -333,7 +336,7 @@ function LeGroupe() {
                     background-image: linear-gradient(
                         to right,
                         rgb(86, 83, 255),
-                        #0059ffda,
+                        #417ff1da,
                         #1f75ee
                     );
                     padding: 4rem 2rem;
@@ -486,7 +489,7 @@ function LeGroupe() {
                 .text-lines p {
                     font-size: 1.1rem;
                     line-height: 1.8;
-                    color: #555;
+                    color: #000000;
                     margin-bottom: 12px;
                     font-family: "Poppins", "Trebuchet MS", Helvetica,
                         sans-serif;

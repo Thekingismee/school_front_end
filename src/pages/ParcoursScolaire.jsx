@@ -163,7 +163,7 @@ function ParcoursScolaire() {
                             </p>
 
                             <div style={styles.btnRow}>
-                                <button
+                                <a href="/about"
                                     style={{
                                         ...styles.btnPrimary,
                                         ...(hoveredBtn === "contact"
@@ -191,7 +191,7 @@ function ParcoursScolaire() {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                </button>
+                                </a>
                             </div>
 
                             <p style={styles.trust}>

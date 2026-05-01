@@ -35,13 +35,13 @@ const About = () => {
       Icon: Users,
       color: "violet",
     },
-    {
-      id: "ressources",
-      title: "Ressources & guides",
-      description: "Bibliothèque spécialisée et accès à des experts.",
-      Icon: BookOpen,
-      color: "amber",
-    },
+    // {
+    //   id: "ressources",
+    //   title: "Ressources & guides",
+    //   description: "Bibliothèque spécialisée et accès à des experts.",
+    //   Icon: BookOpen,
+    //   color: "amber",
+    // },
     {
       id: "soutien",
       title: "Soutien psychologique",
@@ -63,13 +63,13 @@ const About = () => {
       Icon: Route,
       color: "indigo",
     },
-    {
-      id: "formation",
-      title: "Ateliers de formation",
-      description: "Sessions pratiques pour gagner en confiance.",
-      Icon: Lightbulb,
-      color: "orange",
-    },
+    // {
+    //   id: "formation",
+    //   title: "Ateliers de formation",
+    //   description: "Sessions pratiques pour gagner en confiance.",
+    //   Icon: Lightbulb,
+    //   color: "orange",
+    // },
   ];
 
   // ♾️ Duplication pour le défilement infini
@@ -78,7 +78,7 @@ const About = () => {
   return (
     <>
       {/* ===== HERO : Image pleine hauteur, sans texte ===== */}
-      <header className="hero-section">
+      {/* <header className="hero-section">
         <picture className="hero-picture">
           <source media="(min-width: 1024px)" srcSet="/about8.jpg?w=1920&q=85" />
           <source media="(min-width: 768px)" srcSet="/about8.jpg?w=1200&q=80" />
@@ -95,9 +95,18 @@ const About = () => {
             }}
           />
         </picture>
-        {/* <div className="hero-overlay" aria-hidden="true" /> */}
         <div className="hero-grain" aria-hidden="true" />
-      </header>
+      </header> */}
+      <header className="header-hero">
+                <img 
+            src="/about8.jpg?w=800&q=75"
+                alt="Recrutement Groupe Scolaire L'Atome" className="hero-background" />
+                <div className="hero-overlay"></div>
+                <div className="hero-content">
+                    <h1 className="titre">À propos de nous</h1>
+                    <p className="hero-subtitle">Nous croyons en un apprentissage basé sur les valeurs, la créativité et le développement des compétences.</p>
+                </div>
+            </header>
 
       {/* ===== INTRO : Présentation chaleureuse ===== */}
       <section className="intro-section">
@@ -115,8 +124,8 @@ const About = () => {
               </p>
               <p>
                 C'est pour cela que nous avons construit une approche centrée sur 
-                <strong> l'écoute, la bienveillance et l'accompagnement</strong>. 
-                Notre équipe est à vos côtés — pas seulement pour enseigner, mais 
+               l'écoute, la bienveillance et l'accompagnement. 
+                Notre équipe est à vos côtés pas seulement pour enseigner, mais 
                 pour comprendre, guider et soutenir toute la famille.
               </p>
             </div>
@@ -124,7 +133,7 @@ const About = () => {
             <div className="intro-stats">
               <StatItem number="15+" label="Années d'expérience" />
               <StatItem number="500+" label="Familles accompagnées" />
-              <StatItem number="95%" label="Parents satisfaits" />
+              {/* <StatItem number="95%" label="Parents satisfaits" /> */}
             </div>
           </div>
         </div>
@@ -177,6 +186,14 @@ const About = () => {
       <style jsx>{`
         /* ===== BASE ===== */
         * { box-sizing: border-box; }
+
+                        .header-hero { position: relative; text-align: center; min-height: 550px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+                .hero-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+                .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.5) 100%); z-index: 1; }
+                .hero-content { position: relative; z-index: 2; padding: 140px 70px; }
+                .titre { text-shadow: 2px 2px 30px rgba(0, 0, 0, 0.5); font-size: 4rem; font-weight: bold; font-family: 'Georgia', 'Times New Roman', serif; color: #fff; margin: 0 0 16px 0; }
+                .hero-subtitle { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 1.2rem; color: rgba(255, 255, 255, 0.9); margin: 0; }
+
 
         /* ===== HERO SECTION ===== */
         .hero-section {

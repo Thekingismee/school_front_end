@@ -188,12 +188,13 @@ const Navbar = () => {
                 </ul>
 
                 {/* Call button (desktop only) */}
-                <button
+                                 <a
+                                href="tel:+212522903052"
                     className="call-button"
-                    onClick={() => setIsContactOpen(true)}
                 >
                     Appeler nous <Phone size={18} />
-                </button>
+                </a>
+                           
             </div>
 
             {/* Overlay mobile */}
@@ -349,6 +350,7 @@ const Navbar = () => {
 
                 /* ===== CALL BUTTON ===== */
                 .call-button {
+                text-decoration: none;
                     display: flex;
                     align-items: center;
                     gap: 8px;

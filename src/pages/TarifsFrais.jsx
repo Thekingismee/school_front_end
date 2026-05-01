@@ -119,7 +119,7 @@ function Tarifs() {
             </section>
             
             {/* ===== FORMULES DE PAIEMENT — Simples et rassurantes ===== */}
-            <section className="payment-section">
+            {/* <section className="payment-section">
                 <div className="section-header">
                     <h2>Des modalités de paiement <span className="highlight">flexibles</span></h2>
                     <p className="section-subtitle">
@@ -159,7 +159,7 @@ function Tarifs() {
                         </button>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
          
             {/* ===== COMPOSANT HOMEINFO ===== */}

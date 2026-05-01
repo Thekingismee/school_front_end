@@ -21,7 +21,7 @@ function HomeInfo() {
               <em className="heading1Accent">Parlons-en.</em>
             </h2>
             <p className="body">
-              Notre équipe vous accompagne à chaque étape — que ce soit pour
+              Notre équipe vous accompagne à chaque étape, que ce soit pour
               découvrir nos programmes, préparer votre inscription, ou simplement
               venir visiter l'école. On préfère une vraie conversation à un
               formulaire impersonnel.

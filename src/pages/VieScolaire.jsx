@@ -35,8 +35,7 @@ function VieScolaire() {
                     {/* Partie Droite : Contenu */}
                     <div className="about-content">
                         <h1>
-                            Une école qui vit, un cadre qui protège, des
-                            services qui facilitent le quotidien
+                            Une école qui accompagne chaque élève
                         </h1>
 
                         {/* <p>
@@ -333,9 +332,9 @@ function VieScolaire() {
                 .about-section {
                     background-image: linear-gradient(
                         to right,
-                        #81b9eeff,
-                        #4c97deff,
-                        #4c97deff
+                        rgb(86, 83, 255),
+                        #417ff1da,
+                        #1f75ee
                     );
                     padding: 4rem 2rem;
                     width: 73%;

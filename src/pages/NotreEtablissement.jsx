@@ -53,7 +53,7 @@ function NotreEtablissement() {
                         <div className="contact-links">
                             {/* Lien 1 : Localisation */}
                             <a
-                                href="https://maps.google.com"
+                                href="https://www.google.com/maps/place/Groupe+scolaire+L%E2%80%99atome/@33.5374443,-7.683869,17z/data=!3m1!4b1!4m6!3m5!1s0xda62cbe72870d3b:0x1edb5fa572f0aac!8m2!3d33.5374443!4d-7.6812941!16s%2Fg%2F11b6c9_km6?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="contact-link"
@@ -62,19 +62,18 @@ function NotreEtablissement() {
                             </a>
 
                             {/* Lien 2 : Téléphone */}
-                            <a
-                                href="tel:+212666666666"
+                            <a href="tel:+212522903052"
                                 className="contact-link"
                             >
-                                <Phone size={20} /> +212 6666666666
+                                <Phone size={20} /> +212 522903052
                             </a>
 
                             {/* Lien 3 : Email */}
                             <a
-                                href="mailto:test@gmail.com"
+                                href="mailto:gslatome@gmail.com"
                                 className="contact-link"
                             >
-                                <Mail size={20} /> test@gmail.com
+                                <Mail size={20} /> gslatome@gmail.com
                             </a>
                         </div>
                     </div>

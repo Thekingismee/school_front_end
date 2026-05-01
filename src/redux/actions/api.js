@@ -175,7 +175,13 @@ export function loginUser(data) {
         privateAPI: false,
         withCredentials: true,
         csrf: true,
-        onSuccess: loginSuccess,
+        onSuccess: (data) => {
+            // Stocker le token Sanctum
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+            }
+            return loginSuccess(data);
+        },
         onFailure: loginFailure,
         label: LOGIN_REQUEST
     });
@@ -186,6 +192,8 @@ export function fetchInscriptions(params = {}) {
         url: `${BACKEND_URL}/admin/inscriptions`,
         method: "GET",
         data: params,
+        withCredentials: true,  // <-- Ajouter ceci
+        csrf: true,             // <-- Et ceci
         onSuccess: setInscriptions,
         onFailure: () => null,
         label: FETCH_INSCRIPTIONS

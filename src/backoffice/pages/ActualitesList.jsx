@@ -8,6 +8,7 @@ const ActualitesList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [deletingId, setDeletingId] = useState(null); // 🔥 État pour le bouton de suppression
 
   // Formulaire
   const [formData, setFormData] = useState({
@@ -46,7 +47,7 @@ const ActualitesList = () => {
         headers: {
           'Accept': 'application/json',
         },
-        credentials: 'include', // Use session cookies instead of token
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Erreur de chargement');
@@ -57,6 +58,39 @@ const ActualitesList = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 🔥 Gestion de la suppression
+  const handleDelete = async (id, slug, titre) => {
+    if (!window.confirm(`Êtes-vous sûr de vouloir supprimer "${titre}" ?`)) {
+      return;
+    }
+
+    try {
+      setDeletingId(id);
+      
+      const response = await fetch(`${API_URL}/admin/actualites/${slug}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Erreur lors de la suppression');
+      }
+
+      // Retirer l'actualité de la liste localement
+      setActualites(prev => prev.filter(actu => actu.id !== id));
+      
+    } catch (err) {
+      alert('Erreur : ' + err.message);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -94,7 +128,6 @@ const ActualitesList = () => {
       setSubmitting(true);
 
       const data = new FormData();
-      // Ajouter l'image seulement si elle existe
       if (formData.image) {
         data.append('image', formData.image);
       }
@@ -109,14 +142,13 @@ const ActualitesList = () => {
         headers: {
           'Accept': 'application/json',
         },
-        credentials: 'include', // Use session cookies
+        credentials: 'include',
         body: data,
       });
 
       const responseData = await response.json();
 
       if (!response.ok) {
-        // Gestion des erreurs de validation (422)
         if (response.status === 422 && responseData.errors) {
           console.error('Erreurs de validation:', responseData.errors);
           alert('Erreurs de validation:\n' + Object.entries(responseData.errors).map(([key, msgs]) => `${key}: ${msgs[0]}`).join('\n'));
@@ -161,7 +193,7 @@ const ActualitesList = () => {
     setPreviewImage(null);
   };
 
-  // Styles simples
+  // Styles
   const styles = {
     container: {
       padding: '20px',
@@ -203,6 +235,7 @@ const ActualitesList = () => {
       overflow: 'hidden',
       backgroundColor: 'white',
       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      position: 'relative',
     },
     cardImage: {
       width: '100%',
@@ -234,6 +267,7 @@ const ActualitesList = () => {
       fontWeight: '600',
       margin: '0 0 8px 0',
       color: '#111827',
+      paddingRight: '24px', // Espace pour le bouton delete
     },
     cardDate: {
       fontSize: '13px',
@@ -245,6 +279,32 @@ const ActualitesList = () => {
       color: '#4b5563',
       lineHeight: '1.5',
       margin: 0,
+    },
+    // 🔥 Bouton de suppression dans la carte
+    btnDelete: {
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      backgroundColor: 'rgba(239, 68, 68, 0.9)',
+      color: 'white',
+      border: 'none',
+      borderRadius: '50%',
+      width: '32px',
+      height: '32px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      fontSize: '18px',
+      transition: 'background-color 0.2s',
+      zIndex: 10,
+    },
+    btnDeleteHover: {
+      backgroundColor: 'rgba(220, 38, 38, 1)',
+    },
+    btnDeleteDisabled: {
+      backgroundColor: 'rgba(156, 163, 175, 0.8)',
+      cursor: 'not-allowed',
     },
     modal: {
       position: 'fixed',
@@ -357,6 +417,9 @@ const ActualitesList = () => {
     },
   };
 
+  // 🔥 État pour le hover du bouton delete
+  const [hoveredDeleteId, setHoveredDeleteId] = useState(null);
+
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -383,6 +446,22 @@ const ActualitesList = () => {
         <div style={styles.grid}>
           {actualites.map((actu) => (
             <div key={actu.id} style={styles.card}>
+              {/* 🔥 Bouton de suppression */}
+              <button
+                style={{
+                  ...styles.btnDelete,
+                  ...(deletingId === actu.id ? styles.btnDeleteDisabled : {}),
+                  ...(hoveredDeleteId === actu.id ? styles.btnDeleteHover : {}),
+                }}
+                onClick={() => handleDelete(actu.id, actu.slug, actu.titre)}
+                onMouseEnter={() => setHoveredDeleteId(actu.id)}
+                onMouseLeave={() => setHoveredDeleteId(null)}
+                disabled={deletingId === actu.id}
+                title="Supprimer cette actualité"
+              >
+                {deletingId === actu.id ? '⏳' : '🗑️'}
+              </button>
+
               {actu.has_image ? (
                 <img
                   src={actu.image?.url}

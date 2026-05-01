@@ -4,10 +4,10 @@ const ServicesCantineTransportGarderie = () => {
     const services = [
         {
             id: 1,
-            titre: "Cantine Scolaire",
-            src: "/lunchbox.jpg",
+            titre: "éducation optimale",
+            src: "/serv3.jpg",
             description:
-                "Nous accompagnons les parents dans l'organisation des lunchboxes pour le petit-déjeuner et le déjeuner de leurs enfants. Vous préparez vous-même la lunchbox à la maison, et nous nous chargeons du service de réchauffement sur place. Nous veillons également à proposer un petit-déjeuner équilibré et à sensibiliser les enfants à une alimentation saine et variée."
+                "Nous accompagnons les eleves dans leur parcours scolaire en offrant un soutien personnalisé, des ressources pédagogiques innovantes et un encadrement bienveillant. Notre objectif est de favoriser l'épanouissement intellectuel et personnel de chaque élève, en cultivant la curiosité, la créativité et l'autonomie."
         },
         {
             id: 2,
@@ -111,6 +111,7 @@ const ServicesCantineTransportGarderie = () => {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
                     gap: 28px;
+                    justify-items: center;
                 }
                 .ctg-card {
                     overflow: hidden;
@@ -118,6 +119,8 @@ const ServicesCantineTransportGarderie = () => {
                     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
                     transition: transform 0.3s ease;
                     background: #fff;
+                    max-width: 300px;
+                    width: 100%;
                 }
                 .ctg-card:hover {
                     transform: translateY(-6px);

@@ -3,7 +3,7 @@ import { WhatsApp } from "@mui/icons-material";
 import React from "react";
 
 const WhatsAppLink = () => {
-  const phoneNumber = "212666666666"; // Remplace par ton numéro
+  const phoneNumber = "212522903052"; // Remplace par ton numéro
   const message = "Bonjour, je souhaite plus d'informations.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 

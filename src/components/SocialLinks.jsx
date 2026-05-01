@@ -8,7 +8,7 @@ const SocialLinks = () => {
     {
       name: "WhatsApp",
       icon: <WhatsApp />,
-      url: `https://wa.me/212666666666?text=${encodeURIComponent("Bonjour, je souhaite plus d'informations.")}`,
+      url: `https://wa.me/+212670653333?text=${encodeURIComponent("Bonjour, je souhaite plus d'informations.")}`,
       color: "#25D366",
       ariaLabel: "Nous contacter sur WhatsApp",
       title: "Discuter sur WhatsApp",
@@ -16,7 +16,7 @@ const SocialLinks = () => {
     {
       name: "Instagram",
       icon: <Instagram />,
-      url: "https://instagram.com/toncompte",
+      url: "https://www.instagram.com/gslatome",
       color: "#E4405F",
       ariaLabel: "Nous suivre sur Instagram",
       title: "Voir notre profil Instagram",
@@ -24,7 +24,7 @@ const SocialLinks = () => {
     {
       name: "Facebook",
       icon: <Facebook />,
-      url: "https://facebook.com/tonpage",
+      url: "https://www.facebook.com/groupescolairelatome",
       color: "#1877F2",
       ariaLabel: "Nous suivre sur Facebook",
       title: "Voir notre page Facebook",

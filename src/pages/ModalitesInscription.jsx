@@ -409,7 +409,7 @@ function ModalitesInscription() {
           display: flex;
           gap: 1.2rem;
           padding: 0.5rem 1rem;
-          animation: scrollInfinite 45s linear infinite;
+          // animation: scrollInfinite 45s linear infinite;
           width: max-content;
           will-change: transform;
         }
@@ -457,7 +457,6 @@ function ModalitesInscription() {
           position: relative;
           box-shadow: 0 2px 14px rgba(0, 0, 0, 0.06);
           border: 1px solid rgba(226, 232, 240, 0.7);
-          transition: all 0.35s ease;
           overflow: hidden;
         }
 

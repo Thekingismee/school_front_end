@@ -63,10 +63,10 @@ function NotreEtablissement() {
 
                             {/* Lien 2 : Téléphone */}
                             <a
-                                href="tel:+212666666666"
+                                href="tel:+212522903052"
                                 className="contact-link"
                             >
-                                <Phone size={20} /> +212 6666666666
+                                <Phone size={20} /> +212 522903052
                             </a>
 
                             {/* Lien 3 : Email */}

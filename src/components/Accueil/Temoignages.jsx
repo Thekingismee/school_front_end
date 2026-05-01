@@ -165,7 +165,8 @@ const Temoignages = () => {
 
         /* Image */
         .temoignage-img {
-          width: 100%;
+          width: 70%;
+          margin: 0 auto;
           height: auto;
           display: block;
           object-fit: cover;
