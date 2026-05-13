@@ -64,7 +64,7 @@ function LeGroupe() {
                         </div>
 
                         {/* Deuxième paragraphe avec lignes alignées */}
-                        <div className="paragraph-wrapper">
+                        {/* <div className="paragraph-wrapper">
                             <p className="para-line">
                                 Le{" "}
                                 <strong>
@@ -86,7 +86,25 @@ function LeGroupe() {
                                 </strong>
                                 .
                             </p>
-                        </div>
+                        </div> */}
+
+                        <div className="paragraph-wrapper">
+  <p className="para-line">
+    <strong>
+      Le Groupe Scolaire l'Atome met l'accent sur un enseignement rigoureux,
+      l'apprentissage des langues et le développement des compétences
+      essentielles.
+    </strong>
+  </p>
+  <p className="para-line">
+    <strong>
+      À travers un suivi pédagogique personnalisé et des activités éducatives
+      variées, l'établissement prépare chaque élève à réussir son parcours
+      scolaire tout en cultivant les valeurs de respect, responsabilité et
+      ouverture.
+    </strong>
+  </p>
+</div>
 
                         <div className="about-cta">
                             <p>Des questions ?</p>
@@ -106,7 +124,11 @@ function LeGroupe() {
                 <div className="about-container2">
                     {/* Partie Gauche : Contenu */}
                     <div className="about-content2">
-                        <h1>Une équipe aux valeurs partagées</h1>
+                        {/* <h1>Une équipe aux valeurs partagées</h1> */}
+
+                        <h1>
+                            Vision collective
+                        </h1>
 
                         <div className="text-lines">
                             <p className="line-1">
@@ -125,6 +147,7 @@ function LeGroupe() {
                                 accompagner chaque élève dans sa singularité et
                                 son potentiel.
                             </p>
+                           
 
                             {/* <p className="line-2">
                                 <strong>

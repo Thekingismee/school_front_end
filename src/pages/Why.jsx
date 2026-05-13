@@ -19,7 +19,7 @@ function Why() {
     <div className="hero-content">
         <h1 className="hero-title">
             <span className="hero-title-main">Pourquoi</span>
-            <span className="hero-title-accent">L'Atome</span>
+            <span className="hero-title-accent">L'Atome ?</span>
         </h1>
         <p className="hero-subtitle">
             Une école à taille humaine, une vision à haute ambition

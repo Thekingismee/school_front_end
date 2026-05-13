@@ -22,12 +22,7 @@ const HomeGallery = () => {
             fallback:
                 "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80"
         },
-        {
-            id: 4,
-            src: "/fillette.jpg",
-            fallback:
-                "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80"
-        },
+       
         {
             id: 5,
             src: "/sor1.jpg",
@@ -35,29 +30,57 @@ const HomeGallery = () => {
                 "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80"
         },
         {
-            id: 6,
-            src: "/sor2.jpg",
-            fallback:
-                "https://images.unsplash.com/photo-1427504745634-b521b4249ef7?w=600&q=80"
-        },
-        {
-            id: 7,
-            src: "/sp.jpg",
-            fallback:
-                "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80"
-        },
-        {
-            id: 8,
-            src: "/rima.jpg",
-            fallback:
-                "https://images.unsplash.com/photo-1544717305-38b9144f7a1f?w=600&q=80"
-        },
-        {
-            id: 9,
-            src: "/sind.jpg",
-            fallback:
-                "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&q=80"
-        }
+        id: 12,
+        src: "/wadaa.jpg",
+        fallback: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80"
+    },
+    {
+        id: 13,
+        src: "/ali.jpg",
+        fallback: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=600&q=80"
+    },
+       
+        // {
+        //     id: 7,
+        //     src: "/sp.jpg",
+        //     fallback:
+        //         "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80"
+        // },
+        
+        // {
+        //     id: 9,
+        //     src: "/sind.jpg",
+        //     fallback:
+        //         "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&q=80"
+        // },
+         {
+        id: 10,
+        src: "/lina.jpg",
+        fallback: "https://images.unsplash.com/photo-1519456264917-42d0aa2e0625?w=600&q=80"
+    },
+     {
+        id: 14,
+        src: "/arij.jpg",
+        fallback: "https://images.unsplash.com/photo-1544717305-38b9144f7a1f?w=600&q=80"
+    },
+    
+    {
+        id: 16,
+        src: "/theapein.jpg",
+        fallback: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80"
+    },
+    {
+        id: 17,
+        src: "/abdrelig.jpg",
+        fallback: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80"
+    }
+   
+  
+    // {
+    //     id: 11,
+    //     src: "/moro.jpg",
+    //     fallback: "https://images.unsplash.com/photo-1503676382389-4809596d5290?w=600&q=80"
+    // }
     ];
 
     const nextSlide = () => {

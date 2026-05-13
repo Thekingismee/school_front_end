@@ -51,10 +51,10 @@ const Cantine = () => {
               ref={videoRef}
               controls
               loop
-              poster="/cantine.jpg"
+              poster="http://elecmarketmaroc.com/cantine.jpg"
               className="cantine-video-player"
             >
-              <source src="/cantine.mp4" type="video/mp4" />
+              <source src="http://elecmarketmaroc.com/cantine.mp4" type="video/mp4" />
               Votre navigateur ne supporte pas la lecture vidéo.
             </video>
           </div>

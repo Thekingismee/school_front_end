@@ -4,11 +4,10 @@ import ActivitesCollege from "../components/Collège/ActivitesCollege.jsx";
 const College = () => {
     // ⭐⭐⭐ AJOUTEZ VOS IMAGES ICI (SANS TEXTE) ⭐⭐⭐
     const collegeCarouselImages = [
-        { src: "/college/image1.jpg" },
-        { src: "/college/image2.jpg" },
-        { src: "/college/image3.jpg" },
-        { src: "/college/image4.jpg" },
-        { src: "/college/image5.jpg" }
+       { src: "/COLL12.jpg" },
+                { src: "/COLL14.jpg" },
+
+        { src: "/COLL13.jpg" }
     ];
     // ⭐ FIN DE LA ZONE À MODIFIER ⭐
 
@@ -29,20 +28,41 @@ const College = () => {
             />
 
             <style jsx>{`
-                .header1 {
-                    position: relative;
-                    text-align: center;
-                    padding: 200px 70px;
-                    font-size: 2rem;
-                    font-weight: bold;
-                    color: #fff;
-                    background-image: url("/collg3.jpg");
-                    background-size: cover;
-                    background-position: center center;
-                    background-repeat: no-repeat;
-                    background-attachment: fixed;
-                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-                }
+                // .header1 {
+                //     position: relative;
+                //     text-align: center;
+                //     // padding: 200px 70px;
+                //     min-height: 100vh;  /* Au lieu de padding fixe */
+
+                //     font-size: 2rem;
+                //     font-weight: bold;
+                //     color: #fff;
+                //     background-image: url("COLL9.jpg");
+                //     background-size: cover;
+                //    background-position: top center;  /* Change center center en top center */
+                //     // background-position: center center;
+                //     background-repeat: no-repeat;
+                //     background-attachment: fixed;
+                //     // clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                // }
+.header1 {
+    position: relative;
+    text-align: center;
+    padding: 200px 70px;  /* REMETTRE cette ligne et enlever min-height */
+    /* min-height: 100vh;  à SUPPRIMER */
+    /* width: 100%;  à SUPPRIMER */
+    /* display: flex;  à SUPPRIMER */
+    /* align-items: center;  à SUPPRIMER */
+    /* justify-content: center;  à SUPPRIMER */
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    background-image: url("COLL999.jpg");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
                 .header-overlay {
                     position: absolute;
@@ -85,6 +105,19 @@ const College = () => {
                 }
 
                 @media (max-width: 768px) {
+                .header1 {
+                    position: relative;
+                    text-align: center;
+                    padding: 20px;
+                    font-size: 2rem;
+                    color: #fff;
+                    background-image: url("/tranparent2.png");
+                    background-size: cover;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-color: #57c77e;
+                }
                     .header1 {
                         padding: 120px 40px;
                     }

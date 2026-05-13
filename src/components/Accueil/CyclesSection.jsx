@@ -25,7 +25,7 @@ const CyclesSection = () => {
         {
             id: 3,
             title: "College",
-            image: "/college.jpg",
+            image: "/COLL50.jpg",
             fallbackImage:
                 "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80",
             description:
@@ -35,7 +35,7 @@ const CyclesSection = () => {
         {
             id: 4,
             title: "Lycee",
-            image: "/lycee.jpg",
+            image: "/LYCLYC2.jpg",
             fallbackImage:
                 "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&q=80",
             description:

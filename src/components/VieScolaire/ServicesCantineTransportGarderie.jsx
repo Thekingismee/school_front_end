@@ -5,14 +5,14 @@ const ServicesCantineTransportGarderie = () => {
         {
             id: 1,
             titre: "éducation optimale",
-            src: "/serv3.jpg",
+            src: "/freebook.jpg",
             description:
                 "Nous accompagnons les eleves dans leur parcours scolaire en offrant un soutien personnalisé, des ressources pédagogiques innovantes et un encadrement bienveillant. Notre objectif est de favoriser l'épanouissement intellectuel et personnel de chaque élève, en cultivant la curiosité, la créativité et l'autonomie."
         },
         {
             id: 2,
             titre: "Transport Scolaire",
-            src: "/trans.jpg",
+            src: "/transpvie.jpg",
             description:
                 "Un service de transport scolaire sécurisé avec des chauffeurs expérimentés et des véhicules récents. Nous assurons la desserte de nombreux quartiers avec des horaires adaptés aux besoins des familles. Un suivi en temps réel permet aux parents de connaître la position du bus à tout moment."
         },

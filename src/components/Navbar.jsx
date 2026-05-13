@@ -135,12 +135,12 @@ const Navbar = () => {
                         </button>
 
                         <ul className={`dropdown-menu ${activeDropdown === "admin" ? "desktop-visible" : ""} ${mobileOpenSubmenus["admin"] ? "mobile-visible" : ""}`}>
-                            <li><a href="/why" onClick={handleMobileLinkClick}>Pourquoi L'Atome</a></li>
+                            <li><a href="/why" onClick={handleMobileLinkClick}>Pourquoi L'Atome ?</a></li>
                             <li><a href="/ModalitesInscription" onClick={handleMobileLinkClick}>Modalites d'inscription</a></li>
                             <li><a href="/inscription" onClick={handleMobileLinkClick}>Demande d'inscription</a></li>
                             <li><a href="/rendez-vous" onClick={handleMobileLinkClick}>Demande de visite / Rendez-vous</a></li>
                             <li><a href="/join-us" onClick={handleMobileLinkClick}>Nous rejoindre</a></li>
-                            <li><a href="/tarifs-et-frais" onClick={handleMobileLinkClick}>Tarifs et frais de scolarité</a></li>
+                            {/* <li><a href="/tarifs-et-frais" onClick={handleMobileLinkClick}>Tarifs et frais de scolarité</a></li> */}
                         </ul>
                     </li>
 

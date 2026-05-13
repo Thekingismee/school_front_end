@@ -65,7 +65,7 @@ function NotreEtablissement() {
                             <a href="tel:+212522903052"
                                 className="contact-link"
                             >
-                                <Phone size={20} /> +212 522903052
+                                <Phone size={20} /> +212 670653333
                             </a>
 
                             {/* Lien 3 : Email */}
@@ -95,18 +95,19 @@ function NotreEtablissement() {
                     </div>
                 </div>
             </section>
-
-            <HomeValeurs />
-            <Cantine />
-            <Temoignages />
-
-            <Button href="/inscription">
+             <Button href="/inscription">
                 Inscrivez vos enfants dès maintenant{" "}
                 <RightOutlined
                     style={{ marginLeft: "10px", fontSize: "20px" }}
                 />
             </Button>
 
+
+           
+            <Cantine />
+            {/* <Temoignages /> */}
+
+           
             <style jsx>{`
                 /* ===== HERO SECTION AVEC OVERLAY BLANC TRANSPARENT ===== */
                 .hero-section {

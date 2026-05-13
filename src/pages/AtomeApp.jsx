@@ -186,10 +186,12 @@ const AtomeApp = () => {
               
               <div className="download-qr">
                 {/* <div className="qr-wrapper"> */}
-                  <img className="qr-wrapper" src="/qr-code.png" alt="QR Code de téléchargement" onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<div class="qr-placeholder">🔲 QR Code</div>';
-                  }} />
+                  <div className="qr-wrapper">
+  <img src="/qr-code.png" alt="QR Code de téléchargement" onError={(e) => {
+    e.target.style.display = 'none';
+    e.target.parentElement.innerHTML = '<div class="qr-placeholder">🔲 QR Code</div>';
+  }} />
+</div>
                 {/* </div> */}
                 <p>Scannez pour télécharger</p>
                 <small>Compatible tous appareils</small>
@@ -653,20 +655,25 @@ const AtomeApp = () => {
         }
 
         .qr-wrapper {
-          background: white;
-          padding: 20px;
-          border-radius: 20px;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-          margin-bottom: 20px;
-          display: flex;
-          justify-content: center;
-        }
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-        .download-qr img {
-          width: 350px;
-          height: 350px;
-          object-fit: contain;
-        }
+.qr-wrapper img {
+  width: 100%;
+  max-width: 260px;
+  height: auto;        /* ← plus de hauteur fixe */
+  object-fit: contain;
+}
 
         .download-qr p {
           font-weight: 600;

@@ -204,7 +204,7 @@ function ParcoursScolaire() {
             </div>
 
             <CyclesSection />
-            <Temoignages />
+            {/* <Temoignages /> */}
             <HomeGallery />
 
             <style jsx>{`

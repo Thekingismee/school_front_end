@@ -32,10 +32,16 @@ function VieScolaire() {
 
             <section className="about-section">
                 <div className="about-container">
+                        <div className="about-image-wrapper1">
+                        <img
+                            src="/Learning-rafiki.png"
+                            alt="Groupe Scolaire L'Atome"
+                        />
+                    </div>
                     {/* Partie Droite : Contenu */}
                     <div className="about-content">
                         <h1>
-                            Une école qui accompagne chaque élève
+                            Suivi individuel garanti
                         </h1>
 
                         {/* <p>
@@ -45,23 +51,28 @@ function VieScolaire() {
             <p>
               Au sein du <strong>Groupe Scolaire l'Atome à Lissasfa</strong>, la vie scolaire est pensée pour accompagner chaque élève dans son développement global. Entre activités périscolaires, services pratiques et suivi personnalisé, nous créons un environnement bienveillant où chaque enfant peut s'épanouir, grandir et réussir, en toute sécurité.
             </p> */}
+                      
                         <p>
-                            <span>
-                                La vie scolaire au Groupe Scolaire l'Atome ne se
-                                limite pas aux salles de classe.
-                            </span>
-                            <span>
-                                Elle englobe tout ce qui contribue à
-                                l'épanouissement de l'élève : activités
-                                périscolaires, services quotidiens, sécurité,
-                                santé et accompagnement numérique.
-                            </span>
-                            <span>
-                                Nous offrons un environnement complet,
-                                bienveillant et structuré, qui place l'élève et
-                                sa famille au cœur de notre projet éducatif.
-                            </span>
-                        </p>
+  <span>
+    <strong>
+      La vie scolaire au Groupe Scolaire l'Atome ne se limite pas aux salles de
+      classe.
+    </strong>
+  </span>
+  <span>
+    <strong>
+      Elle englobe tout ce qui contribue à l'épanouissement de l'élève :
+      activités périscolaires, services quotidiens, sécurité, santé et
+      accompagnement numérique.
+    </strong>
+  </span>
+  <span>
+    <strong>
+      Nous offrons un environnement complet, bienveillant et structuré, qui
+      place l'élève et sa famille au cœur de notre projet éducatif.
+    </strong>
+  </span>
+</p>
 
                         <div className="about-cta">
                             <p>Des questions ? </p>
@@ -82,14 +93,14 @@ function VieScolaire() {
                     </div>
                 </div>
             </section>
-
-            <HomeGallery />
-            <Activites />
-            {/* <Services/> */}
-            {/* <ServicesCantineTransportGarderie /> */}
-            <div id="services-cantine-transport-garderie" className="target-section-wrapper">
+ <div id="services-cantine-transport-garderie" className="target-section-wrapper">
                 <ServicesCantineTransportGarderie />
             </div>
+            <HomeGallery />
+            {/* <Activites /> */}
+            {/* <Services/> */}
+            {/* <ServicesCantineTransportGarderie /> */}
+           
 
             <SecuriteSante />
             <Temoignages />
@@ -365,6 +376,17 @@ function VieScolaire() {
                     width: 100%;
                     object-fit: cover;
                 }
+                .about-image-wrapper1 {
+                display: none;
+                    flex: 1;
+                    max-width: 500px;
+                }
+
+                .about-image-wrapper1 img {
+                display: none;
+                    width: 100%;
+                    object-fit: cover;
+                }
 
                 /* Styles pour le contenu texte */
                 .about-content {
@@ -409,7 +431,7 @@ function VieScolaire() {
                 /* Style du bouton */
                 .btn-contact {
                     background-color: transparent;
-                    color: #2566b2ff;
+                    color: rgb(255, 255, 255);
                     border: none;
                     padding: 0px;
                     cursor: pointer;
@@ -428,6 +450,13 @@ function VieScolaire() {
 
                 /* Responsive : Sur mobile, on empile verticalement */
                 @media (max-width: 768px) {
+                .about-section {
+                    width: 95%;
+                }
+                    .about-content h1 {
+                    font-size: 2rem;
+                    text-align: center;
+                }
                     .about-container {
                         flex-direction: column;
                         gap: 2rem;
@@ -435,7 +464,27 @@ function VieScolaire() {
 
                     .about-image-wrapper {
                         max-width: 100%;
+                        display: none;
                     }
+                    .about-image-wrapper1 {
+                        max-width: 100%;
+                        display: block;
+                    }
+
+               
+
+                .about-image-wrapper img {
+                    width: 100%;
+                    object-fit: cover;
+                    display: none;
+                }
+                
+
+                .about-image-wrapper1 img {
+                display: block;
+                    width: 100%;
+                    object-fit: cover;
+                }
 
                     .about-cta {
                         flex-direction: column;

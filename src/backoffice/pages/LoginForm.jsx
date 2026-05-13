@@ -126,9 +126,9 @@ function LoginForm({ isAuthenticated, isLoading, authError, authErrors, loginUse
                   Se souvenir de moi
                 </label>
               </div>
-              <Link to="/forgot-password" className="forgot-link">
+              {/* <Link to="/forgot-password" className="forgot-link">
                 Mot de passe oublié ?
-              </Link>
+              </Link> */}
             </div>
 
             {/* Bouton de soumission */}

@@ -4,11 +4,14 @@ import ActivitesLycee from "../components/Lycée/ActivitesLycee.jsx";
 const Lycee = () => {
     // ⭐⭐⭐ AJOUTEZ VOS IMAGES ICI (SANS TEXTE) ⭐⭐⭐
     const lyceeCarouselImages = [
-        { src: "/lycee/image1.jpg" },
-        { src: "/lycee/image2.jpg" },
-        { src: "/lycee/image3.jpg" },
-        { src: "/lycee/image4.jpg" },
-        { src: "/lycee/image5.jpg" }
+         { src: "/LYC10.jpg" },
+           { src: "/LYC8.jpg" },
+                 { src: "/LYC0.jpg" },
+                //    { src: "/LYC00.jpg" },
+                
+                 
+                  { src: "/LYC12.jpg" }
+
     ];
     // ⭐ FIN DE LA ZONE À MODIFIER ⭐
 
@@ -36,11 +39,12 @@ const Lycee = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/graduation.jpg");
+                    background-image: url("/tranparent2.png");
                     background-size: cover;
                     background-position: center center;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
+                    background-color: #57a6c7;
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
                 }
 

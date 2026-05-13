@@ -43,10 +43,22 @@ function Home() {
         <Temoignages />
         <HomeGallery />
         <Button href="/inscription">
-          Inscrivez vos enfants dès maintenant <RightOutlined style={{ marginLeft: '10px', fontSize: '20px' }} />
+          Inscrivez vos enfants{" "}<span className="span">dès maintenant</span> <RightOutlined style={{ marginLeft: '10px', fontSize: '20px' }} />
         </Button>
         <HomeActualites />
 
+<style jsx>{`
+          
+          .span {
+margin-left: 7px;         }
+   @media (max-width: 640px) {
+          .span {
+            display: none;
+          }
+          
+}
+            `}
+</style>
     </div>
 
 

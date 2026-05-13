@@ -5,7 +5,7 @@ import ContactPopup from "../components/Accueil/ContactPopup";
 import Activites from "../components/VieScolaire/Activites";
 // import Services from "../components/Accueil/Services";
 import ServicesCantineTransportGarderie from "../components/VieScolaire/ServicesCantineTransportGarderie";
-import SecuriteSante from "../components/VieScolaire/SecuriteSante";
+// import SecuriteSante from "../components/VieScolaire/SecuriteSante";
 
 function VieScolaire() {
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -92,7 +92,7 @@ function VieScolaire() {
                 <ServicesCantineTransportGarderie />
             </div>
 
-            <SecuriteSante />
+            {/* <SecuriteSante /> */}
             <Temoignages />
             <ContactPopup
                 isOpen={isContactOpen}

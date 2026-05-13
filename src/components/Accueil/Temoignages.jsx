@@ -171,6 +171,7 @@ const Temoignages = () => {
           display: block;
           object-fit: cover;
         }
+        
 
         /* Arrows */
         .temoignage-arrow {
@@ -222,6 +223,9 @@ const Temoignages = () => {
         @media (max-width: 640px) {
           .temoignages-section {
             padding: 56px 16px;
+          }
+          .temoignage-img {
+            width: 100%;
           }
 
           .temoignage-arrow {

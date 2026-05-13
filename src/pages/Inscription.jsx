@@ -121,16 +121,15 @@ const Inscription = () => {
     ],
     'college': [
       { value: '', label: 'Sélectionnez un niveau' },
-      { value: '6eme', label: '6ème' },
-      { value: '5eme', label: '5ème' },
-      { value: '4eme', label: '4ème' },
-      { value: '3eme', label: '3ème' }
+      { value: '1 ac', label: '1 année de collège' },
+      { value: '2 ac', label: '2 ème années de collège' },
+      { value: '3 ac', label: '3 ème années de collège' },
     ],
     'lycee': [
       { value: '', label: 'Sélectionnez un niveau' },
-      { value: 'seconde', label: 'Seconde' },
-      { value: 'premiere', label: 'Première' },
-      { value: 'terminale', label: 'Terminale' }
+      { value: 'TC', label: 'Tronc commun' },
+      { value: '1 Bac', label: '1 Bac' },
+      { value: 'Bac', label: 'BAC' }
     ]
   };
 

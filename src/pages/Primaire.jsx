@@ -4,11 +4,18 @@ import ActivitesPrimaire from "../components/Primaire/ActivitesPrimaire";
 const Primaire = () => {
     // ⭐⭐⭐ AJOUTEZ VOS IMAGES ICI (SANS TEXTE) ⭐⭐⭐
     const primaireCarouselImages = [
-        { src: "/primaire/image1.jpg" },
-        { src: "/primaire/image2.jpg" },
-        { src: "/primaire/image3.jpg" },
-        { src: "/primaire/image4.jpg" },
-        { src: "/primaire/image5.jpg" }
+       { src: "/PRIM11.jpg" },
+       { src: "/PRIM4.jpg" },
+      { src: "/PRIM1.jpg" },
+       { src: "/PRIM7.jpg" },
+      { src: "/PRIM17.jpg" }, 
+    //   { src: "/PRIM2.jpg" },
+       
+     
+    //   { src: "/PRIM8.jpg" },
+    //   { src: "/PRIM9.jpg" },
+       { src: "/PRIM10.jpg" }
+        
     ];
     // ⭐ FIN DE LA ZONE À MODIFIER ⭐
 
@@ -36,11 +43,12 @@ const Primaire = () => {
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/primprim2.jpg");
+                    background-image: url("/tranparent2.png");
                     background-size: cover;
-                    background-position: center 30%;
+                    background-position: center center;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
+                    background-color: #c7ad57;
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
                 }
 

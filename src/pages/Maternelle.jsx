@@ -4,11 +4,15 @@ import ActivitesMaternelle from "../components/Maternelle/ActivitesMaternelle";
 const Maternelle = () => {
     // ⭐⭐⭐ AJOUTEZ VOS IMAGES ICI (SANS TEXTE) ⭐⭐⭐
     const maternelleCarouselImages = [
-        { src: "/lieu.jpg" },
-        { src: "/lieu.jpg" },
-        { src: "/lieu.jpg" },
-        { src: "/lieu.jpg" },
-        { src: "/lieu.jpg" }
+        { src: "/ENF1.jpg" },  
+        { src: "/ENF3.jpg" }, 
+        { src: "/ENF6.jpg" }, 
+        { src: "/ENF7.jpg" }, 
+        //  { src: "/ENF4.jpg" },  
+        { src: "/ENF5.jpg" },  
+          { src: "/ENF8.jpg" }
+        
+        
     ];
     // ⭐ FIN DE LA ZONE À MODIFIER ⭐
 
@@ -32,15 +36,16 @@ const Maternelle = () => {
                 .header1 {
                     position: relative;
                     text-align: center;
-                    padding: 180px 70px;
+                    padding: 200px 70px;
                     font-size: 2rem;
                     font-weight: bold;
                     color: #fff;
-                    background-image: url("/matmat3.jpg");
+                    background-image: url("/tranparent2.png");
                     background-size: cover;
-                    background-position: center;
+                    background-position: center center;
                     background-repeat: no-repeat;
                     background-attachment: fixed;
+                    background-color: #c75757;
                     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
                 }
 

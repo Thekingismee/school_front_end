@@ -11,7 +11,7 @@ const Faq = () => {
       items: [
         {
           question: "Quels sont les critères d'admission ?",
-          answer: "L'admission au Groupe Scolaire L'Atome se base sur plusieurs critères : le dossier scolaire, les résultats académiques, une visite de l'établissement et un entretien avec la famille. Nous recherchons des élèves motivés et capables de s'adapter à notre projet pédagogique trilingue."
+          answer: "L'admission au Groupe Scolaire L'Atome se base sur plusieurs critères : le dossier scolaire, les résultats académiques, une visite de l'établissement. Nous recherchons des élèves motivés et capables de s'adapter à notre projet pédagogique trilingue."
         },
         {
           question: "Quel est le processus d'inscription ?",
@@ -19,12 +19,9 @@ const Faq = () => {
         },
         {
           question: "Quand ouvre l'inscription pour l'année prochaine ?",
-          answer: "Les inscriptions pour la nouvelle année scolaire ouvrent généralement en janvier. Nous recommandons une inscription anticipée car les places sont limitées."
+          answer: "Les inscriptions pour la nouvelle année scolaire ouvrent généralement en juillet. Nous recommandons une inscription anticipée car les places sont limitées."
         },
-        {
-          question: "Y a-t-il une capacité maximale d'élèves par classe ?",
-          answer: "Oui, nos classes ne dépassent pas 25 élèves pour garantir un suivi individualisé de qualité et un environnement propice à l'apprentissage."
-        }
+     
       ]
     },
     {
@@ -32,20 +29,14 @@ const Faq = () => {
       items: [
         {
           question: "Quels sont les frais de scolarité ?",
-          answer: "Les frais de scolarité varient selon le cycle et incluent les frais pédagogiques, l'assurance scolaire et les services optionnels. Consultez notre page Tarifs & Frais pour les détails complets par cycle."
+          answer: "Les frais de scolarité varient selon le cycle et incluent les frais pédagogiques, l'assurance scolaire et les services optionnels. "
         },
-        {
-          question: "Quelles sont les modalités de paiement ?",
-          answer: "Nous proposons deux options : 10 mensualités (septembre à juin) ou 3 versements trimestriels (40% à l'inscription, 30% chaque trimestre)."
-        },
+       
         {
           question: "Y a-t-il des réductions pour plusieurs enfants ?",
           answer: "Oui ! Nous proposons des réductions familiales : 5% à partir du 2e enfant et 10% à partir du 3e enfant inscrit dans notre établissement."
         },
-        {
-          question: "Proposez-vous des bourses ou aides financières ?",
-          answer: "Nous examininons les demandes d'aides financières au cas par cas. Contactez directement notre administratrice pour discuter de votre situation."
-        }
+      
       ]
     },
     {
@@ -53,19 +44,16 @@ const Faq = () => {
       items: [
         {
           question: "Quel est le modèle pédagogique du Groupe Scolaire ?",
-          answer: "Notre approche combine un enseignement trilingue (Français, Arabe, Anglais) avec une pédagogie moderne, soutenue par le numérique et des projets concrets. Nous valorisons l'autonomie, la créativité et l'esprit critique."
+          answer: "Notre approche combine un enseignement multilingue(Français, Arabe, Anglais,espagnol) avec une pédagogie moderne, soutenue par le numérique et des projets concrets. Nous valorisons l'autonomie, la créativité et l'esprit critique."
         },
         {
           question: "Quels sont les horaires d'école ?",
-          answer: "Les horaires varient selon le cycle : Maternelle (8h30-15h30), Primaire (8h30-16h), Collège & Lycée (8h-17h). Une garderie est disponible jusqu'à 18h."
+          answer: "L’école fonctionne en système continu de 8h30 à 17h30 pour tous les cycles. Les horaires sont organisés selon le niveau : Maternelle, Primaire, Collège et Lycée, avec une répartition adaptée des heures de cours. Au lycée, le volume horaire est structuré en heures selon les matières ."
         },
-        {
-          question: "Quels services de cantine et garderie proposez-vous ?",
-          answer: "Nous proposons une cantine avec repas préparés sur place par nos cuisiniers, adaptés aux régimes alimentaires. La garderie du matin commence à 7h30 et celle du soir jusqu'à 18h."
-        },
+       
         {
           question: "Y a-t-il des activités extrascolaires ?",
-          answer: "Oui, nous proposons diverses activités : sports (football, tennis, natation), arts (musique, théâtre, dessin), ateliers scientifiques et clubs membres. Elles sont incluses ou optionnelles selon le type."
+          answer: "L'école organise régulièrement des sorties éducatives, des journées à thème et des ateliers de découverte pour enrichir le parcours des élèves."
         }
       ]
     },
@@ -74,15 +62,15 @@ const Faq = () => {
       items: [
         {
           question: "À quel âge commence l'apprentissage des langues ?",
-          answer: "L'enseignement trilingue débute dès la maternelle. Les enfants sont exposés progressivement au Français, Arabe et Anglais par des enseignants spécialisés."
+          answer: "L'enseignement multilingue débute dès la maternelle. Les enfants sont exposés progressivement au français, à l’arabe, à l’anglais et à l’espagnol par des enseignants spécialisés"
         },
         {
-          question: "Comment est assuré un bon niveau dans les trois langues ?",
-          answer: "Nos enseignants sont des natifs ou bilingues certifiés. Nous utilisons une pédagogie adaptée avec des contenus variés : cours formels, projets, échanges, et immersion progressive."
+          question: "Comment est assuré un bon niveau dans les quatres langues ?",
+          answer: "Nos enseignants sont natifs ou bilingues certifiés. Nous adoptons une pédagogie plurilingue avec des contenus variés : cours structurés, projets, activités interactives et immersion progressive en arabe, français, anglais et espagnol ."
         },
         {
           question: "Les élèves passent-ils des certifications externes ?",
-          answer: "Oui, nous préparons nos élèves aux certifications internationales : Cambridge English, DALF/DELF pour le français, et des tests en arabe selon le niveau."
+          answer: "Oui, nous préparons nos élèves aux certifications internationales : Cambridge English"
         }
       ]
     },
@@ -95,12 +83,10 @@ const Faq = () => {
         },
         {
           question: "Comment assurez-vous la sécurité des élèves ?",
-          answer: "La sécurité est notre priorité : portail sécurisé, surveillance vidéo, personnel formé aux premiers secours, protocoles d'urgence testés régulièrement, et assurance scolaire complète."
-        },
-        {
-          question: "My child was injured at school. What should I do?",
-          answer: "En cas d'accident, notre infirmerie intervient immédiatement. Nous vous contactons directement et documentons l'incident. L'assurance scolaire couvre les frais médicaux. Nos protocoles sont rigoureux et régulièrement revus."
-        }
+          answer: "La sécurité est notre priorité : portail sécurisé,  personnel formé aux premiers secours, protocoles d'urgence testés régulièrement, et assurance scolaire complète."
+        
+     },  
+     
       ]
     },
     {
@@ -129,16 +115,13 @@ const Faq = () => {
       items: [
         {
           question: "Quels documents dois-je fournir pour l'inscription ?",
-          answer: "Liste standard : acte de naissance, extrait RCCM du tuteur, bulletins de l'année précédente, certificat de vaccination, photocopie passeport. Una liste complète vous sera transmise après la pré-inscription."
+          answer: "Les documents à fournir varient selon le niveau. De manière générale, pour tous les niveaux : certificat de radiation, copie de l’acte de naissance, 6 photos d’identité récentes, copie de la carte nationale du père ou du tuteur, chemise cartonnée et carte d’élève (pour les anciens élèves). Pour le primaire et le collège/lycée, des documents supplémentaires peuvent être demandés comme le dossier scolaire validé, un dossier en plastique bleu, la carte d’élève verte ou un certificat médical selon les cas."
         },
         {
           question: "Comment accéder au portail parent ?",
           answer: "Un identifiant et mot de passe vous sont fournis après l'inscription. Vous pouvez télécharger l'application L'Atome App ou accéder via le portail web pour un suivi complet."
         },
-        {
-          question: "Quelle est la politique en cas d'absence prolongée ?",
-          answer: "Les absences doivent être justifiées. Pour les absences supérieures à 5 jours, une demande formelle auprès de l'administration est requise. Un excès d'absences injustifiées peut affecter la scolarité."
-        },
+       
         {
           question: "Comment signaler un problème ou une préoccupation ?",
           answer: "Vous pouvez contacter directement la direction, utiliser l'application de messagerie, ou écrire un mail. Nous avons aussi une boîte suggestions pour améliorer continuellement notre service."
@@ -166,7 +149,7 @@ const Faq = () => {
                 <div className="hero-overlay"></div>
                 <div className="hero-content">
                     <h1 className="titre">Foire Aux Questions</h1>
-                    <p className="hero-subtitle">Trouvez les réponses à vos questions sur l'admission, la vie scolaire et notre projet pédagogique.</p>
+                    <p className="hero-subtitle">Trouvez les réponses à vos questions.</p>
                 </div>
             </header>
 
